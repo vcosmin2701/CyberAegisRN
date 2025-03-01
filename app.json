@@ -1,9 +1,11 @@
 {
   "expo": {
     "name": "CyberAegiesRN",
-    "slug": "CyberAegiesRN",
-    "version": "1.0.0",
+    "slug": "cyberaegiesrn",
+    "sdkVersion": "52.0.0",
+    "platforms": ["ios", "android"],
     "orientation": "portrait",
+    "version": "1.0.0",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
