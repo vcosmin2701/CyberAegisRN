@@ -8,8 +8,8 @@ import {
   Animated,
   TouchableOpacity,
   Alert,
-  Clipboard,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface Rule {
