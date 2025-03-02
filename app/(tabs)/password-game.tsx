@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface Rule {
@@ -136,8 +136,12 @@ export default function PasswordGame() {
 
   const copyPassword = async () => {
     if (password) {
-      await Clipboard.setString(password);
-      Alert.alert('Succes!', 'Parola a fost copiată în clipboard!');
+      try {
+        await Clipboard.setStringAsync(password);
+        Alert.alert('Succes!', 'Parola a fost copiată în clipboard!');
+      } catch (error) {
+        Alert.alert('Eroare', 'Nu am putut copia parola în clipboard.');
+      }
     }
   };
 
