@@ -8,8 +8,23 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
-import { adImages } from '../../assets/images/ads';
 import { FontAwesome } from '@expo/vector-icons';
+
+// Import images directly
+const adImages = {
+  fake1: require('../../assets/images/ads/Fake1.png'),
+  fake2: require('../../assets/images/ads/Fake2.png'),
+  fake3: require('../../assets/images/ads/Fake3.png'),
+  fake4: require('../../assets/images/ads/Fake4.png'),
+  fake5: require('../../assets/images/ads/Fake5.png'),
+  fake6: require('../../assets/images/ads/Fake6.png'),
+  real1: require('../../assets/images/ads/Real1.png'),
+  real2: require('../../assets/images/ads/Real2.png'),
+  real3: require('../../assets/images/ads/Real3.png'),
+  real4: require('../../assets/images/ads/Real4.png'),
+  real5: require('../../assets/images/ads/Real5.png'),
+  real6: require('../../assets/images/ads/Real6.png'),
+};
 
 interface Ad {
   id: number;
@@ -19,52 +34,116 @@ interface Ad {
   title: string;
 }
 
-const ads: Ad[] = [
-  {
-    id: 1,
-    image: adImages.fake1,
-    isFake: true,
-    title: "Câștigă iPhone 15 GRATIS!",
-    explanation: "Această reclamă este falsă deoarece promite un produs scump gratuit fără condiții clare. De obicei, astfel de oferte sunt folosite pentru a colecta date personale sau pentru fraude.",
-  },
-  {
-    id: 2,
-    image: adImages.legit1,
-    isFake: false,
-    title: "Reduceri Black Friday - eMAG",
-    explanation: "Aceasta este o reclamă legitimă de la un comerciant cunoscut, cu reduceri în perioada specifică Black Friday.",
-  },
-  {
-    id: 3,
-    image: adImages.fake2,
-    isFake: true,
-    title: "Câștigă 10,000€ în 24 ore!",
-    explanation: "Reclamă falsă care promite câștiguri nerealiste într-un timp foarte scurt. Este o tactică comună în schemele piramidale sau înșelătorii.",
-  },
-  {
-    id: 4,
-    image: adImages.legit2,
-    isFake: false,
-    title: "Lidl - Oferte săptămânale",
-    explanation: "Reclamă legitimă cu oferte săptămânale de la un lanț de magazine cunoscut.",
-  },
-  {
-    id: 5,
-    image: adImages.fake3,
-    isFake: true,
-    title: "Tratament miraculos - vindecă orice boală!",
-    explanation: "Reclamă falsă care promite vindecări miraculoase. Afirmațiile medicale exagerate sunt semne clare de înșelătorie.",
-  },
-  {
-    id: 6,
-    image: adImages.legit3,
-    isFake: false,
-    title: "Kaufland - Promoții locale",
-    explanation: "Reclamă legitimă cu promoții locale de la un supermarket cunoscut.",
-  },
-];
+const allAds = {
+  fake: [
+    {
+      id: 1,
+      image: adImages.fake1,
+      isFake: true,
+      title: "Câștigă un iPhone 10!",
+      explanation: "Această reclamă este falsă deoarece folosește o roată a norocului și promite un iPhone 10 cu un singur click. Textul 'Foarte căcare' și designul strident sunt indicii clare că este o înșelătorie.",
+    },
+    {
+      id: 2,
+      image: adImages.fake2,
+      isFake: true,
+      title: "Câștigă 1 MILION € Instant!",
+      explanation: "Reclamă falsă care promite câștiguri instant nerealiste de 1 milion de euro. Folosirea banilor și a termenului 'instant' sunt indicii clare ale unei înșelătorii.",
+    },
+    {
+      id: 3,
+      image: adImages.fake3,
+      isFake: true,
+      title: "Bonus 500% la Cazino!",
+      explanation: "Reclamă falsă de cazino care promite bonusuri nerealiste de 500%. Cazinourile online neautorizate folosesc adesea astfel de tactici pentru a atrage utilizatori.",
+    },
+    {
+      id: 4,
+      image: adImages.fake4,
+      isFake: true,
+      title: "Credit Rapid 50.000€",
+      explanation: "Reclamă falsă care promite credite rapide fără verificări. Sumele mari și lipsa verificărilor sunt semne clare că este o înșelătorie.",
+    },
+    {
+      id: 5,
+      image: adImages.fake5,
+      isFake: true,
+      title: "Bitcoin x10 Garantat",
+      explanation: "Reclamă falsă care promite profit garantat din Bitcoin. Nicio investiție legitimă nu poate garanta profituri, mai ales de 10 ori suma investită.",
+    },
+    {
+      id: 6,
+      image: adImages.fake6,
+      isFake: true,
+      title: "Mercedes C-Class GRATIS",
+      explanation: "Reclamă falsă care promite o mașină Mercedes gratuită. Premiile foarte scumpe oferite 'gratuit' sunt de obicei capcane pentru date personale.",
+    }
+  ],
+  legit: [
+    {
+      id: 7,
+      image: adImages.real1,
+      isFake: false,
+      title: "Mega Image - Oferte de Vară",
+      explanation: "Reclamă legitimă de la Mega Image cu reduceri de vară verificabile. Prețurile sunt realiste și promoțiile pot fi verificate în magazine.",
+    },
+    {
+      id: 8,
+      image: adImages.real2,
+      isFake: false,
+      title: "Penny - Prețuri Mici",
+      explanation: "Reclamă legitimă de la Penny Market cu oferte la produse de bază. Reducerile sunt realiste și verificabile în magazine.",
+    },
+    {
+      id: 9,
+      image: adImages.real3,
+      isFake: false,
+      title: "Kaufland - Săptămâna Aceasta",
+      explanation: "Reclamă legitimă pentru promoțiile săptămânale Kaufland. Ofertele sunt clare și pot fi verificate în catalog și magazine.",
+    },
+    {
+      id: 10,
+      image: adImages.real4,
+      isFake: false,
+      title: "Lidl - Oferte de Joi",
+      explanation: "Reclamă legitimă pentru ofertele de joi de la Lidl. Produsele și prețurile sunt transparente și verificabile.",
+    },
+    {
+      id: 11,
+      image: adImages.real5,
+      isFake: false,
+      title: "Carrefour - Fresh",
+      explanation: "Reclamă legitimă cu reduceri la produse proaspete de la Carrefour. Prețurile și produsele sunt clar specificate.",
+    },
+    {
+      id: 12,
+      image: adImages.real6,
+      isFake: false,
+      title: "Auchan - Reduceri",
+      explanation: "Reclamă legitimă cu promoții Auchan. Ofertele sunt prezentate transparent și au prețuri verificabile în magazine.",
+    }
+  ]
+};
+
+function shuffleArray<T>(array: T[]): T[] {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
 
 export default function AdDetectorGame() {
+  const [ads] = useState<Ad[]>(() => {
+    // Alege random 3 reclame false din cele 6 disponibile
+    const shuffledFake = shuffleArray(allAds.fake).slice(0, 3);
+    // Alege random 3 reclame legitime din cele 6 disponibile
+    const shuffledLegit = shuffleArray(allAds.legit).slice(0, 3);
+    // Combină și amestecă cele 6 reclame selectate
+    return shuffleArray([...shuffledFake, ...shuffledLegit]);
+  });
+
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [foundFakes, setFoundFakes] = useState<number>(0);
   const [gameCompleted, setGameCompleted] = useState<boolean>(false);
