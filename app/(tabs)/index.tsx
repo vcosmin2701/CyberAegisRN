@@ -41,7 +41,7 @@ export default function HomeScreen() {
 
       {/* Current Lesson Status */}
       <View style={styles.currentLessonCard}>
-        <Text style={styles.sectionTitle}>Current Lesson</Text>
+        <Text style={styles.sectionTitle}>Current Lesson 📚</Text>
         <Text style={styles.lessonTitle}>{userData.currentLesson}</Text>
         <View style={styles.progressBar}>
           <View
@@ -69,9 +69,19 @@ export default function HomeScreen() {
         </View>
       </TouchableOpacity>
 
+      {/* Alex's Lab Button */}
+      <TouchableOpacity style={styles.mainGameButton}>
+        <View style={styles.mainGameContent}>
+          <Text style={styles.mainGameTitle}>🥼 Alex's Lab</Text>
+          <Text style={styles.mainGameSubtitle}>
+            See the results of Alex's experiments 
+          </Text>
+        </View>
+      </TouchableOpacity>
+
       {/* Daily Check-in */}
       <View style={styles.dailyCheckIn}>
-        <Text style={styles.sectionTitle}>Daily Rewards</Text>
+        <Text style={styles.sectionTitle}>Daily Rewards 🎁</Text>
         <View style={styles.checkInContainer}>
           {[1, 2, 3, 4, 5].map((day) => (
             <View key={day} style={styles.dayBox}>
@@ -87,10 +97,10 @@ export default function HomeScreen() {
       {/* Quick Actions Grid */}
       <View style={styles.quickActions}>
         <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>🎲 Minigames</Text>
+          <Text style={styles.actionButtonText}>Minigames 🎲</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>📚 Switch Subject</Text>
+          <Text style={styles.actionButtonText}>Shop 🛍️</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
