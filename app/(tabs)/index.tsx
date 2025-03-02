@@ -61,7 +61,7 @@ export default function HomeScreen() {
             <View key={day} style={styles.dayBox}>
               <Text style={styles.dayNumber}>{day}</Text>
               <View style={[styles.checkMark, day <= 2 && styles.checked]}>
-                {day <= 2 ? '✓' : '?'}
+                <Text style={styles.checkMarkText}>{day <= 2 ? '✓' : '?'}</Text>
               </View>
             </View>
           ))}
@@ -84,33 +84,34 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#091353',
+    backgroundColor: '#BFD7ED', // Baby Blue
   },
   header: {
     padding: 20,
     paddingTop: 40,
+    backgroundColor: '#003B73', // Navy Blue
   },
   headerTitle: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#FFD700',
+    color: '#BFD7ED', // Baby Blue
     marginBottom: 15,
   },
   profileSection: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#1A237E',
+    backgroundColor: '#0074B7', // Royal Blue
     padding: 15,
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#4A90E2',
+    borderColor: '#60A3D9', // Blue Grotto
   },
   profileInfo: {
     flex: 1,
   },
   username: {
-    color: '#FFF',
+    color: '#BFD7ED', // Baby Blue
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
@@ -119,24 +120,24 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   xpText: {
-    color: '#4A90E2',
+    color: '#60A3D9', // Blue Grotto
     fontSize: 14,
   },
   xpBar: {
     height: 6,
-    backgroundColor: '#0D1B3E',
+    backgroundColor: '#003B73', // Navy Blue
     borderRadius: 3,
     overflow: 'hidden',
   },
   xpProgress: {
     height: '100%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#60A3D9', // Blue Grotto
   },
   profileButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#60A3D9', // Blue Grotto
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 15,
@@ -147,52 +148,67 @@ const styles = StyleSheet.create({
   currentLessonCard: {
     margin: 20,
     padding: 20,
-    backgroundColor: '#1A237E',
+    backgroundColor: '#0074B7', // Royal Blue
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#4A90E2',
+    borderColor: '#60A3D9', // Blue Grotto
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   lessonTitle: {
-    color: '#FFF',
+    color: '#BFD7ED', // Baby Blue
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   progressBar: {
     height: 8,
-    backgroundColor: '#0D1B3E',
+    backgroundColor: '#003B73', // Navy Blue
     borderRadius: 4,
     overflow: 'hidden',
     marginVertical: 10,
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#60A3D9', // Blue Grotto
   },
   progressText: {
-    color: '#4A90E2',
+    color: '#BFD7ED', // Baby Blue
     fontSize: 14,
     marginBottom: 15,
   },
   continueButton: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#003B73', // Navy Blue
     padding: 12,
     borderRadius: 10,
     alignItems: 'center',
   },
   continueButtonText: {
-    color: '#FFF',
+    color: '#BFD7ED', // Baby Blue
     fontSize: 16,
     fontWeight: 'bold',
   },
   mainGameButton: {
-    backgroundColor: '#1A237E',
+    backgroundColor: '#0074B7', // Royal Blue
     margin: 20,
     borderRadius: 15,
     padding: 20,
     elevation: 5,
     borderWidth: 2,
-    borderColor: '#4A90E2',
+    borderColor: '#60A3D9', // Blue Grotto
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   mainGameContent: {
     alignItems: 'center',
@@ -200,26 +216,34 @@ const styles = StyleSheet.create({
   mainGameTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#BFD7ED', // Baby Blue
     marginBottom: 8,
   },
   mainGameSubtitle: {
     fontSize: 16,
-    color: '#4A90E2',
+    color: '#60A3D9', // Blue Grotto
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFD700',
+    color: '#BFD7ED', // Baby Blue
     marginBottom: 15,
   },
   dailyCheckIn: {
     margin: 20,
     padding: 20,
-    backgroundColor: '#1A237E',
+    backgroundColor: '#0074B7', // Royal Blue
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#4A90E2',
+    borderColor: '#60A3D9', // Blue Grotto
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   checkInContainer: {
     flexDirection: 'row',
@@ -231,7 +255,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   dayNumber: {
-    color: '#FFF',
+    color: '#BFD7ED', // Baby Blue
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -239,36 +263,46 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: '#1A237E',
+    backgroundColor: '#003B73', // Navy Blue
     borderWidth: 2,
-    borderColor: '#4A90E2',
+    borderColor: '#60A3D9', // Blue Grotto
     justifyContent: 'center',
     alignItems: 'center',
-    color: '#FFF',
+  },
+  checkMarkText: {
+    color: '#BFD7ED', // Baby Blue
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   checked: {
-    backgroundColor: '#4CAF50',
-    borderColor: '#4CAF50',
+    backgroundColor: '#60A3D9', // Blue Grotto
   },
   quickActions: {
-    margin: 20,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
     justifyContent: 'space-between',
+    margin: 20,
+    marginTop: 0,
+    gap: 15,
   },
   actionButton: {
-    backgroundColor: '#1A237E',
-    width: '48%',
+    flex: 1,
+    backgroundColor: '#0074B7', // Royal Blue
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#4A90E2',
-    marginBottom: 10,
+    borderColor: '#60A3D9', // Blue Grotto
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   actionButtonText: {
-    color: '#FFF',
+    color: '#BFD7ED', // Baby Blue
     fontSize: 16,
     fontWeight: 'bold',
   },
