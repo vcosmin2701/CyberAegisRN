@@ -6,8 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Dimensions,
 } from 'react-native';
 import { Link } from 'expo-router';
+
+const { width } = Dimensions.get('window');
+const cardWidth = width * 0.9; // 90% of screen width
 
 export default function HomeScreen() {
   // Mock user data - replace with real data later
@@ -20,88 +24,79 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Header with Profile */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>CyberAegis</Text>
-        <View style={styles.profileSection}>
-          <View style={styles.profileInfo}>
-            <Text style={styles.username}>{userData.username}</Text>
-            <View style={styles.xpContainer}>
-              <Text style={styles.xpText}>XP: {userData.xp}</Text>
-              <View style={styles.xpBar}>
-                <View style={[styles.xpProgress, { width: '60%' }]} />
+      <View style={styles.contentContainer}>
+        {/* Header with Profile */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>CyberAegis</Text>
+          <View style={styles.profileSection}>
+            <View style={styles.profileInfo}>
+              <Text style={styles.username}>{userData.username}</Text>
+              <View style={styles.xpContainer}>
+                <Text style={styles.xpText}>XP: {userData.xp}</Text>
+                <View style={styles.xpBar}>
+                  <View style={[styles.xpProgress, { width: `${userData.lessonProgress}%` }]} />
+                </View>
               </View>
             </View>
+            <TouchableOpacity style={styles.profileButton}>
+              <Text style={styles.profileButtonText}>👤</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.profileButton}>
-            <Text style={styles.profileButtonText}>👤</Text>
+        </View>
+
+        {/* Current Lesson Status */}
+        <View style={styles.currentLessonCard}>
+          <Text style={styles.sectionTitle}>Current Lesson 📚</Text>
+          <Text style={styles.lessonTitle}>{userData.currentLesson}</Text>
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: `${userData.lessonProgress}%` }]} />
+          </View>
+          <Text style={styles.progressText}>{userData.lessonProgress}% Complete</Text>
+          <TouchableOpacity style={styles.continueButton}>
+            <Text style={styles.continueButtonText}>Continue Learning</Text>
           </TouchableOpacity>
         </View>
-      </View>
 
-      {/* Current Lesson Status */}
-      <View style={styles.currentLessonCard}>
-        <Text style={styles.sectionTitle}>Current Lesson 📚</Text>
-        <Text style={styles.lessonTitle}>{userData.currentLesson}</Text>
-        <View style={styles.progressBar}>
-          <View
-            style={[
-              styles.progressFill,
-              { width: `${userData.lessonProgress}%` },
-            ]}
-          />
-        </View>
-        <Text style={styles.progressText}>
-          {userData.lessonProgress}% Complete
-        </Text>
-        <TouchableOpacity style={styles.continueButton}>
-          <Text style={styles.continueButtonText}>Continue Learning</Text>
+        {/* Main Game Button */}
+        <TouchableOpacity style={styles.mainGameButton}>
+          <View style={styles.mainGameContent}>
+            <Text style={styles.mainGameTitle}>🎮 Start Platformer Game</Text>
+            <Text style={styles.mainGameSubtitle}>Begin Your Cyber Adventure</Text>
+          </View>
         </TouchableOpacity>
-      </View>
 
-      {/* Main Game Button */}
-      <TouchableOpacity style={styles.mainGameButton}>
-        <View style={styles.mainGameContent}>
-          <Text style={styles.mainGameTitle}>🎮 Start Platformer Game</Text>
-          <Text style={styles.mainGameSubtitle}>
-            Begin Your Cyber Adventure
-          </Text>
-        </View>
-      </TouchableOpacity>
+        {/* Alex's Lab Button */}
+        <TouchableOpacity style={styles.mainGameButton}>
+          <View style={styles.mainGameContent}>
+            <Text style={styles.mainGameTitle}>🥼 Alex's Lab</Text>
+            <Text style={styles.mainGameSubtitle}>See the results of Alex's experiments</Text>
+          </View>
+        </TouchableOpacity>
 
-      {/* Alex's Lab Button */}
-      <TouchableOpacity style={styles.mainGameButton}>
-        <View style={styles.mainGameContent}>
-          <Text style={styles.mainGameTitle}>🥼 Alex's Lab</Text>
-          <Text style={styles.mainGameSubtitle}>
-            See the results of Alex's experiments 
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Daily Check-in */}
-      <View style={styles.dailyCheckIn}>
-        <Text style={styles.sectionTitle}>Daily Rewards 🎁</Text>
-        <View style={styles.checkInContainer}>
-          {[1, 2, 3, 4, 5].map((day) => (
-            <View key={day} style={styles.dayBox}>
-              <Text style={styles.dayNumber}>{day}</Text>
-              <View style={[styles.checkMark, day <= 2 && styles.checked]}>
-                <Text style={styles.checkMarkText}>{day <= 2 ? '✓' : '?'}</Text>
+        {/* Daily Check-in */}
+        <View style={styles.dailyCheckIn}>
+          <Text style={styles.sectionTitle}>Daily Rewards 🎁</Text>
+          <View style={styles.checkInContainer}>
+            {[1, 2, 3, 4, 5].map((day) => (
+              <View key={day} style={styles.dayBox}>
+                <Text style={styles.dayNumber}>{day}</Text>
+                <View style={[styles.checkMark, day <= 2 && styles.checked]}>
+                  <Text style={styles.checkMarkText}>{day <= 2 ? '✓' : '?'}</Text>
+                </View>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
-      </View>
 
-      {/* Quick Actions Grid */}
-      <View style={styles.quickActions}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Minigames 🎲</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Shop 🛍️</Text>
-        </TouchableOpacity>
+        {/* Quick Actions Grid */}
+        <View style={styles.quickActions}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionButtonText}>Minigames 🎲</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionButtonText}>Shop 🛍️</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -112,42 +107,48 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#BFD7ED', // Baby Blue
   },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
   header: {
-    padding: 20,
-    paddingTop: 40,
+    flex: 1,
     backgroundColor: '#003B73', // Navy Blue
+    padding: 16,
+    paddingTop: 48,
   },
   headerTitle: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#BFD7ED', // Baby Blue
-    marginBottom: 15,
+    marginBottom: 16,
   },
   profileSection: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: '#0074B7', // Royal Blue
-    padding: 15,
-    borderRadius: 15,
+    padding: 16,
+    borderRadius: 16,
     borderWidth: 2,
     borderColor: '#60A3D9', // Blue Grotto
   },
   profileInfo: {
     flex: 1,
+    marginRight: 16,
   },
   username: {
     color: '#BFD7ED', // Baby Blue
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 8,
   },
   xpContainer: {
-    gap: 5,
+    flex: 1,
   },
   xpText: {
     color: '#60A3D9', // Blue Grotto
     fontSize: 14,
+    marginBottom: 4,
   },
   xpBar: {
     height: 6,
@@ -166,39 +167,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#60A3D9', // Blue Grotto
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 15,
   },
   profileButtonText: {
     fontSize: 20,
   },
   currentLessonCard: {
-    margin: 20,
-    padding: 20,
+    flex: 1,
     backgroundColor: '#0074B7', // Royal Blue
-    borderRadius: 15,
+    borderRadius: 16,
+    padding: 16,
+    marginVertical: 16,
     borderWidth: 2,
     borderColor: '#60A3D9', // Blue Grotto
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
     elevation: 5,
   },
   lessonTitle: {
     color: '#BFD7ED', // Baby Blue
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   progressBar: {
     height: 8,
     backgroundColor: '#003B73', // Navy Blue
     borderRadius: 4,
     overflow: 'hidden',
-    marginVertical: 10,
+    marginVertical: 8,
   },
   progressFill: {
     height: '100%',
@@ -207,7 +201,7 @@ const styles = StyleSheet.create({
   progressText: {
     color: '#BFD7ED', // Baby Blue
     fontSize: 14,
-    marginBottom: 15,
+    marginBottom: 16,
   },
   continueButton: {
     backgroundColor: '#003B73', // Navy Blue
@@ -221,20 +215,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   mainGameButton: {
+    flex: 1,
     backgroundColor: '#0074B7', // Royal Blue
-    margin: 20,
-    borderRadius: 15,
-    padding: 20,
-    elevation: 5,
+    borderRadius: 16,
+    padding: 16,
+    marginVertical: 8,
     borderWidth: 2,
     borderColor: '#60A3D9', // Blue Grotto
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    elevation: 5,
   },
   mainGameContent: {
     alignItems: 'center',
@@ -244,31 +232,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#BFD7ED', // Baby Blue
     marginBottom: 8,
+    textAlign: 'center',
   },
   mainGameSubtitle: {
     fontSize: 16,
     color: '#60A3D9', // Blue Grotto
+    textAlign: 'center',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#BFD7ED', // Baby Blue
-    marginBottom: 15,
+    marginBottom: 16,
   },
   dailyCheckIn: {
-    margin: 20,
-    padding: 20,
+    flex: 1,
     backgroundColor: '#0074B7', // Royal Blue
-    borderRadius: 15,
+    borderRadius: 16,
+    padding: 16,
+    marginVertical: 16,
     borderWidth: 2,
     borderColor: '#60A3D9', // Blue Grotto
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
     elevation: 5,
   },
   checkInContainer: {
@@ -277,23 +261,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayBox: {
+    flex: 1,
     alignItems: 'center',
-    gap: 8,
+    marginHorizontal: 4,
   },
   dayNumber: {
     color: '#BFD7ED', // Baby Blue
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 8,
   },
   checkMark: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: '#003B73', // Navy Blue
     borderWidth: 2,
     borderColor: '#60A3D9', // Blue Grotto
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   checkMarkText: {
     color: '#BFD7ED', // Baby Blue
@@ -305,31 +291,23 @@ const styles = StyleSheet.create({
   },
   quickActions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    margin: 20,
-    marginTop: 0,
-    gap: 15,
+    marginVertical: 16,
+    gap: 16,
   },
   actionButton: {
     flex: 1,
     backgroundColor: '#0074B7', // Royal Blue
-    padding: 15,
+    padding: 16,
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#60A3D9', // Blue Grotto
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
     elevation: 5,
   },
   actionButtonText: {
     color: '#BFD7ED', // Baby Blue
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
