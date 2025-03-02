@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8BA5B0',
   },
   card: {
+    flex: 1,
     backgroundColor: '#1E1E1E',
     borderRadius: 16,
     padding: 20,
@@ -382,9 +383,9 @@ const styles = StyleSheet.create({
     borderColor: '#6B8590',
   },
   ruleText: {
+    flex: 1,
     color: '#8BA5B0',
     marginLeft: 12,
-    flex: 1,
     fontSize: 16,
   },
   copyButton: {
