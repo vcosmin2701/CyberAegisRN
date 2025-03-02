@@ -7,123 +7,11 @@ import {
   Image,
   Animated,
   Dimensions,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-
-// Import images directly
-const adImages = {
-  fake1: require('../../assets/images/ads/Fake1.png'),
-  fake2: require('../../assets/images/ads/Fake2.png'),
-  fake3: require('../../assets/images/ads/Fake3.png'),
-  fake4: require('../../assets/images/ads/Fake4.png'),
-  fake5: require('../../assets/images/ads/Fake5.png'),
-  fake6: require('../../assets/images/ads/Fake6.png'),
-  real1: require('../../assets/images/ads/Real1.png'),
-  real2: require('../../assets/images/ads/Real2.png'),
-  real3: require('../../assets/images/ads/Real3.png'),
-  real4: require('../../assets/images/ads/Real4.png'),
-  real5: require('../../assets/images/ads/Real5.png'),
-  real6: require('../../assets/images/ads/Real6.png'),
-};
-
-interface Ad {
-  id: number;
-  image: any;
-  isFake: boolean;
-  explanation: string;
-  title: string;
-}
-
-const allAds = {
-  fake: [
-    {
-      id: 1,
-      image: adImages.fake1,
-      isFake: true,
-      title: "Câștigă un iPhone 10!",
-      explanation: "Această reclamă este falsă deoarece folosește o roată a norocului și promite un iPhone 10 cu un singur click. Textul 'Foarte căcare' și designul strident sunt indicii clare că este o înșelătorie.",
-    },
-    {
-      id: 2,
-      image: adImages.fake2,
-      isFake: true,
-      title: "Câștigă 1 MILION € Instant!",
-      explanation: "Reclamă falsă care promite câștiguri instant nerealiste de 1 milion de euro. Folosirea banilor și a termenului 'instant' sunt indicii clare ale unei înșelătorii.",
-    },
-    {
-      id: 3,
-      image: adImages.fake3,
-      isFake: true,
-      title: "Bonus 500% la Cazino!",
-      explanation: "Reclamă falsă de cazino care promite bonusuri nerealiste de 500%. Cazinourile online neautorizate folosesc adesea astfel de tactici pentru a atrage utilizatori.",
-    },
-    {
-      id: 4,
-      image: adImages.fake4,
-      isFake: true,
-      title: "Credit Rapid 50.000€",
-      explanation: "Reclamă falsă care promite credite rapide fără verificări. Sumele mari și lipsa verificărilor sunt semne clare că este o înșelătorie.",
-    },
-    {
-      id: 5,
-      image: adImages.fake5,
-      isFake: true,
-      title: "Bitcoin x10 Garantat",
-      explanation: "Reclamă falsă care promite profit garantat din Bitcoin. Nicio investiție legitimă nu poate garanta profituri, mai ales de 10 ori suma investită.",
-    },
-    {
-      id: 6,
-      image: adImages.fake6,
-      isFake: true,
-      title: "Mercedes C-Class GRATIS",
-      explanation: "Reclamă falsă care promite o mașină Mercedes gratuită. Premiile foarte scumpe oferite 'gratuit' sunt de obicei capcane pentru date personale.",
-    }
-  ],
-  legit: [
-    {
-      id: 7,
-      image: adImages.real1,
-      isFake: false,
-      title: "Mega Image - Oferte de Vară",
-      explanation: "Reclamă legitimă de la Mega Image cu reduceri de vară verificabile. Prețurile sunt realiste și promoțiile pot fi verificate în magazine.",
-    },
-    {
-      id: 8,
-      image: adImages.real2,
-      isFake: false,
-      title: "Penny - Prețuri Mici",
-      explanation: "Reclamă legitimă de la Penny Market cu oferte la produse de bază. Reducerile sunt realiste și verificabile în magazine.",
-    },
-    {
-      id: 9,
-      image: adImages.real3,
-      isFake: false,
-      title: "Kaufland - Săptămâna Aceasta",
-      explanation: "Reclamă legitimă pentru promoțiile săptămânale Kaufland. Ofertele sunt clare și pot fi verificate în catalog și magazine.",
-    },
-    {
-      id: 10,
-      image: adImages.real4,
-      isFake: false,
-      title: "Lidl - Oferte de Joi",
-      explanation: "Reclamă legitimă pentru ofertele de joi de la Lidl. Produsele și prețurile sunt transparente și verificabile.",
-    },
-    {
-      id: 11,
-      image: adImages.real5,
-      isFake: false,
-      title: "Carrefour - Fresh",
-      explanation: "Reclamă legitimă cu reduceri la produse proaspete de la Carrefour. Prețurile și produsele sunt clar specificate.",
-    },
-    {
-      id: 12,
-      image: adImages.real6,
-      isFake: false,
-      title: "Auchan - Reduceri",
-      explanation: "Reclamă legitimă cu promoții Auchan. Ofertele sunt prezentate transparent și au prețuri verificabile în magazine.",
-    }
-  ]
-};
+import { allAds, AdInfo } from '../../assets/images/ads/images';
 
 function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array];
@@ -135,33 +23,50 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export default function AdDetectorGame() {
-  const [ads] = useState<Ad[]>(() => {
-    // Alege random 3 reclame false din cele 6 disponibile
+  const initializeGame = () => {
     const shuffledFake = shuffleArray(allAds.fake).slice(0, 3);
-    // Alege random 3 reclame legitime din cele 6 disponibile
     const shuffledLegit = shuffleArray(allAds.legit).slice(0, 3);
-    // Combină și amestecă cele 6 reclame selectate
     return shuffleArray([...shuffledFake, ...shuffledLegit]);
-  });
+  };
 
+  const [ads, setAds] = useState<AdInfo[]>(() => initializeGame());
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [foundFakes, setFoundFakes] = useState<number>(0);
+  const [lives, setLives] = useState<number>(2);
   const [gameCompleted, setGameCompleted] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState<boolean>(false);
   const [fadeOutAnim] = useState(new Animated.Value(1));
   const [celebrationAnim] = useState(new Animated.Value(0));
-  const [flipAnimations] = useState<{ [key: number]: Animated.Value }>(() =>
+  const [gameOverAnim] = useState(new Animated.Value(0));
+  const [flipAnimations, setFlipAnimations] = useState<{ [key: number]: Animated.Value }>(() =>
     ads.reduce((acc, ad) => ({ ...acc, [ad.id]: new Animated.Value(0) }), {})
   );
 
+  const resetGame = () => {
+    const newAds = initializeGame();
+    setAds(newAds);
+    setFlippedCards([]);
+    setFoundFakes(0);
+    setLives(2);
+    setGameCompleted(false);
+    setGameOver(false);
+    fadeOutAnim.setValue(1);
+    celebrationAnim.setValue(0);
+    gameOverAnim.setValue(0);
+    setFlipAnimations(
+      newAds.reduce((acc, ad) => ({ ...acc, [ad.id]: new Animated.Value(0) }), {})
+    );
+  };
+
   useEffect(() => {
-    if (gameCompleted) {
+    if (gameCompleted || gameOver) {
       Animated.sequence([
         Animated.timing(fadeOutAnim, {
           toValue: 0,
           duration: 1000,
           useNativeDriver: true,
         }),
-        Animated.spring(celebrationAnim, {
+        Animated.spring(gameOver ? gameOverAnim : celebrationAnim, {
           toValue: 1,
           friction: 8,
           tension: 40,
@@ -169,7 +74,7 @@ export default function AdDetectorGame() {
         }),
       ]).start();
     }
-  }, [gameCompleted]);
+  }, [gameCompleted, gameOver]);
 
   const flipCard = (id: number) => {
     const ad = ads.find(a => a.id === id);
@@ -190,6 +95,13 @@ export default function AdDetectorGame() {
       if (newFoundFakes === 3) {
         setGameCompleted(true);
       }
+    } else {
+      // Dacă utilizatorul selectează o reclamă legitimă ca fiind falsă
+      const newLives = lives - 1;
+      setLives(newLives);
+      if (newLives === 0) {
+        setGameOver(true);
+      }
     }
   };
 
@@ -200,7 +112,7 @@ export default function AdDetectorGame() {
     });
   };
 
-  const renderCard = (ad: Ad) => {
+  const renderCard = (ad: AdInfo) => {
     const flipRotation = getFlipInterpolation(ad.id);
     const flipRotationBack = flipAnimations[ad.id].interpolate({
       inputRange: [0, 1],
@@ -250,86 +162,160 @@ export default function AdDetectorGame() {
     );
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Detectorul de Reclame False</Text>
-      <Text style={styles.subtitle}>
-        Găsește cele 3 reclame false și află de ce sunt înșelătoare!
-      </Text>
-      
-      <Animated.View 
-        style={[
-          styles.cardsGrid,
-          { opacity: fadeOutAnim }
-        ]}
-      >
-        {ads.map(ad => renderCard(ad))}
-      </Animated.View>
+  const renderLives = () => {
+    return (
+      <View style={styles.livesContainer}>
+        <Text style={styles.livesText}>Vieți rămase: </Text>
+        {[...Array(lives)].map((_, index) => (
+          <Text key={index} style={styles.calculatorEmoji}>💻</Text>
+        ))}
+        <Text style={styles.livesCounter}>{lives}/2</Text>
+      </View>
+    );
+  };
 
-      {gameCompleted && (
-        <Animated.View 
-          style={[
-            styles.completionMessage,
-            {
-              transform: [
-                { scale: celebrationAnim },
-                {
-                  translateY: celebrationAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [200, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          <FontAwesome name="trophy" size={60} color="#FFD700" style={styles.trophyIcon} />
-          <Text style={styles.completionText}>
-            Felicitări!
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          <Text style={styles.title}>Detectorul de Reclame False</Text>
+          <Text style={styles.subtitle}>
+            Găsește cele 3 reclame false și află de ce sunt înșelătoare!
           </Text>
-          <Text style={styles.completionSubtext}>
-            Ai identificat cu succes toate reclamele false!
-          </Text>
-          <Text style={styles.completionDetails}>
-            Acum ești mai pregătit să identifici și să eviți reclamele înșelătoare în viitor.
-          </Text>
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}>
-              <FontAwesome name="check-circle" size={24} color="#4CAF50" />
-              <Text style={styles.statText}>3/3 Reclame False Găsite</Text>
+          {renderLives()}
+          
+          <Animated.View 
+            style={[
+              styles.cardsGrid,
+              { opacity: fadeOutAnim }
+            ]}
+          >
+            {ads.map(ad => renderCard(ad))}
+          </Animated.View>
+        </View>
+
+        {gameCompleted && (
+          <Animated.View 
+            style={[
+              styles.completionMessage,
+              {
+                transform: [
+                  { scale: celebrationAnim },
+                  {
+                    translateY: celebrationAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [200, 0],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <FontAwesome name="trophy" size={60} color="#FFD700" style={styles.trophyIcon} />
+            <Text style={styles.completionText}>
+              Felicitări!
+            </Text>
+            <Text style={styles.completionSubtext}>
+              Ai identificat cu succes toate reclamele false!
+            </Text>
+            <Text style={styles.completionDetails}>
+              Acum ești mai pregătit să identifici și să eviți reclamele înșelătoare în viitor.
+            </Text>
+            <View style={styles.statsContainer}>
+              <View style={styles.statItem}>
+                <FontAwesome name="check-circle" size={24} color="#4CAF50" />
+                <Text style={styles.statText}>3/3 Reclame False Găsite</Text>
+              </View>
+              <View style={styles.statItem}>
+                <FontAwesome name="star" size={24} color="#FFD700" />
+                <Text style={styles.statText}>Expert în Detectarea Fraudelor</Text>
+              </View>
             </View>
-            <View style={styles.statItem}>
-              <FontAwesome name="star" size={24} color="#FFD700" />
-              <Text style={styles.statText}>Expert în Detectarea Fraudelor</Text>
-            </View>
-          </View>
-        </Animated.View>
-      )}
-    </View>
+          </Animated.View>
+        )}
+
+        {gameOver && (
+          <Animated.View 
+            style={[
+              styles.completionMessage,
+              {
+                transform: [
+                  { scale: gameOverAnim },
+                  {
+                    translateY: gameOverAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [200, 0],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <FontAwesome name="times-circle" size={60} color="#FF4444" style={styles.trophyIcon} />
+            <Text style={[styles.completionText, { color: '#FF4444' }]}>
+              Ai Pierdut!
+            </Text>
+            <Text style={styles.completionSubtext}>
+              Nu-ți face griji, poți încerca din nou!
+            </Text>
+            <Text style={styles.completionDetails}>
+              Hint: Verifică cu atenție detaliile reclamelor și gândește-te dacă ofertele sunt prea bune pentru a fi adevărate.
+            </Text>
+            <TouchableOpacity 
+              style={styles.retryButton} 
+              onPress={resetGame}
+            >
+              <View style={styles.statItem}>
+                <FontAwesome name="refresh" size={24} color="#4CAF50" />
+                <Text style={[styles.statText, styles.retryText]}>Încearcă din nou pentru un scor mai bun!</Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const cardWidth = windowWidth > 600 ? windowWidth * 0.3 : windowWidth * 0.4;
+
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: '#8BA5B0',
-    padding: '5%',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 80, // Space for navigation bar
+  },
+  container: {
+    flex: 1,
+    padding: windowWidth * 0.05,
   },
   title: {
-    fontSize: Dimensions.get('window').width < 380 ? 24 : 32,
+    fontSize: windowWidth < 380 ? 24 : 32,
     fontWeight: 'bold',
     color: '#1E1E1E',
     textAlign: 'center',
-    marginBottom: '2%',
+    marginBottom: windowHeight * 0.02,
     textShadowColor: 'rgba(0, 0, 0, 0.1)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
   subtitle: {
-    fontSize: Dimensions.get('window').width < 380 ? 14 : 18,
+    fontSize: windowWidth < 380 ? 14 : 18,
     color: '#1E1E1E',
     textAlign: 'center',
-    marginBottom: '5%',
+    marginBottom: windowHeight * 0.02,
     opacity: 0.8,
     paddingHorizontal: '5%',
   },
@@ -341,11 +327,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   cardContainer: {
-    width: Dimensions.get('window').width > 600 
-      ? Dimensions.get('window').width * 0.25 
-      : Dimensions.get('window').width * 0.4,
+    width: cardWidth,
     aspectRatio: 0.75,
-    margin: '2%',
+    margin: windowWidth * 0.02,
     maxWidth: 300,
   },
   card: {
@@ -465,5 +449,46 @@ const styles = StyleSheet.create({
     fontSize: Dimensions.get('window').width < 380 ? 14 : 16,
     color: '#8BA5B0',
     marginLeft: 10,
+  },
+  livesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: windowHeight * 0.02,
+    backgroundColor: '#1E1E1E',
+    padding: windowWidth * 0.02,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  livesText: {
+    fontSize: 16,
+    color: '#8BA5B0',
+    fontWeight: 'bold',
+  },
+  calculatorEmoji: {
+    fontSize: 20,
+    marginHorizontal: 4,
+  },
+  livesCounter: {
+    fontSize: 16,
+    color: '#8BA5B0',
+    fontWeight: 'bold',
+    marginLeft: 8,
+  },
+  retryButton: {
+    backgroundColor: '#1E1E1E',
+    padding: 15,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    marginTop: 10,
+  },
+  retryText: {
+    color: '#4CAF50',
+    fontWeight: 'bold',
   },
 }); 
