@@ -1,14 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from 'react-native';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
   // Mock user data - replace with real data later
   const userData = {
-    username: "CyberHero123",
+    username: 'CyberHero123',
     xp: 1250,
-    currentLesson: "Network Security Basics",
-    lessonProgress: 60
+    currentLesson: 'Network Security Basics',
+    lessonProgress: 60,
   };
 
   return (
@@ -37,9 +44,16 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>Current Lesson</Text>
         <Text style={styles.lessonTitle}>{userData.currentLesson}</Text>
         <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: `${userData.lessonProgress}%` }]} />
+          <View
+            style={[
+              styles.progressFill,
+              { width: `${userData.lessonProgress}%` },
+            ]}
+          />
         </View>
-        <Text style={styles.progressText}>{userData.lessonProgress}% Complete</Text>
+        <Text style={styles.progressText}>
+          {userData.lessonProgress}% Complete
+        </Text>
         <TouchableOpacity style={styles.continueButton}>
           <Text style={styles.continueButtonText}>Continue Learning</Text>
         </TouchableOpacity>
@@ -49,7 +63,9 @@ export default function HomeScreen() {
       <TouchableOpacity style={styles.mainGameButton}>
         <View style={styles.mainGameContent}>
           <Text style={styles.mainGameTitle}>🎮 Start Platformer Game</Text>
-          <Text style={styles.mainGameSubtitle}>Begin Your Cyber Adventure</Text>
+          <Text style={styles.mainGameSubtitle}>
+            Begin Your Cyber Adventure
+          </Text>
         </View>
       </TouchableOpacity>
 
