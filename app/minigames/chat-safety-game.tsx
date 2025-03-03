@@ -400,12 +400,25 @@ export default function ChatSafetyGame() {
             <Text style={[styles.completionText, { color: '#4CAF50' }]}>
               Felicitări!
             </Text>
-            <Text style={styles.completionSubtext}>
-              Ai protejat cu succes informațiile tale personale!
-            </Text>
-            <Text style={styles.completionDetails}>
-              Continuă să fii precaut pe internet și nu da niciodată informații personale străinilor!
-            </Text>
+            {lives === 1 ? (
+              <>
+                <Text style={[styles.completionSubtext, { color: '#FFA500' }]}>
+                  Ai reușit, dar ai dezvăluit unele informații personale!
+                </Text>
+                <Text style={[styles.completionDetails, { color: '#FFA500' }]}>
+                  Ai supraviețuit, dar ai dat totuși unele date personale. Data viitoare fii mai atent și nu dezvălui nicio informație personală!
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text style={styles.completionSubtext}>
+                  Ai protejat cu succes informațiile tale personale!
+                </Text>
+                <Text style={styles.completionDetails}>
+                  Continuă să fii precaut pe internet și nu da niciodată informații personale străinilor!
+                </Text>
+              </>
+            )}
             <TouchableOpacity 
               style={[styles.retryButton, { borderColor: '#4CAF50' }]}
               onPress={() => {
