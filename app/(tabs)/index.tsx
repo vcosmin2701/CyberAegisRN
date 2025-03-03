@@ -87,9 +87,11 @@ export default function HomeScreen() {
 
         {/* Quick Actions Grid */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionButtonText}>Minigames 🎲</Text>
-          </TouchableOpacity>
+          <Link href="../minigames/minigames" asChild>
+            <TouchableOpacity style={styles.actionButton}>
+              <Text style={styles.actionButtonText}>Minigames 🎲</Text>
+            </TouchableOpacity>
+          </Link>
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.actionButtonText}>Shop 🛍️</Text>
           </TouchableOpacity>
