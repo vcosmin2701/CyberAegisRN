@@ -1,5 +1,5 @@
 import React from 'react';
-import { styles } from '../../app/styles/indexStyle';
+import styles from '../../app/styles/indexStyle';
 import {
   StyleSheet,
   View,
