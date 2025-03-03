@@ -7,7 +7,7 @@ export default function MinigamesScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Minigames</Text>
       <View style={styles.gamesContainer}>
-        <Link href="/password-game" asChild>
+        <Link href="/minigames/password-game" asChild>
           <TouchableOpacity style={styles.gameButton}>
             <View style={styles.gameContent}>
               <Text style={styles.gameIcon}>🔒</Text>
@@ -17,7 +17,7 @@ export default function MinigamesScreen() {
           </TouchableOpacity>
         </Link>
 
-        <Link href="/chat-safety-game" asChild>
+        <Link href="/minigames/chat-safety-game" asChild>
           <TouchableOpacity style={styles.gameButton}>
             <View style={styles.gameContent}>
               <Text style={styles.gameIcon}>💬</Text>
@@ -27,7 +27,7 @@ export default function MinigamesScreen() {
           </TouchableOpacity>
         </Link>
 
-        <Link href="/ad-detector-game" asChild>
+        <Link href="/minigames/ad-detector-game" asChild>
           <TouchableOpacity style={styles.gameButton}>
             <View style={styles.gameContent}>
               <Text style={styles.gameIcon}>🎣</Text>
