@@ -51,7 +51,7 @@ const messages: Message[] = [
     text: "Super! În ce oraș stai? Poate locuim aproape și ne putem întâlni să ne jucăm!",
     isBot: true,
     isPersonal: true,
-    options: ["Nu dau informații personale", "Prefer să nu spun", "Vreau să răspund"],
+    options: ["Nu dau informații personale", "Vreau să răspund"],
     requiresInput: false
   },
   {
@@ -59,7 +59,7 @@ const messages: Message[] = [
     text: "La ce școală înveți? Poate te cunosc!",
     isBot: true,
     isPersonal: true,
-    options: ["Nu dau informații personale", "Nu pot să spun asta", "Vreau să răspund"],
+    options: ["Prefer să nu spun", "Vreau să răspund"],
     requiresInput: false
   },
   {
@@ -67,7 +67,7 @@ const messages: Message[] = [
     text: "Hai să ne întâlnim în parc! Care e numărul tău de telefon să stabilim?",
     isBot: true,
     isPersonal: true,
-    options: ["Nu dau informații personale", "Nu ofer numărul meu de telefon", "Vreau să răspund"],
+    options: ["Nu pot să spun asta", "Vreau să răspund"],
     requiresInput: false
   }
 ];
@@ -98,8 +98,13 @@ export default function ChatSafetyGame() {
       
       // Simulate typing delay
       setTimeout(() => {
-        setCurrentMessageIndex(currentMessageIndex + 1);
-        setDisplayedMessages(prev => [...prev, messages[currentMessageIndex + 1]]);
+        if (currentMessageIndex < messages.length - 1) {
+          setCurrentMessageIndex(currentMessageIndex + 1);
+          setDisplayedMessages(prev => [...prev, messages[currentMessageIndex + 1]]);
+        } else {
+          setGameWon(true);
+          animateGameEnd();
+        }
         setIsTyping(false);
       }, 1500);
 
@@ -116,15 +121,33 @@ export default function ChatSafetyGame() {
   };
 
   const handleOption = (option: string, message: Message) => {
+    if (option === "Refuz cererea") {
+      setDisplayedMessages([...displayedMessages, {
+        id: Date.now(),
+        text: option,
+        isBot: false,
+        isPersonal: false
+      }, {
+        id: Date.now() + 1,
+        text: "Nu ai vrut să comunicăm... La revedere! 👋",
+        isBot: true,
+        isPersonal: false
+      }]);
+      setTimeout(() => {
+        setGameWon(true);
+        animateGameEnd();
+      }, 1500);
+      return;
+    }
+
     if (option === "Vreau să răspund") {
-      const updatedMessage = {...message, requiresInput: true};
+      messages[currentMessageIndex].requiresInput = true;
       setDisplayedMessages([...displayedMessages, {
         id: Date.now(),
         text: option,
         isBot: false,
         isPersonal: false
       }]);
-      messages[currentMessageIndex] = updatedMessage;
       return;
     }
 
@@ -135,7 +158,7 @@ export default function ChatSafetyGame() {
       isPersonal: false
     }]);
 
-    if (message.isPersonal && !option.includes("Nu")) {
+    if (message.isPersonal && !option.includes("Nu") && !option.includes("Prefer")) {
       const newLives = lives - 1;
       setLives(newLives);
       if (newLives === 0) {
@@ -151,7 +174,7 @@ export default function ChatSafetyGame() {
       if (currentMessageIndex < messages.length - 1) {
         setCurrentMessageIndex(currentMessageIndex + 1);
         setDisplayedMessages(prev => [...prev, messages[currentMessageIndex + 1]]);
-      } else if (!message.isPersonal || option.includes("Nu")) {
+      } else if (!message.isPersonal || option.includes("Nu") || option.includes("Prefer")) {
         setGameWon(true);
         animateGameEnd();
       }
