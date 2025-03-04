@@ -29,20 +29,22 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2A2A3A',
     borderRadius: 15,
-    padding: 15,
+    padding: 10,
     marginBottom: 20,
+    aspectRatio: 1,
   },
   boardGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    flex: 1,
   },
   cell: {
-    width: (windowWidth - 70) / 6,
-    height: (windowWidth - 70) / 6,
+    width: '15%',
+    aspectRatio: 1,
     backgroundColor: '#3A3A4A',
     borderRadius: 8,
-    margin: 2,
+    margin: '1%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -51,6 +53,10 @@ export const styles = StyleSheet.create({
   },
   cellVisited: {
     backgroundColor: '#FFA500',
+  },
+  cellChallenge: {
+    borderWidth: 2,
+    borderColor: '#FFA500',
   },
   cellText: {
     color: '#FFFFFF',
@@ -150,8 +156,9 @@ export const styles = StyleSheet.create({
     backgroundColor: '#2A2A3A',
     borderRadius: 15,
     padding: 20,
-    width: '80%',
+    width: '90%',
     alignItems: 'center',
+    maxHeight: '80%',
   },
   gameOverTitle: {
     color: '#4CAF50',
@@ -163,7 +170,8 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
+    lineHeight: 24,
   },
   retryButton: {
     backgroundColor: '#4CAF50',
@@ -175,6 +183,31 @@ export const styles = StyleSheet.create({
   retryButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  feedbackText: {
+    color: '#4CAF50',
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 25,
+    lineHeight: 28,
+    fontWeight: '600',
+  },
+  statsContainer: {
+    backgroundColor: '#3A3A4A',
+    borderRadius: 10,
+    padding: 15,
+    width: '100%',
+    marginBottom: 20,
+  },
+  statsText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  statsHighlight: {
+    color: '#4CAF50',
     fontWeight: 'bold',
   },
 }); 
