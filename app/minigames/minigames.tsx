@@ -1,99 +1,84 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { styles } from '../styles/minigamesStyle';
+
+const games = [
+  {
+    id: 'detective',
+    title: 'Eroul Siguranței Online',
+    description: 'Rezolvă cazurile de siguranță online ca un detectiv digital!',
+    icon: 'search',
+    color: '#4CAF50',
+    path: '/minigames/detective-game' as const
+  },
+  {
+    id: 'block',
+    title: 'Blochează și Protejează',
+    description: 'Protejează-ți prietenii de mesajele negative în acest joc de reflexe!',
+    icon: 'shield',
+    color: '#FFA500',
+    path: '/minigames/block-game' as const
+  },
+  {
+    id: 'board',
+    title: 'Aventură în Siguranța Online',
+    description: 'Navighează prin provocările internetului într-un joc de tip board-game!',
+    icon: 'gamepad',
+    color: '#FF4444',
+    path: '/minigames/board-game' as const
+  },
+  {
+    id: 'chat',
+    title: 'Chat în Siguranță',
+    description: 'Învață cum să te protejezi în conversațiile online!',
+    icon: 'comments',
+    color: '#2196F3',
+    path: '/minigames/chat-safety-game' as const
+  },
+  {
+    id: 'password',
+    title: 'Jocul Parolelor',
+    description: 'Învață cum să creezi parole puternice și să le păstrezi în siguranță!',
+    icon: 'lock',
+    color: '#9C27B0',
+    path: '/minigames/password-game' as const
+  },
+  {
+    id: 'ad-detector',
+    title: 'Detectorul de Reclame',
+    description: 'Învață să identifici și să eviți reclamele înșelătoare online!',
+    icon: 'ban',
+    color: '#E91E63',
+    path: '/minigames/ad-detector-game' as const
+  }
+];
 
 export default function MinigamesScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Minigames</Text>
-      <View style={styles.gamesContainer}>
-        <Link href="/minigames/password-game" asChild>
-          <TouchableOpacity style={styles.gameButton}>
-            <View style={styles.gameContent}>
-              <Text style={styles.gameIcon}>🔒</Text>
-              <Text style={styles.gameTitle}>Password Game</Text>
-              <Text style={styles.gameDescription}>Învață să creezi parole puternice</Text>
-            </View>
-          </TouchableOpacity>
-        </Link>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Minigame-uri</Text>
+        <Text style={styles.subtitle}>Învață despre siguranța online prin joc!</Text>
 
-        <Link href="/minigames/chat-safety-game" asChild>
-          <TouchableOpacity style={styles.gameButton}>
-            <View style={styles.gameContent}>
-              <Text style={styles.gameIcon}>💬</Text>
-              <Text style={styles.gameTitle}>Chat Safety Game</Text>
-              <Text style={styles.gameDescription}>Protejează-ți informațiile personale</Text>
-            </View>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href="/minigames/ad-detector-game" asChild>
-          <TouchableOpacity style={styles.gameButton}>
-            <View style={styles.gameContent}>
-              <Text style={styles.gameIcon}>🎣</Text>
-              <Text style={styles.gameTitle}>Phishing Game</Text>
-              <Text style={styles.gameDescription}>Identifică emailurile periculoase</Text>
-            </View>
-          </TouchableOpacity>
-        </Link>
+        <ScrollView style={styles.gamesContainer}>
+          {games.map((game) => (
+            <Link key={game.id} href={game.path} asChild>
+              <TouchableOpacity style={styles.gameCard}>
+                <View style={[styles.iconContainer, { backgroundColor: game.color }]}>
+                  <FontAwesome name={game.icon as any} size={30} color="#FFFFFF" />
+                </View>
+                <View style={styles.gameInfo}>
+                  <Text style={styles.gameTitle}>{game.title}</Text>
+                  <Text style={styles.gameDescription}>{game.description}</Text>
+                </View>
+                <FontAwesome name="chevron-right" size={20} color="#8BA5B0" />
+              </TouchableOpacity>
+            </Link>
+          ))}
+        </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
-}
-
-const windowWidth = Dimensions.get('window').width;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#BFD7ED',
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#003B73',
-    textAlign: 'center',
-    marginVertical: 20,
-    textShadowColor: 'rgba(0, 0, 0, 0.1)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  gamesContainer: {
-    gap: 20,
-  },
-  gameButton: {
-    backgroundColor: '#0074B7',
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 2,
-    borderColor: '#60A3D9',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  gameContent: {
-    alignItems: 'center',
-  },
-  gameIcon: {
-    fontSize: 40,
-    marginBottom: 10,
-  },
-  gameTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#BFD7ED',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  gameDescription: {
-    fontSize: 16,
-    color: '#60A3D9',
-    textAlign: 'center',
-  },
-}); 
+} 
