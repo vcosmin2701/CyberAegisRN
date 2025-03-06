@@ -1,17 +1,15 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { styles } from '../styles/explorescreenStyle';
 
 export default function ExploreScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={{ color: 'white' }}>Explorează</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>Explorează</Text>
+        <View style={styles.subjectsGrid}>
+          {/* Add your subject items here */}
+        </View>
+      </View>
+    </ScrollView>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};
