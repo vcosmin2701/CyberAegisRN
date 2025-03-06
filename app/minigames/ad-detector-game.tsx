@@ -188,7 +188,7 @@ export default function AdDetectorGame() {
             Găsește cele 3 reclame false și află de ce sunt înșelătoare!
           </Text>
           {renderLives()}
-          
+
           <Animated.View 
             style={[
               styles.cardsGrid,
@@ -279,5 +279,5 @@ export default function AdDetectorGame() {
         )}
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 };
