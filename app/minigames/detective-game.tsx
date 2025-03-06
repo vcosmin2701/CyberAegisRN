@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  Animated,
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { styles } from '../styles/detectiveGameStyle';
+import detectiveGameStyles from '../styles/detectiveGameStyle';
 
 interface Scenario {
   id: number;
@@ -17,76 +23,85 @@ interface Scenario {
 const scenarios: Scenario[] = [
   {
     id: 1,
-    text: "Ana a primit un mesaj răutăcios de la un coleg. Ce ar trebui să facă?",
+    text: 'Ana a primit un mesaj răutăcios de la un coleg. Ce ar trebui să facă?',
     options: [
       {
-        text: "Răspunde și se ceartă",
+        text: 'Răspunde și se ceartă',
         isCorrect: false,
-        feedback: "Răspunsul agresiv poate agrava situația. Este mai bine să păstrezi calmul și să ceri ajutor.",
-        icon: "exclamation-triangle"
+        feedback:
+          'Răspunsul agresiv poate agrava situația. Este mai bine să păstrezi calmul și să ceri ajutor.',
+        icon: 'exclamation-triangle',
       },
       {
-        text: "Ignoră și blochează persoana",
+        text: 'Ignoră și blochează persoana',
         isCorrect: true,
-        feedback: "Excelent! Ignorarea și blocarea sunt acțiuni mature care protejează și evită escaladarea situației.",
-        icon: "shield"
+        feedback:
+          'Excelent! Ignorarea și blocarea sunt acțiuni mature care protejează și evită escaladarea situației.',
+        icon: 'shield',
       },
       {
-        text: "Face captură și spune unui adult",
+        text: 'Face captură și spune unui adult',
         isCorrect: true,
-        feedback: "Foarte bine! Documentarea și raportarea unui adult sunt pași importanți pentru a rezolva situația.",
-        icon: "camera"
-      }
-    ]
+        feedback:
+          'Foarte bine! Documentarea și raportarea unui adult sunt pași importanți pentru a rezolva situația.',
+        icon: 'camera',
+      },
+    ],
   },
   {
     id: 2,
-    text: "Mihai primește o cerere de prietenie de la un necunoscut. Ce ar trebui să facă?",
+    text: 'Mihai primește o cerere de prietenie de la un necunoscut. Ce ar trebui să facă?',
     options: [
       {
-        text: "Acceptă cererea pentru că are multe prieteni în comun",
+        text: 'Acceptă cererea pentru că are multe prieteni în comun',
         isCorrect: false,
-        feedback: "Numărul de prieteni în comun nu garantează siguranța. Este important să cunoști persoana înainte de a accepta.",
-        icon: "user-plus"
+        feedback:
+          'Numărul de prieteni în comun nu garantează siguranța. Este important să cunoști persoana înainte de a accepta.',
+        icon: 'user-plus',
       },
       {
-        text: "Refuză și raportează profilul",
+        text: 'Refuză și raportează profilul',
         isCorrect: true,
-        feedback: "Corect! Este mai sigur să refuzi cereri de la necunoscuți și să raportezi profilul suspect.",
-        icon: "ban"
+        feedback:
+          'Corect! Este mai sigur să refuzi cereri de la necunoscuți și să raportezi profilul suspect.',
+        icon: 'ban',
       },
       {
-        text: "Trimite un mesaj pentru a cunoaște persoana",
+        text: 'Trimite un mesaj pentru a cunoaște persoana',
         isCorrect: false,
-        feedback: "Nu este recomandat să inițiezi conversații cu necunoscuți online.",
-        icon: "comment"
-      }
-    ]
+        feedback:
+          'Nu este recomandat să inițiezi conversații cu necunoscuți online.',
+        icon: 'comment',
+      },
+    ],
   },
   {
     id: 3,
-    text: "Elena primește un link de la un prieten care pare suspect. Ce ar trebui să facă?",
+    text: 'Elena primește un link de la un prieten care pare suspect. Ce ar trebui să facă?',
     options: [
       {
-        text: "Deschide link-ul pentru că vine de la un prieten",
+        text: 'Deschide link-ul pentru că vine de la un prieten',
         isCorrect: false,
-        feedback: "Chiar și link-urile de la prieteni pot fi periculoase dacă conturile lor au fost compromise.",
-        icon: "link"
+        feedback:
+          'Chiar și link-urile de la prieteni pot fi periculoase dacă conturile lor au fost compromise.',
+        icon: 'link',
       },
       {
-        text: "Verifică URL-ul și cere confirmare",
+        text: 'Verifică URL-ul și cere confirmare',
         isCorrect: true,
-        feedback: "Excelent! Verificarea URL-ului și cererea de confirmare sunt practici sigure.",
-        icon: "check-circle"
+        feedback:
+          'Excelent! Verificarea URL-ului și cererea de confirmare sunt practici sigure.',
+        icon: 'check-circle',
       },
       {
-        text: "Trimite mai departe la alți prieteni",
+        text: 'Trimite mai departe la alți prieteni',
         isCorrect: false,
-        feedback: "Nu trimite niciodată link-uri suspecte mai departe, chiar dacă vin de la prieteni.",
-        icon: "share"
-      }
-    ]
-  }
+        feedback:
+          'Nu trimite niciodată link-uri suspecte mai departe, chiar dacă vin de la prieteni.',
+        icon: 'share',
+      },
+    ],
+  },
 ];
 
 export default function DetectiveGame() {
@@ -131,38 +146,51 @@ export default function DetectiveGame() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Eroul Siguranței Online</Text>
-        <Text style={styles.subtitle}>Rezolvă cazurile de siguranță online!</Text>
+    <SafeAreaView style={detectiveGameStyles.safeArea}>
+      <View style={detectiveGameStyles.container}>
+        <Text style={detectiveGameStyles.title}>Eroul Siguranței Online</Text>
+        <Text style={detectiveGameStyles.subtitle}>
+          Rezolvă cazurile de siguranță online!
+        </Text>
 
-        <View style={styles.scoreContainer}>
-          <Text style={styles.scoreText}>Scor: {score}</Text>
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${(currentScenario / scenarios.length) * 100}%` }]} />
+        <View style={detectiveGameStyles.scoreContainer}>
+          <Text style={detectiveGameStyles.scoreText}>Scor: {score}</Text>
+          <View style={detectiveGameStyles.progressBar}>
+            <View
+              style={[
+                detectiveGameStyles.progressFill,
+                { width: `${(currentScenario / scenarios.length) * 100}%` },
+              ]}
+            />
           </View>
         </View>
 
         <Animated.View style={{ opacity: fadeAnim }}>
-          <View style={styles.scenarioCard}>
-            <Text style={styles.scenarioText}>
+          <View style={detectiveGameStyles.scenarioCard}>
+            <Text style={detectiveGameStyles.scenarioText}>
               {scenarios[currentScenario].text}
             </Text>
-            <View style={styles.optionsContainer}>
+            <View style={detectiveGameStyles.optionsContainer}>
               {scenarios[currentScenario].options.map((option, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
-                    styles.optionButton,
+                    detectiveGameStyles.optionButton,
                     selectedOption === index && {
-                      backgroundColor: option.isCorrect ? '#4CAF50' : '#FF4444'
-                    }
+                      backgroundColor: option.isCorrect ? '#4CAF50' : '#FF4444',
+                    },
                   ]}
                   onPress={() => handleOptionSelect(index)}
                   disabled={showFeedback}
                 >
-                  <Text style={styles.optionText}>{option.text}</Text>
-                  <FontAwesome name={option.icon as any} size={24} color="#FFFFFF" />
+                  <Text style={detectiveGameStyles.optionText}>
+                    {option.text}
+                  </Text>
+                  <FontAwesome
+                    name={option.icon as any}
+                    size={24}
+                    color="#FFFFFF"
+                  />
                 </TouchableOpacity>
               ))}
             </View>
@@ -170,20 +198,33 @@ export default function DetectiveGame() {
         </Animated.View>
 
         {showFeedback && (
-          <View style={styles.feedbackContainer}>
-            <View style={styles.feedbackCard}>
+          <View style={detectiveGameStyles.feedbackContainer}>
+            <View style={detectiveGameStyles.feedbackCard}>
               <FontAwesome
-                name={scenarios[currentScenario].options[selectedOption!].isCorrect ? "check-circle" : "times-circle"}
+                name={
+                  scenarios[currentScenario].options[selectedOption!].isCorrect
+                    ? 'check-circle'
+                    : 'times-circle'
+                }
                 size={50}
-                color={scenarios[currentScenario].options[selectedOption!].isCorrect ? "#4CAF50" : "#FF4444"}
-                style={styles.feedbackIcon}
+                color={
+                  scenarios[currentScenario].options[selectedOption!].isCorrect
+                    ? '#4CAF50'
+                    : '#FF4444'
+                }
+                style={detectiveGameStyles.feedbackIcon}
               />
-              <Text style={styles.feedbackText}>
+              <Text style={detectiveGameStyles.feedbackText}>
                 {scenarios[currentScenario].options[selectedOption!].feedback}
               </Text>
-              <TouchableOpacity style={styles.feedbackButton} onPress={handleNext}>
-                <Text style={styles.feedbackButtonText}>
-                  {currentScenario < scenarios.length - 1 ? "Următorul caz" : "Joacă din nou"}
+              <TouchableOpacity
+                style={detectiveGameStyles.feedbackButton}
+                onPress={handleNext}
+              >
+                <Text style={detectiveGameStyles.feedbackButtonText}>
+                  {currentScenario < scenarios.length - 1
+                    ? 'Următorul caz'
+                    : 'Joacă din nou'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -192,4 +233,4 @@ export default function DetectiveGame() {
       </View>
     </SafeAreaView>
   );
-} 
+}

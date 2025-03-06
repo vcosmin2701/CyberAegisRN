@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export const styles = StyleSheet.create({
+const detectiveGameStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#1E1E2E',
@@ -127,4 +127,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-}); 
+});
+
+export default detectiveGameStyles;

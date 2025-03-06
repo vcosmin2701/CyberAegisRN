@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export const styles = StyleSheet.create({
+const blockGameStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#1E1E2E',
@@ -237,4 +237,6 @@ export const styles = StyleSheet.create({
     lineHeight: 28,
     fontWeight: '600',
   },
-}); 
+});
+
+export default blockGameStyles;

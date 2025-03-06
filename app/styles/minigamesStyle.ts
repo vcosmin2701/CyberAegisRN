@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+const minigamesStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#1E1E2E',
@@ -63,4 +63,6 @@ export const styles = StyleSheet.create({
     color: '#8BA5B0',
     lineHeight: 20,
   },
-}); 
+});
+
+export default minigamesStyles;

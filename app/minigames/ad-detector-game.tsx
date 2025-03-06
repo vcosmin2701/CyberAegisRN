@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { styles } from '../styles/ad-detectorStyle';
+import adDetectorStyles from '../styles/ad-detectorStyle';
 import {
   StyleSheet,
   View,
@@ -39,7 +39,9 @@ export default function AdDetectorGame() {
   const [fadeOutAnim] = useState(new Animated.Value(1));
   const [celebrationAnim] = useState(new Animated.Value(0));
   const [gameOverAnim] = useState(new Animated.Value(0));
-  const [flipAnimations, setFlipAnimations] = useState<{ [key: number]: Animated.Value }>(() =>
+  const [flipAnimations, setFlipAnimations] = useState<{
+    [key: number]: Animated.Value;
+  }>(() =>
     ads.reduce((acc, ad) => ({ ...acc, [ad.id]: new Animated.Value(0) }), {})
   );
 
@@ -55,7 +57,10 @@ export default function AdDetectorGame() {
     celebrationAnim.setValue(0);
     gameOverAnim.setValue(0);
     setFlipAnimations(
-      newAds.reduce((acc, ad) => ({ ...acc, [ad.id]: new Animated.Value(0) }), {})
+      newAds.reduce(
+        (acc, ad) => ({ ...acc, [ad.id]: new Animated.Value(0) }),
+        {}
+      )
     );
   };
 
@@ -78,7 +83,7 @@ export default function AdDetectorGame() {
   }, [gameCompleted, gameOver]);
 
   const flipCard = (id: number) => {
-    const ad = ads.find(a => a.id === id);
+    const ad = ads.find((a) => a.id === id);
     if (!ad || flippedCards.includes(id)) return;
 
     Animated.spring(flipAnimations[id], {
@@ -123,38 +128,38 @@ export default function AdDetectorGame() {
     return (
       <TouchableOpacity
         key={ad.id}
-        style={styles.cardContainer}
+        style={adDetectorStyles.cardContainer}
         onPress={() => flipCard(ad.id)}
         disabled={flippedCards.includes(ad.id)}
       >
         <Animated.View
           style={[
-            styles.card,
+            adDetectorStyles.card,
             {
               transform: [{ rotateY: flipRotation }],
               backfaceVisibility: 'hidden',
             },
           ]}
         >
-          <Text style={styles.cardTitle}>{ad.title}</Text>
+          <Text style={adDetectorStyles.cardTitle}>{ad.title}</Text>
           <Image
             source={ad.image}
-            style={styles.adImage}
+            style={adDetectorStyles.adImage}
             resizeMode="cover"
           />
         </Animated.View>
         <Animated.View
           style={[
-            styles.cardBack,
+            adDetectorStyles.cardBack,
             {
               transform: [{ rotateY: flipRotationBack }],
               backfaceVisibility: 'hidden',
             },
           ]}
         >
-          <Text style={styles.explanationText}>{ad.explanation}</Text>
+          <Text style={adDetectorStyles.explanationText}>{ad.explanation}</Text>
           {ad.isFake && (
-            <Text style={styles.fakeIndicator}>
+            <Text style={adDetectorStyles.fakeIndicator}>
               Reclamă Falsă {foundFakes}/3
             </Text>
           )}
@@ -165,44 +170,45 @@ export default function AdDetectorGame() {
 
   const renderLives = () => {
     return (
-      <View style={styles.livesContainer}>
-        <Text style={styles.livesText}>Vieți rămase: </Text>
+      <View style={adDetectorStyles.livesContainer}>
+        <Text style={adDetectorStyles.livesText}>Vieți rămase: </Text>
         {[...Array(lives)].map((_, index) => (
-          <Text key={index} style={styles.calculatorEmoji}>💻</Text>
+          <Text key={index} style={adDetectorStyles.calculatorEmoji}>
+            💻
+          </Text>
         ))}
-        <Text style={styles.livesCounter}>{lives}/2</Text>
+        <Text style={adDetectorStyles.livesCounter}>{lives}/2</Text>
       </View>
     );
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
+    <SafeAreaView style={adDetectorStyles.safeArea}>
+      <ScrollView
+        style={adDetectorStyles.scrollView}
+        contentContainerStyle={adDetectorStyles.scrollViewContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.container}>
-          <Text style={styles.title}>Detectorul de Reclame False</Text>
-          <Text style={styles.subtitle}>
+        <View style={adDetectorStyles.container}>
+          <Text style={adDetectorStyles.title}>
+            Detectorul de Reclame False
+          </Text>
+          <Text style={adDetectorStyles.subtitle}>
             Găsește cele 3 reclame false și află de ce sunt înșelătoare!
           </Text>
           {renderLives()}
 
-          <Animated.View 
-            style={[
-              styles.cardsGrid,
-              { opacity: fadeOutAnim }
-            ]}
+          <Animated.View
+            style={[adDetectorStyles.cardsGrid, { opacity: fadeOutAnim }]}
           >
-            {ads.map(ad => renderCard(ad))}
+            {ads.map((ad) => renderCard(ad))}
           </Animated.View>
         </View>
 
         {gameCompleted && (
-          <Animated.View 
+          <Animated.View
             style={[
-              styles.completionMessage,
+              adDetectorStyles.completionMessage,
               {
                 transform: [
                   { scale: celebrationAnim },
@@ -216,33 +222,41 @@ export default function AdDetectorGame() {
               },
             ]}
           >
-            <FontAwesome name="trophy" size={60} color="#FFD700" style={styles.trophyIcon} />
-            <Text style={styles.completionText}>
-              Felicitări!
-            </Text>
-            <Text style={styles.completionSubtext}>
+            <FontAwesome
+              name="trophy"
+              size={60}
+              color="#FFD700"
+              style={adDetectorStyles.trophyIcon}
+            />
+            <Text style={adDetectorStyles.completionText}>Felicitări!</Text>
+            <Text style={adDetectorStyles.completionSubtext}>
               Ai identificat cu succes toate reclamele false!
             </Text>
-            <Text style={styles.completionDetails}>
-              Acum ești mai pregătit să identifici și să eviți reclamele înșelătoare în viitor.
+            <Text style={adDetectorStyles.completionDetails}>
+              Acum ești mai pregătit să identifici și să eviți reclamele
+              înșelătoare în viitor.
             </Text>
-            <View style={styles.statsContainer}>
-              <View style={styles.statItem}>
+            <View style={adDetectorStyles.statsContainer}>
+              <View style={adDetectorStyles.statItem}>
                 <FontAwesome name="check-circle" size={24} color="#4CAF50" />
-                <Text style={styles.statText}>3/3 Reclame False Găsite</Text>
+                <Text style={adDetectorStyles.statText}>
+                  3/3 Reclame False Găsite
+                </Text>
               </View>
-              <View style={styles.statItem}>
+              <View style={adDetectorStyles.statItem}>
                 <FontAwesome name="star" size={24} color="#FFD700" />
-                <Text style={styles.statText}>Expert în Detectarea Fraudelor</Text>
+                <Text style={adDetectorStyles.statText}>
+                  Expert în Detectarea Fraudelor
+                </Text>
               </View>
             </View>
           </Animated.View>
         )}
 
         {gameOver && (
-          <Animated.View 
+          <Animated.View
             style={[
-              styles.completionMessage,
+              adDetectorStyles.completionMessage,
               {
                 transform: [
                   { scale: gameOverAnim },
@@ -256,28 +270,43 @@ export default function AdDetectorGame() {
               },
             ]}
           >
-            <FontAwesome name="times-circle" size={60} color="#FF4444" style={styles.trophyIcon} />
-            <Text style={[styles.completionText, { color: '#FF4444' }]}>
+            <FontAwesome
+              name="times-circle"
+              size={60}
+              color="#FF4444"
+              style={adDetectorStyles.trophyIcon}
+            />
+            <Text
+              style={[adDetectorStyles.completionText, { color: '#FF4444' }]}
+            >
               Ai Pierdut!
             </Text>
-            <Text style={styles.completionSubtext}>
+            <Text style={adDetectorStyles.completionSubtext}>
               Nu-ți face griji, poți încerca din nou!
             </Text>
-            <Text style={styles.completionDetails}>
-              Hint: Verifică cu atenție detaliile reclamelor și gândește-te dacă ofertele sunt prea bune pentru a fi adevărate.
+            <Text style={adDetectorStyles.completionDetails}>
+              Hint: Verifică cu atenție detaliile reclamelor și gândește-te dacă
+              ofertele sunt prea bune pentru a fi adevărate.
             </Text>
-            <TouchableOpacity 
-              style={styles.retryButton} 
+            <TouchableOpacity
+              style={adDetectorStyles.retryButton}
               onPress={resetGame}
             >
-              <View style={styles.statItem}>
+              <View style={adDetectorStyles.statItem}>
                 <FontAwesome name="refresh" size={24} color="#4CAF50" />
-                <Text style={[styles.statText, styles.retryText]}>Încearcă din nou pentru un scor mai bun!</Text>
+                <Text
+                  style={[
+                    adDetectorStyles.statText,
+                    adDetectorStyles.retryText,
+                  ]}
+                >
+                  Încearcă din nou pentru un scor mai bun!
+                </Text>
               </View>
             </TouchableOpacity>
           </Animated.View>
         )}
       </ScrollView>
     </SafeAreaView>
-  )
-};
+  );
+}

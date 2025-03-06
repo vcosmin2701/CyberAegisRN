@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { styles } from '../styles/password-gameStyle';
+import passwordGameStyles from '../styles/password-gameStyle';
 import {
   StyleSheet,
   View,
@@ -47,27 +47,30 @@ const passwordRules: Rule[] = [
   },
   {
     id: 5,
-    description: 'Parola trebuie să conțină cel puțin un caracter special (!@#$%^&*)',
+    description:
+      'Parola trebuie să conțină cel puțin un caracter special (!@#$%^&*)',
     validator: (password) => /[!@#$%^&*]/.test(password),
     points: 25,
   },
   {
     id: 6,
     description: 'Parola nu poate conține numele tău',
-    validator: (password, userName) => 
-      userName ? !password.toLowerCase().includes(userName.toLowerCase()) : true,
+    validator: (password, userName) =>
+      userName
+        ? !password.toLowerCase().includes(userName.toLowerCase())
+        : true,
     points: 15,
   },
   {
     id: 7,
     description: 'Parola nu poate conține secvențe comune (123, abc)',
-    validator: (password) => 
-      !/(123|abc|password|qwerty)/i.test(password),
+    validator: (password) => !/(123|abc|password|qwerty)/i.test(password),
     points: 20,
   },
   {
     id: 8,
-    description: 'Parola nu poate avea caractere repetate de 3 sau mai multe ori',
+    description:
+      'Parola nu poate avea caractere repetate de 3 sau mai multe ori',
     validator: (password) => !/(.)\1{2,}/.test(password),
     points: 20,
   },
@@ -85,9 +88,9 @@ export default function PasswordGame() {
   const handlePasswordFocus = () => {
     if (!userName.trim()) {
       Alert.alert(
-        "Nume lipsă",
-        "Te rog să-ți introduci numele înainte de a crea o parolă.",
-        [{ text: "OK" }]
+        'Nume lipsă',
+        'Te rog să-ți introduci numele înainte de a crea o parolă.',
+        [{ text: 'OK' }]
       );
       return false;
     }
@@ -99,13 +102,19 @@ export default function PasswordGame() {
       setScore(0);
       return;
     }
-    
-    const totalPoints = passwordRules.reduce((acc, rule) => acc + rule.points, 0);
-    const currentPoints = passwordRules.reduce((acc, rule) => 
-      acc + (rule.validator(password, userName) ? rule.points : 0), 0);
-    
+
+    const totalPoints = passwordRules.reduce(
+      (acc, rule) => acc + rule.points,
+      0
+    );
+    const currentPoints = passwordRules.reduce(
+      (acc, rule) =>
+        acc + (rule.validator(password, userName) ? rule.points : 0),
+      0
+    );
+
     const strengthPercentage = (currentPoints / totalPoints) * 100;
-    
+
     Animated.timing(strength, {
       toValue: strengthPercentage,
       duration: 300,
@@ -147,18 +156,18 @@ export default function PasswordGame() {
   };
 
   const failedRules = passwordRules.filter(
-    rule => !rule.validator(password, userName)
+    (rule) => !rule.validator(password, userName)
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.title}>Jocul Parolei Sigure</Text>
-        
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Numele tău:</Text>
+    <View style={passwordGameStyles.container}>
+      <View style={passwordGameStyles.card}>
+        <Text style={passwordGameStyles.title}>Jocul Parolei Sigure</Text>
+
+        <View style={passwordGameStyles.inputContainer}>
+          <Text style={passwordGameStyles.label}>Numele tău:</Text>
           <TextInput
-            style={styles.input}
+            style={passwordGameStyles.input}
             value={userName}
             onChangeText={setUserName}
             placeholder="Introdu numele tău"
@@ -166,11 +175,14 @@ export default function PasswordGame() {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Parola ta:</Text>
-          <View style={styles.passwordInputContainer}>
+        <View style={passwordGameStyles.inputContainer}>
+          <Text style={passwordGameStyles.label}>Parola ta:</Text>
+          <View style={passwordGameStyles.passwordInputContainer}>
             <TextInput
-              style={[styles.input, styles.passwordInput]}
+              style={[
+                passwordGameStyles.input,
+                passwordGameStyles.passwordInput,
+              ]}
               value={password}
               onChangeText={setPassword}
               placeholder="Creează o parolă puternică"
@@ -183,7 +195,7 @@ export default function PasswordGame() {
               }}
             />
             <TouchableOpacity
-              style={styles.eyeIcon}
+              style={passwordGameStyles.eyeIcon}
               onPress={() => setShowPassword(!showPassword)}
             >
               <FontAwesome
@@ -195,10 +207,10 @@ export default function PasswordGame() {
           </View>
         </View>
 
-        <View style={styles.strengthContainer}>
+        <View style={passwordGameStyles.strengthContainer}>
           <Animated.View
             style={[
-              styles.strengthBar,
+              passwordGameStyles.strengthBar,
               {
                 width: strength.interpolate({
                   inputRange: [0, 100],
@@ -210,59 +222,66 @@ export default function PasswordGame() {
           />
         </View>
 
-        <Text style={styles.scoreText}>
-          Scor: {score} / {passwordRules.reduce((acc, rule) => acc + rule.points, 0)}
+        <Text style={passwordGameStyles.scoreText}>
+          Scor: {score} /{' '}
+          {passwordRules.reduce((acc, rule) => acc + rule.points, 0)}
         </Text>
 
-        <TouchableOpacity 
-          style={styles.suggestionButton} 
+        <TouchableOpacity
+          style={passwordGameStyles.suggestionButton}
           onPress={toggleSuggestions}
         >
-          <Text style={styles.suggestionButtonText}>
+          <Text style={passwordGameStyles.suggestionButtonText}>
             {failedRules.length} sugestii rămase
           </Text>
           <FontAwesome
             name={showSuggestions ? 'chevron-up' : 'chevron-down'}
             size={20}
             color="#6B8590"
-            style={styles.suggestionArrow}
+            style={passwordGameStyles.suggestionArrow}
           />
         </TouchableOpacity>
 
-        <Animated.View style={[
-          styles.suggestionsContainer,
-          {
-            maxHeight: drawerAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 300]
-            }),
-            opacity: drawerAnimation,
-            marginBottom: drawerAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 16]
-            })
-          }
-        ]}>
+        <Animated.View
+          style={[
+            passwordGameStyles.suggestionsContainer,
+            {
+              maxHeight: drawerAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 300],
+              }),
+              opacity: drawerAnimation,
+              marginBottom: drawerAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 16],
+              }),
+            },
+          ]}
+        >
           <ScrollView>
             {failedRules.map((rule) => (
-              <View key={rule.id} style={styles.ruleItem}>
-                <FontAwesome
-                  name="times-circle"
-                  size={24}
-                  color="#FF4444"
-                />
-                <Text style={styles.ruleText}>{rule.description}</Text>
+              <View key={rule.id} style={passwordGameStyles.ruleItem}>
+                <FontAwesome name="times-circle" size={24} color="#FF4444" />
+                <Text style={passwordGameStyles.ruleText}>
+                  {rule.description}
+                </Text>
               </View>
             ))}
           </ScrollView>
         </Animated.View>
 
-        {score === passwordRules.reduce((acc, rule) => acc + rule.points, 0) && (
-          <TouchableOpacity style={styles.copyButton} onPress={copyPassword}>
-            <Text style={styles.copyButtonText}>Copiază Parola</Text>
+        {score ===
+          passwordRules.reduce((acc, rule) => acc + rule.points, 0) && (
+          <TouchableOpacity
+            style={passwordGameStyles.copyButton}
+            onPress={copyPassword}
+          >
+            <Text style={passwordGameStyles.copyButtonText}>
+              Copiază Parola
+            </Text>
           </TouchableOpacity>
         )}
       </View>
     </View>
   );
-}; 
+}

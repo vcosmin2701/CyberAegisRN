@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+const adDetectorStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#8BA5B0',
@@ -221,3 +221,5 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default adDetectorStyles;
