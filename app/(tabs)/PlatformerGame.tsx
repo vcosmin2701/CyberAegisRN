@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,7 +9,10 @@ import {
   SafeAreaView,
   Dimensions,
   StatusBar,
+  Vibration,
+  Animated,
 } from 'react-native';
+// import LottieView from 'lottie-react-native';
 
 // Get screen dimensions
 const { width, height } = Dimensions.get('window');
@@ -26,14 +29,39 @@ interface QuizQuestion {
 
 const quizQuestions: QuizQuestion[] = [
   {
-    question: 'What is the most common type of cyber attack?',
-    options: ['Phishing', 'DDoS', 'Malware', 'SQL Injection'],
-    correctAnswer: 0,
+    question: 'Ce trebuie să faci când primești un mesaj de la un străin?',
+    options: [
+      'Deschid mesajul',
+      'Spun unui adult',
+      'Răspund imediat',
+      'Dau click pe link',
+    ],
+    correctAnswer: 1,
   },
   {
-    question: 'Which of these is a strong password?',
-    options: ['123456', 'P@ssw0rd!', 'K9$mP2#vL9*nQ', 'password123'],
+    question: 'Care este o parolă bună?',
+    options: ['123456', 'numele meu', 'Fl0@re!Alb@stră', 'parola'],
     correctAnswer: 2,
+  },
+  {
+    question: 'Ce faci când folosești internetul?',
+    options: [
+      'Dau informații personale',
+      'Vorbesc doar cu prieteni',
+      'Descărc orice joc',
+      'Deschid toate emailurile',
+    ],
+    correctAnswer: 1,
+  },
+  {
+    question: 'Cum protejezi tableta sau telefonul?',
+    options: [
+      'O las oriunde',
+      'Folosesc o parolă',
+      'O împrumut oricui',
+      'Nu am grijă de ea',
+    ],
+    correctAnswer: 1,
   },
 ];
 
@@ -41,25 +69,141 @@ const PlatformerGame: React.FC = () => {
   const [solvedComputers, setSolvedComputers] = useState<boolean[]>([
     false,
     false,
+    false,
+    false,
   ]);
   const [activeQuiz, setActiveQuiz] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [securityLevel, setSecurityLevel] = useState('Low');
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [engineerPosition, setEngineerPosition] = useState({
+    left: 40,
+    top: 150,
+  });
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [hackerAttack, setHackerAttack] = useState(false);
+  const [gameProgress, setGameProgress] = useState(0);
+  const [malwareThreats, setMalwareThreats] = useState<
+    { x: number; y: number; eliminated: boolean; type: string }[]
+  >([
+    { x: 80, y: 150, eliminated: false, type: 'virus' },
+    { x: 180, y: 280, eliminated: false, type: 'trojan' },
+    { x: 250, y: 180, eliminated: false, type: 'ransomware' },
+    { x: 40, y: 320, eliminated: false, type: 'worm' },
+  ]);
+  const [score, setScore] = useState(0);
+  const [movementDirection, setMovementDirection] = useState<string | null>(
+    null
+  );
+  const [correctAnswersInARow, setCorrectAnswersInARow] = useState(0);
+
+  // Add movement speed and boundaries
+  const MOVEMENT_SPEED = 10;
+  const BOUNDARY = {
+    minX: 0,
+    maxX: width - 50, // Adjust based on engineer width
+    minY: 0,
+    maxY: AVAILABLE_HEIGHT - 100, // Adjust based on engineer height
+  };
+
+  // Animation timing
+  useEffect(() => {
+    // Hide tutorial after 5 seconds
+    const tutorialTimer = setTimeout(() => {
+      setShowTutorial(false);
+    }, 5000);
+
+    // Simulate more frequent hacker attacks
+    const attackInterval = setInterval(() => {
+      if (Math.random() > 0.5 && !solvedComputers.every((solved) => solved)) {
+        setHackerAttack(true);
+      }
+    }, 8000);
+
+    return () => {
+      clearTimeout(tutorialTimer);
+      clearInterval(attackInterval);
+    };
+  }, [solvedComputers]);
+
+  // Add continuous movement when holding down arrow keys
+  useEffect(() => {
+    if (!movementDirection) return;
+
+    const moveInterval = setInterval(() => {
+      moveEngineer(movementDirection as 'up' | 'down' | 'left' | 'right');
+    }, 100);
+
+    return () => clearInterval(moveInterval);
+  }, [movementDirection]);
+
+  // Check for malware elimination
+  useEffect(() => {
+    const checkMalwareElimination = () => {
+      const updatedMalware = [...malwareThreats];
+      let updated = false;
+      let newScore = score;
+
+      malwareThreats.forEach((threat, index) => {
+        if (!threat.eliminated) {
+          const distance = Math.sqrt(
+            Math.pow(engineerPosition.left - threat.x, 2) +
+              Math.pow(engineerPosition.top - threat.y, 2)
+          );
+
+          if (distance < 30) {
+            updatedMalware[index].eliminated = true;
+            updated = true;
+            newScore += 15;
+            Vibration.vibrate(100); // Feedback for elimination
+          }
+        }
+      });
+
+      if (updated) {
+        setMalwareThreats(updatedMalware);
+        setScore(newScore);
+        setGameProgress(Math.min(100, gameProgress + 8));
+      }
+    };
+
+    checkMalwareElimination();
+  }, [engineerPosition]);
 
   const handleComputerPress = (index: number) => {
     if (!solvedComputers[index]) {
       setActiveQuiz(index);
       setShowModal(true);
+      // Move engineer to the computer
+      const positions = [
+        { left: 40, top: 100 },
+        { left: 200, top: 100 },
+        { left: 40, top: 250 },
+        { left: 200, top: 250 },
+      ];
+      setEngineerPosition(positions[index]);
     }
   };
 
   const handleAnswer = (answerIndex: number) => {
     if (activeQuiz !== null) {
-      const question = quizQuestions[activeQuiz];
+      // Make sure we don't go out of bounds with the quiz questions
+      const questionIndex = activeQuiz % quizQuestions.length;
+      const question = quizQuestions[questionIndex];
+
       if (answerIndex === question.correctAnswer) {
         const newSolvedComputers = [...solvedComputers];
         newSolvedComputers[activeQuiz] = true;
         setSolvedComputers(newSolvedComputers);
+
+        // Increment correct answers counter
+        setCorrectAnswersInARow((prev) => prev + 1);
+
+        // Check if we should stop the hacker attack (2 correct answers in a row)
+        if (correctAnswersInARow + 1 >= 2) {
+          setHackerAttack(false);
+          setCorrectAnswersInARow(0);
+        }
 
         // Update security level based on solved computers
         const solvedCount = newSolvedComputers.filter(
@@ -67,24 +211,95 @@ const PlatformerGame: React.FC = () => {
         ).length;
         if (solvedCount === newSolvedComputers.length) {
           setSecurityLevel('High');
+          setShowSuccessMessage(true);
+          setTimeout(() => setShowSuccessMessage(false), 3000);
         } else if (solvedCount > 0) {
           setSecurityLevel('Medium');
+          setGameProgress(50);
         }
+      } else {
+        // Wrong answer feedback
+        Vibration.vibrate(200);
+        // Reset correct answers counter on wrong answer
+        setCorrectAnswersInARow(0);
       }
       setShowModal(false);
       setActiveQuiz(null);
     }
   };
 
+  // Add movement handler with press and release functions
+  const moveEngineer = (direction: 'up' | 'down' | 'left' | 'right') => {
+    setEngineerPosition((current) => {
+      let newPosition = { ...current };
+
+      switch (direction) {
+        case 'up':
+          newPosition.top = Math.max(
+            BOUNDARY.minY,
+            current.top - MOVEMENT_SPEED
+          );
+          break;
+        case 'down':
+          newPosition.top = Math.min(
+            BOUNDARY.maxY,
+            current.top + MOVEMENT_SPEED
+          );
+          break;
+        case 'left':
+          newPosition.left = Math.max(
+            BOUNDARY.minX,
+            current.left - MOVEMENT_SPEED
+          );
+          break;
+        case 'right':
+          newPosition.left = Math.min(
+            BOUNDARY.maxX,
+            current.left + MOVEMENT_SPEED
+          );
+          break;
+      }
+
+      return newPosition;
+    });
+  };
+
+  const handleDirectionPress = (
+    direction: 'up' | 'down' | 'left' | 'right'
+  ) => {
+    setMovementDirection(direction);
+    moveEngineer(direction);
+  };
+
+  const handleDirectionRelease = () => {
+    setMovementDirection(null);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Score Display */}
+      <View style={styles.scoreContainer}>
+        <Text style={styles.scoreText}>SCORE: {score}</Text>
+      </View>
+
+      {/* Progress Bar */}
+      <View style={styles.progressContainer}>
+        <View style={[styles.progressBar, { width: `${gameProgress}%` }]} />
+        <Text style={styles.progressText}>{gameProgress}% Secure</Text>
+      </View>
+
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={true}
       >
         <View style={styles.labRoom}>
           {/* Lab Background with Grid */}
-          <View style={styles.labBackground}>
+          <View
+            style={[
+              styles.labBackground,
+              hackerAttack && styles.hackerAttackBackground,
+            ]}
+          >
             <View style={styles.gridLines}>
               {[...Array(10)].map((_, i) => (
                 <View
@@ -103,7 +318,7 @@ const PlatformerGame: React.FC = () => {
 
           {/* Security Status Display */}
           <View style={styles.securityStatus}>
-            <Text style={styles.securityLabel}>SECURITY LEVEL:</Text>
+            <Text style={styles.securityLabel}>NIVEL SECURITATE:</Text>
             <View
               style={[
                 styles.securityIndicator,
@@ -112,8 +327,19 @@ const PlatformerGame: React.FC = () => {
                 securityLevel === 'High' && styles.securityHigh,
               ]}
             >
-              <Text style={styles.securityText}>{securityLevel}</Text>
+              <Text style={styles.securityText}>
+                {securityLevel === 'Low'
+                  ? 'Scăzut'
+                  : securityLevel === 'Medium'
+                  ? 'Mediu'
+                  : 'Ridicat'}
+              </Text>
             </View>
+            {hackerAttack && (
+              <View style={styles.alertBadge}>
+                <Text style={styles.alertText}>ATAC DETECTAT!</Text>
+              </View>
+            )}
           </View>
 
           {/* Main Content Area */}
@@ -147,12 +373,14 @@ const PlatformerGame: React.FC = () => {
             {/* Center Section - Workstations */}
             <View style={styles.centerSection}>
               <View style={styles.workstationArea}>
-                {[0, 1].map((index) => (
+                {[0, 1, 2, 3].map((index) => (
                   <TouchableOpacity
                     key={index}
                     style={[
                       styles.desk,
-                      index === 0 ? styles.leftDesk : styles.rightDesk,
+                      index % 2 === 0 ? styles.leftDesk : styles.rightDesk,
+                      index < 2 ? styles.topRow : styles.bottomRow,
+                      !solvedComputers[index] && styles.interactiveDesk,
                     ]}
                     onPress={() => handleComputerPress(index)}
                   >
@@ -161,6 +389,9 @@ const PlatformerGame: React.FC = () => {
                         style={[
                           styles.screen,
                           solvedComputers[index] && styles.solvedScreen,
+                          hackerAttack &&
+                            !solvedComputers[index] &&
+                            styles.hackedScreen,
                         ]}
                       >
                         <View style={styles.screenContent} />
@@ -169,6 +400,9 @@ const PlatformerGame: React.FC = () => {
                           <View style={styles.checkmark}>
                             <Text style={styles.checkmarkText}>✓</Text>
                           </View>
+                        )}
+                        {hackerAttack && !solvedComputers[index] && (
+                          <Text style={styles.hackerText}>!</Text>
                         )}
                       </View>
                       <View style={styles.monitorStand} />
@@ -183,8 +417,40 @@ const PlatformerGame: React.FC = () => {
                 ))}
               </View>
 
-              {/* Static Engineer Character */}
-              <View style={styles.staticEngineer}>
+              {/* Malware Threats */}
+              {malwareThreats.map(
+                (threat, index) =>
+                  !threat.eliminated && (
+                    <View
+                      key={index}
+                      style={[
+                        styles.malwareThreat,
+                        { left: threat.x, top: threat.y },
+                      ]}
+                    >
+                      <Text style={styles.malwareIcon}>
+                        {threat.type === 'virus'
+                          ? '🦠'
+                          : threat.type === 'trojan'
+                          ? '🐴'
+                          : threat.type === 'ransomware'
+                          ? '🔒'
+                          : '🐛'}
+                      </Text>
+                    </View>
+                  )
+              )}
+
+              {/* Movable Engineer Character */}
+              <Animated.View
+                style={[
+                  styles.staticEngineer,
+                  {
+                    left: engineerPosition.left,
+                    top: engineerPosition.top,
+                  },
+                ]}
+              >
                 {/* Chair */}
                 <View style={styles.chair}>
                   <View style={styles.chairBack} />
@@ -215,7 +481,7 @@ const PlatformerGame: React.FC = () => {
                     <View style={[styles.rightLeg, styles.sittingLeg]} />
                   </View>
                 </View>
-              </View>
+              </Animated.View>
             </View>
 
             {/* Right Section - Security Features */}
@@ -269,30 +535,119 @@ const PlatformerGame: React.FC = () => {
         </View>
       </ScrollView>
 
+      {/* Tutorial Overlay */}
+      {showTutorial && (
+        <View style={styles.tutorialOverlay}>
+          <View style={styles.tutorialBox}>
+            <Text style={styles.tutorialTitle}>
+              Bine ai venit, Inginer de Securitate!
+            </Text>
+            <Text style={styles.tutorialText}>
+              Misiunea ta este să securizezi toate computerele din laborator.
+              Apasă pe computere pentru a rezolva provocările de securitate.
+            </Text>
+            <TouchableOpacity
+              style={styles.tutorialButton}
+              onPress={() => setShowTutorial(false)}
+            >
+              <Text style={styles.tutorialButtonText}>Am înțeles!</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <View style={styles.successOverlay}>
+          <View style={styles.successBox}>
+            <Text style={styles.successTitle}>Securitate Restabilită!</Text>
+            <Text style={styles.successText}>
+              Bravo! Ai securizat toate sistemele din laborator.
+            </Text>
+            <View style={styles.successIcon}>
+              <Text style={styles.successIconText}>✓</Text>
+            </View>
+          </View>
+        </View>
+      )}
+
       {/* Quiz Modal */}
       <Modal visible={showModal} transparent={true} animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             {activeQuiz !== null && (
               <>
-                <Text style={styles.modalTitle}>Security Challenge</Text>
+                <Text style={styles.modalTitle}>Provocare de Securitate</Text>
                 <Text style={styles.questionText}>
-                  {quizQuestions[activeQuiz].question}
+                  {quizQuestions[activeQuiz % quizQuestions.length].question}
                 </Text>
-                {quizQuestions[activeQuiz].options.map((option, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.optionButton}
-                    onPress={() => handleAnswer(index)}
-                  >
-                    <Text style={styles.optionText}>{option}</Text>
-                  </TouchableOpacity>
-                ))}
+                {quizQuestions[activeQuiz % quizQuestions.length].options.map(
+                  (option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.optionButton,
+                        { transform: [{ scale: 1 }] },
+                      ]}
+                      onPress={() => handleAnswer(index)}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={styles.optionText}>{option}</Text>
+                    </TouchableOpacity>
+                  )
+                )}
               </>
             )}
           </View>
         </View>
       </Modal>
+
+      {/* Control buttons at the bottom */}
+      <View style={styles.controls}>
+        <View style={styles.controlRow}>
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPressIn={() => handleDirectionPress('up')}
+            onPressOut={handleDirectionRelease}
+          >
+            <Text style={styles.controlButtonText}>↑</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.controlRow}>
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPressIn={() => handleDirectionPress('left')}
+            onPressOut={handleDirectionRelease}
+          >
+            <Text style={styles.controlButtonText}>←</Text>
+          </TouchableOpacity>
+          <View style={styles.controlButtonSpacer} />
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPressIn={() => handleDirectionPress('right')}
+            onPressOut={handleDirectionRelease}
+          >
+            <Text style={styles.controlButtonText}>→</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.controlRow}>
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPressIn={() => handleDirectionPress('down')}
+            onPressOut={handleDirectionRelease}
+          >
+            <Text style={styles.controlButtonText}>↓</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Game Instructions */}
+      <TouchableOpacity
+        style={styles.helpButton}
+        onPress={() => setShowTutorial(true)}
+      >
+        <Text style={styles.helpButtonText}>?</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -450,13 +805,14 @@ const styles = StyleSheet.create({
   },
   workstationArea: {
     width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    gap: 20,
+    padding: 10,
   },
   desk: {
-    width: '80%',
+    width: '40%',
     aspectRatio: 1.5,
     padding: 5,
     alignItems: 'center',
@@ -467,11 +823,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    margin: 5,
   },
   leftDesk: {
-    marginBottom: 10,
+    marginRight: 10,
   },
   rightDesk: {
+    marginLeft: 10,
+  },
+  topRow: {
+    marginBottom: 10,
+  },
+  bottomRow: {
     marginTop: 10,
   },
   monitor: {
@@ -659,8 +1022,6 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: 'center',
     zIndex: 10,
-    left: 40,
-    top: 150,
     transform: [{ scale: 0.8 }],
   },
   engineerBody: {
@@ -852,6 +1213,236 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: TAB_BAR_HEIGHT + 20, // Extra padding at the bottom
+  },
+  progressContainer: {
+    height: 20,
+    backgroundColor: '#333',
+    borderRadius: 10,
+    margin: 10,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#4CAF50',
+  },
+  progressText: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 12,
+    width: '100%',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  hackerAttackBackground: {
+    backgroundColor: '#2a1a1a',
+  },
+  interactiveDesk: {
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    shadowColor: '#4CAF50',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  },
+  hackedScreen: {
+    backgroundColor: '#4a1a1a',
+    borderColor: '#FF5252',
+  },
+  hackerText: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -5 }, { translateY: -10 }],
+    color: '#FF5252',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  alertBadge: {
+    backgroundColor: '#FF5250',
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 10,
+    marginLeft: 10,
+  },
+  alertText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  tutorialOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  tutorialBox: {
+    backgroundColor: '#2a2a2a',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+  },
+  tutorialTitle: {
+    color: '#4CAF50',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  tutorialText: {
+    color: '#fff',
+    fontSize: 14,
+    marginBottom: 15,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  tutorialButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignSelf: 'center',
+  },
+  tutorialButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  successOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  successBox: {
+    backgroundColor: '#2a2a2a',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+    alignItems: 'center',
+  },
+  successTitle: {
+    color: '#4CAF50',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  successText: {
+    color: '#fff',
+    fontSize: 16,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  successIcon: {
+    width: 80,
+    height: 80,
+    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    marginTop: 10,
+  },
+  successIconText: {
+    fontSize: 40,
+    color: '#4CAF50',
+  },
+  controls: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 5,
+    borderRadius: 10,
+    zIndex: 100,
+  },
+  controlRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  controlButton: {
+    width: 35,
+    height: 35,
+    backgroundColor: 'rgba(76, 175, 80, 0.8)',
+    borderRadius: 17.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 3,
+  },
+  controlButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  controlButtonSpacer: {
+    width: 35,
+    height: 35,
+    margin: 3,
+  },
+  scoreContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 100,
+  },
+  scoreText: {
+    color: '#4CAF50',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  malwareThreat: {
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 5,
+    borderWidth: 1,
+    borderColor: '#FF5252',
+    shadowColor: '#FF0000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+  },
+  malwareIcon: {
+    fontSize: 18,
+  },
+  helpButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(76, 175, 80, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  helpButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
