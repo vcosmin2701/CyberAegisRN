@@ -441,8 +441,4 @@ export default function ChatSafetyGame() {
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
-}
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-; 
+}; 
