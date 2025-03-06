@@ -90,12 +90,27 @@ const PlatformerGame: React.FC = () => {
     { x: 180, y: 280, eliminated: false, type: 'trojan' },
     { x: 250, y: 180, eliminated: false, type: 'ransomware' },
     { x: 40, y: 320, eliminated: false, type: 'worm' },
+    { x: 120, y: 220, eliminated: false, type: 'virus' },
+    { x: 220, y: 120, eliminated: false, type: 'trojan' },
   ]);
   const [score, setScore] = useState(0);
   const [movementDirection, setMovementDirection] = useState<string | null>(
     null
   );
   const [correctAnswersInARow, setCorrectAnswersInARow] = useState(0);
+  const [showTip, setShowTip] = useState(false);
+  const [currentTip, setCurrentTip] = useState('');
+  const [progressAnimation] = useState(new Animated.Value(0));
+
+  // Security tips in Romanian
+  const securityTips = [
+    'Nu da niciodată parola ta altcuiva!',
+    'Spune unui adult dacă vezi ceva ciudat online.',
+    'Nu deschide emailuri de la persoane necunoscute.',
+    'Folosește parole diferite pentru conturi diferite.',
+    'Nu da informații personale pe internet.',
+    'Ai grijă ce linkuri deschizi!',
+  ];
 
   // Add movement speed and boundaries
   const MOVEMENT_SPEED = 10;
@@ -137,7 +152,7 @@ const PlatformerGame: React.FC = () => {
     return () => clearInterval(moveInterval);
   }, [movementDirection]);
 
-  // Check for malware elimination
+  // Check for malware elimination with improved feedback
   useEffect(() => {
     const checkMalwareElimination = () => {
       const updatedMalware = [...malwareThreats];
@@ -156,6 +171,22 @@ const PlatformerGame: React.FC = () => {
             updated = true;
             newScore += 15;
             Vibration.vibrate(100); // Feedback for elimination
+
+            // Show random security tip
+            const randomTip =
+              securityTips[Math.floor(Math.random() * securityTips.length)];
+            setCurrentTip(randomTip);
+            setShowTip(true);
+            setTimeout(() => setShowTip(false), 3000);
+
+            // Animate progress bar
+            const newProgress = Math.min(100, gameProgress + 8);
+            Animated.timing(progressAnimation, {
+              toValue: newProgress / 100,
+              duration: 500,
+              useNativeDriver: false,
+            }).start();
+            setGameProgress(newProgress);
           }
         }
       });
@@ -163,7 +194,6 @@ const PlatformerGame: React.FC = () => {
       if (updated) {
         setMalwareThreats(updatedMalware);
         setScore(newScore);
-        setGameProgress(Math.min(100, gameProgress + 8));
       }
     };
 
@@ -205,7 +235,7 @@ const PlatformerGame: React.FC = () => {
           setCorrectAnswersInARow(0);
         }
 
-        // Update security level based on solved computers
+        // Update security level and progress
         const solvedCount = newSolvedComputers.filter(
           (solved) => solved
         ).length;
@@ -213,15 +243,43 @@ const PlatformerGame: React.FC = () => {
           setSecurityLevel('High');
           setShowSuccessMessage(true);
           setTimeout(() => setShowSuccessMessage(false), 3000);
+
+          // Animate to 100%
+          Animated.timing(progressAnimation, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: false,
+          }).start();
+          setGameProgress(100);
         } else if (solvedCount > 0) {
           setSecurityLevel('Medium');
-          setGameProgress(50);
+
+          // Increase progress significantly for solving a computer
+          const newProgress = Math.min(100, gameProgress + 15);
+          Animated.timing(progressAnimation, {
+            toValue: newProgress / 100,
+            duration: 500,
+            useNativeDriver: false,
+          }).start();
+          setGameProgress(newProgress);
         }
+
+        // Increase score for correct answer
+        setScore((prev) => prev + 25);
+
+        // Show positive feedback
+        setCurrentTip('Excelent! Ai rezolvat provocarea!');
+        setShowTip(true);
+        setTimeout(() => setShowTip(false), 3000);
       } else {
         // Wrong answer feedback
         Vibration.vibrate(200);
-        // Reset correct answers counter on wrong answer
         setCorrectAnswersInARow(0);
+
+        // Show hint
+        setCurrentTip('Încearcă din nou! Gândește-te la securitate.');
+        setShowTip(true);
+        setTimeout(() => setShowTip(false), 3000);
       }
       setShowModal(false);
       setActiveQuiz(null);
@@ -279,13 +337,23 @@ const PlatformerGame: React.FC = () => {
     <SafeAreaView style={styles.container}>
       {/* Score Display */}
       <View style={styles.scoreContainer}>
-        <Text style={styles.scoreText}>SCORE: {score}</Text>
+        <Text style={styles.scoreText}>SCOR: {score}</Text>
       </View>
 
-      {/* Progress Bar */}
+      {/* Progress Bar - Animated */}
       <View style={styles.progressContainer}>
-        <View style={[styles.progressBar, { width: `${gameProgress}%` }]} />
-        <Text style={styles.progressText}>{gameProgress}% Secure</Text>
+        <Animated.View
+          style={[
+            styles.progressBar,
+            {
+              width: progressAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0%', '100%'],
+              }),
+            },
+          ]}
+        />
+        <Text style={styles.progressText}>{gameProgress}% Securizat</Text>
       </View>
 
       <ScrollView
@@ -417,15 +485,27 @@ const PlatformerGame: React.FC = () => {
                 ))}
               </View>
 
-              {/* Malware Threats */}
+              {/* Malware Threats with Pulse Animation */}
               {malwareThreats.map(
                 (threat, index) =>
                   !threat.eliminated && (
-                    <View
+                    <Animated.View
                       key={index}
                       style={[
                         styles.malwareThreat,
-                        { left: threat.x, top: threat.y },
+                        {
+                          left: threat.x,
+                          top: threat.y,
+                          transform: [
+                            {
+                              scale: new Animated.Value(1).interpolate({
+                                inputRange: [0, 0.5, 1],
+                                outputRange: [1, 1.2, 1],
+                                extrapolate: 'clamp',
+                              }),
+                            },
+                          ],
+                        },
                       ]}
                     >
                       <Text style={styles.malwareIcon}>
@@ -437,7 +517,7 @@ const PlatformerGame: React.FC = () => {
                           ? '🔒'
                           : '🐛'}
                       </Text>
-                    </View>
+                    </Animated.View>
                   )
               )}
 
@@ -648,6 +728,15 @@ const PlatformerGame: React.FC = () => {
       >
         <Text style={styles.helpButtonText}>?</Text>
       </TouchableOpacity>
+
+      {/* Security Tip Popup */}
+      {showTip && (
+        <View style={styles.tipContainer}>
+          <View style={styles.tipBox}>
+            <Text style={styles.tipText}>{currentTip}</Text>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -1220,6 +1309,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#4CAF50',
   },
   progressBar: {
     height: '100%',
@@ -1232,6 +1323,7 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     lineHeight: 20,
+    fontWeight: 'bold',
   },
   hackerAttackBackground: {
     backgroundColor: '#2a1a1a',
@@ -1402,6 +1494,8 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     zIndex: 100,
+    borderWidth: 1,
+    borderColor: '#4CAF50',
   },
   scoreText: {
     color: '#4CAF50',
@@ -1443,6 +1537,29 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  tipContainer: {
+    position: 'absolute',
+    top: '30%',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  tipBox: {
+    backgroundColor: 'rgba(76, 175, 80, 0.9)',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    maxWidth: '80%',
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  tipText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
