@@ -5,11 +5,9 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  ScrollView,
+  SafeAreaView,
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import exploreScreenStyles from '../styles/explorescreenStyle';
-import ChapterContent from '../ChapterContent';
+import { useNavigation } from '@react-navigation/native';
 
 interface Module {
   id: string;
@@ -63,8 +61,8 @@ const sampleModules: Module[] = [
   },
 ];
 
-export default function SubjectsScreen() {
-  const router = useRouter();
+const SubjectsScreen = () => {
+  const navigation = useNavigation();
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
   const toggleModule = (moduleId: string) => {
@@ -75,10 +73,8 @@ export default function SubjectsScreen() {
     <TouchableOpacity
       style={styles.chapterItem}
       onPress={() => {
-        router.push({
-          pathname: '/ChapterContent',
-          params: { chapter: JSON.stringify(item) }
-        });
+        // Navigate to chapter content
+        navigation.navigate('ChapterContent', { chapter: item });
       }}
     >
       <Text style={styles.chapterTitle}>{item.title}</Text>
@@ -109,21 +105,29 @@ export default function SubjectsScreen() {
   );
 
   return (
-    <ScrollView style={exploreScreenStyles.container}>
-      <View style={exploreScreenStyles.content}>
-        <Text style={exploreScreenStyles.title}>Learning Modules</Text>
-        <FlatList
-          data={sampleModules}
-          renderItem={renderModule}
-          keyExtractor={(module) => module.id}
-          style={styles.modulesList}
-        />
-      </View>
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.header}>Learning Modules</Text>
+      <FlatList
+        data={sampleModules}
+        renderItem={renderModule}
+        keyExtractor={(module) => module.id}
+        style={styles.modulesList}
+      />
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    padding: 16,
+    color: '#333',
+  },
   modulesList: {
     flex: 1,
   },
@@ -174,3 +178,5 @@ const styles = StyleSheet.create({
     color: '#666',
   },
 });
+
+export default SubjectsScreen; 
