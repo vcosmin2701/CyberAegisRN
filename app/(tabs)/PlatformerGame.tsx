@@ -14,7 +14,8 @@ import {
 } from 'react-native';
 import { platformerGameStyles } from '../styles/platformerGameStyle';
 import NetworkCables from '../../components/platfomerComponents/networkCables';
-
+import ServerLeft from '@/components/platfomerComponents/serverLeft';
+import TutorialOverlay from '@/components/platfomerComponents/tutorialOverlay';
 // import LottieView from 'lottie-react-native';
 
 // Get screen dimensions
@@ -78,7 +79,7 @@ const PlatformerGame: React.FC = () => {
   const [activeQuiz, setActiveQuiz] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [securityLevel, setSecurityLevel] = useState('Low');
-  const [showTutorial, setShowTutorial] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(false);
   const [engineerPosition, setEngineerPosition] = useState({
     left: 40,
     top: 150,
@@ -126,11 +127,6 @@ const PlatformerGame: React.FC = () => {
 
   // Animation timing
   useEffect(() => {
-    // Hide tutorial after 5 seconds
-    const tutorialTimer = setTimeout(() => {
-      setShowTutorial(false);
-    }, 5000);
-
     // Simulate more frequent hacker attacks
     const attackInterval = setInterval(() => {
       if (Math.random() > 0.5 && !solvedComputers.every((solved) => solved)) {
@@ -139,7 +135,6 @@ const PlatformerGame: React.FC = () => {
     }, 8000);
 
     return () => {
-      clearTimeout(tutorialTimer);
       clearInterval(attackInterval);
     };
   }, [solvedComputers]);
@@ -430,27 +425,10 @@ const PlatformerGame: React.FC = () => {
           <View style={platformerGameStyles.mainContent}>
             {/* Left Section - Server Racks */}
             <View style={platformerGameStyles.leftSection}>
-              <View style={platformerGameStyles.serverRack}>
-                {[...Array(6)].map((_, i) => (
-                  <View key={i} style={platformerGameStyles.server}>
-                    <View style={platformerGameStyles.serverLights}>
-                      <View
-                        style={[
-                          platformerGameStyles.light,
-                          platformerGameStyles.lightGreen,
-                        ]}
-                      />
-                      <View
-                        style={[
-                          platformerGameStyles.light,
-                          platformerGameStyles.lightBlue,
-                        ]}
-                      />
-                    </View>
-                  </View>
-                ))}
+              {/* srever left */}
+              <View>
+                <ServerLeft />
               </View>
-
               {/* Network Cables */}
               <View style={platformerGameStyles.networkCables}>
                 <NetworkCables />
@@ -667,25 +645,7 @@ const PlatformerGame: React.FC = () => {
 
       {/* Tutorial Overlay */}
       {showTutorial && (
-        <View style={platformerGameStyles.tutorialOverlay}>
-          <View style={platformerGameStyles.tutorialBox}>
-            <Text style={platformerGameStyles.tutorialTitle}>
-              Bine ai venit, Inginer de Securitate!
-            </Text>
-            <Text style={platformerGameStyles.tutorialText}>
-              Misiunea ta este să securizezi toate computerele din laborator.
-              Apasă pe computere pentru a rezolva provocările de securitate.
-            </Text>
-            <TouchableOpacity
-              style={platformerGameStyles.tutorialButton}
-              onPress={() => setShowTutorial(false)}
-            >
-              <Text style={platformerGameStyles.tutorialButtonText}>
-                Am înțeles!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <TutorialOverlay onClose={() => setShowTutorial(false)} />
       )}
 
       {/* Success Message */}
