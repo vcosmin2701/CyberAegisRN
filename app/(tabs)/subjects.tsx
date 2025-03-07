@@ -25,12 +25,12 @@ interface Chapter {
 const sampleModules: Module[] = [
   {
     id: '1',
-    title: 'Introduction to Cybersecurity',
+    title: 'Modulul I – Siguranta Online pentru Copii',
     chapters: [
       {
         id: '1-1',
-        title: 'What is Cybersecurity?',
-        description: 'Learn the basics of cybersecurity and its importance',
+        title: 'Capitolul 1: Parolele - Supereroii care ne protejează conturile!',
+        description: 'Cum să fii în siguranță pe internet! Învață despre parole puternice.',
       },
       {
         id: '1-2',
@@ -46,15 +46,36 @@ const sampleModules: Module[] = [
   },
   {
     id: '2',
-    title: 'Network Security',
+    title: 'Introduction to Cybersecurity',
     chapters: [
       {
         id: '2-1',
+        title: 'What is Cybersecurity?',
+        description: 'Learn the basics of cybersecurity and its importance',
+      },
+      {
+        id: '2-2',
+        title: 'Types of Cyber Threats',
+        description: 'Understanding different types of cyber threats',
+      },
+      {
+        id: '2-3',
+        title: 'Basic Security Principles',
+        description: 'Fundamental principles of information security',
+      },
+    ],
+  },
+  {
+    id: '3',
+    title: 'Network Security',
+    chapters: [
+      {
+        id: '3-1',
         title: 'Network Fundamentals',
         description: 'Understanding network basics and protocols',
       },
       {
-        id: '2-2',
+        id: '3-2',
         title: 'Firewalls and IDS',
         description: 'Network security devices and their functions',
       },
