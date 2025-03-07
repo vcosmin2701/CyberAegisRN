@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import exploreScreenStyles from '../styles/explorescreenStyle';
-import ChapterContent from '../ChapterContent';
 
 interface Module {
   id: string;
@@ -76,9 +75,9 @@ export default function SubjectsScreen() {
       style={styles.chapterItem}
       onPress={() => {
         router.push({
-          pathname: '/ChapterContent',
-          params: { chapter: JSON.stringify(item) }
-        });
+          pathname: "/lessonsComponent/ChapterContent",
+          params: { id: item.id, title: item.title, description: item.description }
+        } as any);
       }}
     >
       <Text style={styles.chapterTitle}>{item.title}</Text>
@@ -173,4 +172,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-});
+}); 

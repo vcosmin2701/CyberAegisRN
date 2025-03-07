@@ -7,21 +7,15 @@ import {
 } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
-interface Chapter {
-  id: string;
-  title: string;
-  description: string;
-}
-
 export default function ChapterContent() {
   const params = useLocalSearchParams();
-  const chapter = JSON.parse(params.chapter as string) as Chapter;
+  const { id, title, description } = params;
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>{chapter.title}</Text>
-        <Text style={styles.description}>{chapter.description}</Text>
+        <Text style={styles.title}>{title as string}</Text>
+        <Text style={styles.description}>{description as string}</Text>
         
         {/* Add your chapter content here */}
         <View style={styles.section}>
