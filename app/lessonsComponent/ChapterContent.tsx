@@ -49,7 +49,96 @@ const chapterContents = {
         ]
       }
     ]
-  }
+  },
+  '1-2': {
+    sections: [
+      {
+        title: 'Ce este o reclamă?',
+        content: [
+          'O reclamă este un anunț care îți arată ceva de cumpărat sau îți cere să dai click pe un link. Multe reclame sunt adevărate, dar unele sunt periculoase și vor să te păcălească!',
+        ],
+      },
+      {
+        title: 'Semne că o reclamă este FALSĂ',
+        content: [
+          '„Ai câștigat un telefon GRATUIT!” – Sună prea bine ca să fie adevărat? Atunci probabil nu este!',
+          '„Click aici urgent, altfel pierzi premiul!” – Orice anunț care te grăbește este suspect.',
+          'Are multe greșeli de scriere – „Felicitri! Ai câștigatt o vacanta!” 🤨',
+          'Vine dintr-o sursă necunoscută – Dacă nu ai auzit niciodată de acel site, mai bine stai departe!',
+        ],
+      },
+      {
+        title: 'Cum să NU cazi în capcană?',
+        content: [
+          'Întreabă un adult – Dacă vezi ceva ciudat, roagă un părinte să verifice.',
+          'Nu da click pe linkuri suspecte – Ele pot conține viruși care îți fură datele!',
+          'Caută informația pe Google – Dacă premiul chiar există, sigur vor scrie și pe site-uri serioase.',
+          'Exemplu: Dacă vezi o reclamă care spune „iPhone gratis! Doar azi!”, întreabă-te: „De ce mi-ar da cineva un iPhone fără să fac nimic?”',
+        ],
+      },
+    ],
+  },
+  '1-3': {
+    sections: [
+      {
+        title: 'Ce sunt datele personale?',
+        content: [
+          'Datele personale sunt informațiile despre tine pe care NU trebuie să le împărtășești cu oricine. Ele includ:',
+          'Numele tău complet',
+          'Adresa de acasă',
+          'Școala la care înveți',
+          'Numărul de telefon',
+          'Poze cu tine',
+          'Gândește-te la ele ca la un cufăr cu comori! Nu vrei să le lași la vedere pentru oricine!',
+        ],
+      },
+      {
+        title: 'Dacă un străin îți scrie online...',
+        content: [
+          'Ce trebuie să faci:',
+          'Ignoră-l – Nu vorbi cu persoane necunoscute!',
+          'Blochează-l – Majoritatea aplicațiilor au un buton special pentru asta.',
+          'Spune unui adult – Un părinte sau un profesor poate verifica dacă e ceva periculos.',
+          'Regula de Aur: Dacă nu ai vorbi cu acea persoană în realitate, de ce ai vorbi cu ea online?',
+        ],
+      },
+      {
+        title: 'Ce NU trebuie să spui străinilor online?',
+        content: [
+          'Dacă cineva te întreabă:',
+          '„Cum te cheamă complet?”',
+          '„Unde stai?”',
+          '„Vrei să ne întâlnim?”',
+          'NU răspunde și spune unui adult!',
+        ],
+      },
+    ],
+  },
+  '1-4': {
+    sections: [
+      {
+        title: 'Ce este cyberbullying-ul?',
+        content: [
+          'Cyberbullying înseamnă hărțuire online – când cineva spune lucruri urâte despre tine, te amenință sau te jignește pe internet. Acest lucru poate fi făcut prin:',
+          'Mesaje răutăcioase trimise pe telefon sau pe internet 📱',
+          'Comentarii urâte pe rețelele sociale 😠',
+          'Răspândirea de zvonuri sau imagini jenante fără permisiunea ta 🚫',
+          'Atenție! Cyberbullying-ul poate afecta emoțiile unei persoane și poate face pe cineva să se simtă trist sau speriat. Dar există soluții!',
+        ],
+      },
+      {
+        title: 'Cum să te protejezi de cyberbullying?',
+        content: [
+          'Nu răspunde la mesaje răutăcioase – Dacă răspunzi, situația poate deveni și mai rea.',
+          'Fă capturi de ecran – Dacă cineva te hărțuiește online, păstrează dovezi.',
+          'Blochează persoana care te deranjează – Majoritatea platformelor au opțiunea de „block” sau „report”.',
+          '✅ Spune unui adult de încredere – Nu trebuie să treci singur prin asta! Părinții sau profesorii te pot ajuta.',
+          '✅ Fii un prieten bun online – Nu distribui zvonuri și nu te alătura celor care jignesc pe altcineva!',
+          '🌟 Regula de Aur: Dacă nu ai spune ceva unei persoane față în față, atunci nu o spune nici online!',
+        ],
+      },
+    ],
+  },
   // Add more chapter contents here as needed
 };
 
