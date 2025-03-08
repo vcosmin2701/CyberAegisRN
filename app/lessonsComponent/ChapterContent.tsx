@@ -131,10 +131,142 @@ const chapterContents = {
         content: [
           'Nu răspunde la mesaje răutăcioase – Dacă răspunzi, situația poate deveni și mai rea.',
           'Fă capturi de ecran – Dacă cineva te hărțuiește online, păstrează dovezi.',
-          'Blochează persoana care te deranjează – Majoritatea platformelor au opțiunea de „block” sau „report”.',
+          'Blochează persoana care te deranjează – Majoritatea platformelor au opțiunea de "block" sau "report".',
           '✅ Spune unui adult de încredere – Nu trebuie să treci singur prin asta! Părinții sau profesorii te pot ajuta.',
           '✅ Fii un prieten bun online – Nu distribui zvonuri și nu te alătura celor care jignesc pe altcineva!',
           '🌟 Regula de Aur: Dacă nu ai spune ceva unei persoane față în față, atunci nu o spune nici online!',
+        ],
+      },
+    ],
+  },
+  '2-1': {
+    sections: [
+      {
+        title: 'Cum știm că un site este sigur?',
+        content: [
+          'Un site sigur este ca un loc bine păzit, unde datele tale sunt protejate! 🔒',
+        ],
+      },
+      {
+        title: 'Semne că un site este SIGUR:',
+        content: [
+          '✅ Are un lacăt lângă adresa web 🔒 (ex: https://sitebun.ro)',
+          '✅ Are o adresă care începe cu "https://" – "S" vine de la securitate!',
+          '✅ Nu îți cere date personale fără motiv (de exemplu, nume, telefon, adresă)',
+          '✅ Nu are reclame ciudate care îți cer să descarci ceva fără să vrei',
+        ],
+      },
+      {
+        title: 'Semne că un site este PERICULOS:',
+        content: [
+          '❌ Adresa începe cu "http://" fără "S"',
+          '❌ Are multe reclame suspecte și ferestre care apar brusc (pop-up-uri)',
+          '❌ Îți cere date personale fără un motiv clar',
+          '❌ Are greșeli de scriere (ex: "Goooogle" în loc de "Google")',
+        ],
+      },
+      {
+        title: 'Truc:',
+        content: [
+          'Dacă un site pare suspect, roagă un adult să verifice înainte să dai click! 🔍',
+        ],
+      },
+    ],
+  },
+  '2-2': {
+    sections: [
+      {
+        title: 'Ce este un virus informatic?',
+        content: [
+          'Un virus informatic este un program rău care poate strica calculatorul sau telefonul tău. Este ca un microb invizibil care poate face haos! 😨',
+        ],
+      },
+      {
+        title: 'Cum ajung virușii pe dispozitivele noastre?',
+        content: [
+          '❌ Descărcăm jocuri și aplicații din surse nesigure 🕹️',
+          '❌ Dăm click pe linkuri suspecte 📎',
+          '❌ Deschidem email-uri de la persoane necunoscute 📧',
+        ],
+      },
+      {
+        title: 'Cum să ne protejăm?',
+        content: [
+          '✅ Instalăm un antivirus bun 🛡',
+          '✅ Descărcăm aplicații doar din magazine oficiale (Google Play, App Store) 📲',
+          '✅ Nu deschidem fișiere din email-uri necunoscute 🚫',
+          '✅ Întrebăm un adult înainte de a instala ceva nou 🔍',
+        ],
+      },
+      {
+        title: 'Truc:',
+        content: [
+          'Dacă un site îți spune că "ai un virus" și trebuie să descarci ceva rapid, închide pagina imediat! 🚀',
+        ],
+      },
+    ],
+  },
+  '2-3': {
+    sections: [
+      {
+        title: 'Ce este phishing-ul?',
+        content: [
+          'Phishing-ul este o metodă prin care hackerii încearcă să te păcălească să le dai datele tale personale, cum ar fi parola sau numărul de telefon. 🎭',
+        ],
+      },
+      {
+        title: 'Cum arată o tentativă de phishing?',
+        content: [
+          '❌ Primești un email care spune că ai câștigat un premiu uriaș 🎁',
+          '❌ Un mesaj îți cere să-ți schimbi parola urgent, deși nu ai cerut asta 🔑',
+          '❌ Un site arată aproape identic cu unul real, dar are o adresă ciudată (ex: "faceb00k.com" în loc de "facebook.com") 🧐',
+        ],
+      },
+      {
+        title: 'Cum să NU cazi în capcană?',
+        content: [
+          '✅ Verifică mereu adresa site-ului înainte să introduci date 🔍',
+          '✅ Nu da click pe linkuri suspecte trimise pe email 📩',
+          '✅ Întreabă un adult dacă un mesaj pare dubios 📢',
+        ],
+      },
+      {
+        title: 'Truc:',
+        content: [
+          'Dacă un mesaj sună prea bine ca să fie adevărat ("Ai câștigat un iPhone 📱"), atunci probabil nu este adevărat!',
+        ],
+      },
+    ],
+  },
+  '2-4': {
+    sections: [
+      {
+        title: 'De ce nu toți oamenii online sunt cine spun că sunt?',
+        content: [
+          'Pe internet, oricine poate pretinde că este altcineva. O persoană care se dă drept copil poate fi, de fapt, un adult rău intenționat. 🚨',
+        ],
+      },
+      {
+        title: 'Semne că cineva nu este de încredere:',
+        content: [
+          '❌ Îți cere poze sau date personale rapid 📸',
+          '❌ Vrea să vorbească doar în privat, fără să știe părinții tăi 🕵️‍♂️',
+          '❌ Te presează să faci lucruri care nu îți plac 😨',
+          '❌ Îți propune să vă întâlniți fără să îți spună clar cine este ❌',
+        ],
+      },
+      {
+        title: 'Cum să te protejezi?',
+        content: [
+          '✅ Nu vorbi cu străini online, la fel cum nu ai vorbi pe stradă! 🚦',
+          '✅ Dacă cineva îți cere poze sau informații personale, spune unui adult! 📢',
+          '✅ Blochează și raportează orice comportament ciudat 🛑',
+        ],
+      },
+      {
+        title: 'Regula de Aur:',
+        content: [
+          'Dacă nu ai vorbi cu acea persoană în viața reală, nu vorbi nici online!',
         ],
       },
     ],
