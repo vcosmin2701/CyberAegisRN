@@ -12,6 +12,7 @@ import {
   Vibration,
   Animated,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { platformerGameStyles } from '../styles/platformerGameStyle';
 import NetworkCables from '../../components/platfomerComponents/networkCables';
 import ServerLeft from '@/components/platfomerComponents/serverLeft';
@@ -70,6 +71,7 @@ const quizQuestions: QuizQuestion[] = [
 ];
 
 const PlatformerGame: React.FC = () => {
+  const router = useRouter();
   const [solvedComputers, setSolvedComputers] = useState<boolean[]>([
     false,
     false,
@@ -331,8 +333,26 @@ const PlatformerGame: React.FC = () => {
     setMovementDirection(null);
   };
 
+  // Add a function to handle returning to level selector
+  const handleBackToLevels = () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView style={platformerGameStyles.container}>
+      {/* Back button */}
+      <TouchableOpacity 
+        style={navigationStyles.backButton} 
+        onPress={handleBackToLevels}
+      >
+        <Text style={navigationStyles.backButtonText}>← Back to Levels</Text>
+      </TouchableOpacity>
+
+      {/* Level title */}
+      <View style={navigationStyles.levelTitleContainer}>
+        <Text style={navigationStyles.levelTitle}>Level 1: Cyber Security Basics</Text>
+      </View>
+
       {/* Score Display */}
       <View style={platformerGameStyles.scoreContainer}>
         <Text style={platformerGameStyles.scoreText}>SCOR: {score}</Text>
@@ -763,6 +783,40 @@ export const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: TAB_BAR_HEIGHT + 20, // Extra padding at the bottom
+  },
+});
+
+// Additional styles for navigation
+const navigationStyles = StyleSheet.create({
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    padding: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 5,
+  },
+  backButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  levelTitleContainer: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 5,
+  },
+  levelTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 20,
   },
 });
 
