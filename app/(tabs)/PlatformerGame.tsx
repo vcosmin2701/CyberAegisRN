@@ -337,7 +337,6 @@ const PlatformerGame: React.FC = () => {
       <View style={platformerGameStyles.scoreContainer}>
         <Text style={platformerGameStyles.scoreText}>SCOR: {score}</Text>
       </View>
-
       {/* Progress Bar - Animated */}
       <View style={platformerGameStyles.progressContainer}>
         <Animated.View
@@ -355,7 +354,6 @@ const PlatformerGame: React.FC = () => {
           {gameProgress}% Securizat
         </Text>
       </View>
-
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={true}
@@ -642,12 +640,10 @@ const PlatformerGame: React.FC = () => {
           <View style={styles.bottomPadding} />
         </View>
       </ScrollView>
-
       {/* Tutorial Overlay */}
       {showTutorial && (
         <TutorialOverlay onClose={() => setShowTutorial(false)} />
       )}
-
       {/* Success Message */}
       {showSuccessMessage && (
         <View style={platformerGameStyles.successOverlay}>
@@ -664,7 +660,6 @@ const PlatformerGame: React.FC = () => {
           </View>
         </View>
       )}
-
       {/* Quiz Modal */}
       <Modal visible={showModal} transparent={true} animationType="fade">
         <View style={platformerGameStyles.modalOverlay}>
@@ -699,8 +694,7 @@ const PlatformerGame: React.FC = () => {
           </View>
         </View>
       </Modal>
-
-      {/* Control buttons at the bottom */}
+      {/* Control buttons at the bottom */}.{' '}
       <View style={platformerGameStyles.controls}>
         <View style={platformerGameStyles.controlRow}>
           <TouchableOpacity
@@ -738,7 +732,6 @@ const PlatformerGame: React.FC = () => {
           </TouchableOpacity>
         </View>
       </View>
-
       {/* Game Instructions */}
       <TouchableOpacity
         style={platformerGameStyles.helpButton}
@@ -746,7 +739,6 @@ const PlatformerGame: React.FC = () => {
       >
         <Text style={platformerGameStyles.helpButtonText}>?</Text>
       </TouchableOpacity>
-
       {/* Security Tip Popup */}
       {showTip && (
         <View style={platformerGameStyles.tipContainer}>
