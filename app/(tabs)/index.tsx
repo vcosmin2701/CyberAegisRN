@@ -7,15 +7,20 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 export default function HomeScreen() {
+  const router = useRouter();
   // Mock user data - replace with real data later
   const userData = {
     username: 'CyberHero123',
     xp: 1250,
     currentLesson: 'Network Security Basics',
     lessonProgress: 60,
+  };
+
+  const handleProfilePress = () => {
+    router.push('/(tabs)/profile');
   };
 
   return (
@@ -34,7 +39,7 @@ export default function HomeScreen() {
                 </View>
               </View>
             </View>
-            <TouchableOpacity style={styles.profileButton}>
+            <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
               <Text style={styles.profileButtonText}>👤</Text>
             </TouchableOpacity>
           </View>
