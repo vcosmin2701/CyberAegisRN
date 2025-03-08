@@ -5,7 +5,6 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 
@@ -13,11 +12,21 @@ const ProfileScreen = () => {
   // Mock user data - replace with real data later
   const userData = {
     username: 'CyberHero123',
-    level: 5,
     xp: 1250,
-    joinDate: '2024',
-    achievements: 3,
-    gamesCompleted: 8,
+    completedLessons: [
+      {
+        id: '1',
+        title: 'Parolele - Supereroii care ne protejează conturile!',
+      },
+      {
+        id: '2',
+        title: 'Reclamele False – Capcanele din Internet!',
+      },
+      {
+        id: '3',
+        title: 'Datele Personale – Comorile Tale Secrete!',
+      },
+    ],
   };
 
   return (
@@ -31,45 +40,28 @@ const ProfileScreen = () => {
             </View>
           </View>
           <Text style={styles.username}>{userData.username}</Text>
-          <Text style={styles.subtitle}>Level {userData.level} Cyber Hero</Text>
-        </View>
-
-        {/* Stats Section */}
-        <View style={styles.statsContainer}>
-          <View style={styles.statBox}>
-            <Text style={styles.statNumber}>{userData.xp}</Text>
-            <Text style={styles.statLabel}>XP Points</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statNumber}>{userData.achievements}</Text>
-            <Text style={styles.statLabel}>Achievements</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statNumber}>{userData.gamesCompleted}</Text>
-            <Text style={styles.statLabel}>Games</Text>
+          <View style={styles.xpContainer}>
+            <Text style={styles.xpText}>XP: {userData.xp}</Text>
+            <View style={styles.xpBar}>
+              <View style={[styles.xpProgress, { width: '60%' }]} />
+            </View>
           </View>
         </View>
 
-        {/* Placeholder Sections */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Achievements</Text>
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>Coming Soon!</Text>
-          </View>
-        </View>
+        {/* Completed Lessons Section */}
+        <View style={styles.lessonsContainer}>
+          <Text style={styles.sectionTitle}>Lectii completate</Text>
+          {userData.completedLessons.map((lesson) => (
+            <View key={lesson.id} style={styles.lessonCard}>
+              <View style={styles.lessonInfo}>
+                <Text style={styles.lessonTitle}>{lesson.title}</Text>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Game History</Text>
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>Coming Soon!</Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Settings</Text>
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>Coming Soon!</Text>
-          </View>
+              </View>
+              <View style={styles.completedBadge}>
+                <Text style={styles.completedText}>✓</Text>
+              </View>
+            </View>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -90,83 +82,100 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c3e50',
   },
   profileImageContainer: {
-    marginBottom: 10,
+    marginBottom: 15,
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     backgroundColor: '#3498db',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 4,
+    borderColor: '#fff',
   },
   profileImageText: {
     color: 'white',
-    fontSize: 36,
+    fontSize: 40,
     fontWeight: 'bold',
   },
   username: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#ecf0f1',
     marginBottom: 10,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 20,
-    backgroundColor: 'white',
-    marginBottom: 15,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  statBox: {
+  xpContainer: {
+    width: '80%',
     alignItems: 'center',
   },
-  statNumber: {
+  xpText: {
+    color: '#ecf0f1',
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  xpBar: {
+    width: '100%',
+    height: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  xpProgress: {
+    height: '100%',
+    backgroundColor: '#2ecc71',
+    borderRadius: 4,
+  },
+  lessonsContainer: {
+    padding: 15,
+  },
+  sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#2c3e50',
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#7f8c8d',
-    marginTop: 5,
-  },
-  section: {
-    backgroundColor: 'white',
     marginBottom: 15,
+    marginLeft: 5,
+  },
+  lessonCard: {
+    backgroundColor: 'white',
+    borderRadius: 10,
     padding: 15,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 10,
+  lessonInfo: {
+    flex: 1,
   },
-  placeholder: {
-    height: 100,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 8,
+  lessonTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#2c3e50',
+    marginBottom: 4,
+  },
+  lessonDate: {
+    fontSize: 12,
+    color: '#7f8c8d',
+  },
+  completedBadge: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#2ecc71',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 10,
   },
-  placeholderText: {
-    color: '#95a5a6',
-    fontSize: 16,
+  completedText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
