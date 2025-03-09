@@ -20,7 +20,7 @@ export default function HomeScreen() {
   };
 
   const handleProfilePress = () => {
-    router.push('/(tabs)/profile');
+    router.push('/profile');
   };
 
   return (

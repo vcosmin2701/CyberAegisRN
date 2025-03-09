@@ -49,15 +49,6 @@ export default function TabLayout() {
           href: null, // Hide from tab bar but keep accessible via navigation
         }}
       />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profil',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
-          ),
-        }}
-      />
     </Tabs>
   );
 }
