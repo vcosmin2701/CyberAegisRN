@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '../../app/styles/indexStyle';
 import {
   StyleSheet,
@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 
+export default function HomeScreen() {
+  const router = useRouter();
   // Mock user data - replace with real data later
   const userData = {
     username: 'CyberHero123',
@@ -32,12 +35,7 @@ import {
               <View style={styles.xpContainer}>
                 <Text style={styles.xpText}>XP: {userData.xp}</Text>
                 <View style={styles.xpBar}>
-                  <View
-                    style={[
-                      styles.xpProgress,
-                      { width: `${userData.lessonProgress}%` },
-                    ]}
-                  />
+                  <View style={[styles.xpProgress, { width: `${userData.lessonProgress}%` }]} />
                 </View>
               </View>
             </View>
@@ -52,16 +50,9 @@ import {
           <Text style={styles.sectionTitle}>Current Lesson 📚</Text>
           <Text style={styles.lessonTitle}>{userData.currentLesson}</Text>
           <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${userData.lessonProgress}%` },
-              ]}
-            />
+            <View style={[styles.progressFill, { width: `${userData.lessonProgress}%` }]} />
           </View>
-          <Text style={styles.progressText}>
-            {userData.lessonProgress}% Complete
-          </Text>
+          <Text style={styles.progressText}>{userData.lessonProgress}% Complete</Text>
           <TouchableOpacity style={styles.continueButton}>
             <Text style={styles.continueButtonText}>Continue Learning</Text>
           </TouchableOpacity>
@@ -69,43 +60,37 @@ import {
 
         {/* Main Game Buttons */}
         <View style={styles.gameButtonsContainer}>
+          <Link href="../LevelSelector" asChild>
           <TouchableOpacity style={styles.mainGameButton}>
             <View style={styles.mainGameContent}>
               <Text style={styles.mainGameTitle}>🎮 Start Platformer Game</Text>
-              <Text style={styles.mainGameSubtitle}>
-                Begin Your Cyber Adventure
-              </Text>
+              <Text style={styles.mainGameSubtitle}>Begin Your Cyber Adventure</Text>
             </View>
           </TouchableOpacity>
+          </Link>
 
           <TouchableOpacity style={styles.mainGameButton}>
             <View style={styles.mainGameContent}>
               <Text style={styles.mainGameTitle}>🥼 Alex's Lab</Text>
-              <Text style={styles.mainGameSubtitle}>
-                See the results of Alex's experiments
-              </Text>
+              <Text style={styles.mainGameSubtitle}>See the results of Alex's experiments</Text>
             </View>
           </TouchableOpacity>
         </View>
 
-        {/* Daily Reward Button */}
-        <TouchableOpacity
-          style={styles.dailyRewardButton}
-          onPress={() => setShowDailyReward(true)}
-        >
-          <Text style={styles.dailyRewardButtonText}>
-            🎁 Claim Daily Reward
-          </Text>
-        </TouchableOpacity>
-
-        <DailyReward
-          isVisible={showDailyReward}
-          onClose={() => setShowDailyReward(false)}
-          onClaimReward={(day, reward) => {
-            console.log(`Claimed day ${day} reward: ${reward}`);
-            // Here you can implement the actual reward logic
-          }}
-        />
+        {/* Daily Check-in */}
+        <View style={styles.dailyCheckIn}>
+          <Text style={styles.sectionTitle}>Daily Rewards 🎁</Text>
+          <View style={styles.checkInContainer}>
+            {[1, 2, 3, 4, 5].map((day) => (
+              <View key={day} style={styles.dayBox}>
+                <Text style={styles.dayNumber}>{day}</Text>
+                <View style={[styles.checkMark, day <= 2 && styles.checked]}>
+                  <Text style={styles.checkMarkText}>{day <= 2 ? '✓' : '?'}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
 
         {/* Quick Actions Grid */}
         <View style={styles.quickActions}>
@@ -115,10 +100,11 @@ import {
             </TouchableOpacity>
           </Link>
           <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionButtonText}>Shop 🛍️</Text>
+            <Text style={styles.actionButtonText}>Shop 🛍</Text>
           </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
   );
 }
+;
