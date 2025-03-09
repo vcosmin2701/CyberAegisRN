@@ -32,6 +32,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="LevelSelector"
+
         options={{
           title: 'Levels',
           tabBarIcon: ({ color, size }) => (
@@ -47,15 +48,6 @@ export default function TabLayout() {
             <Ionicons name="code-working" size={size} color={color} />
           ),
           href: null, // Hide from tab bar but keep accessible via navigation
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profil',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
-          ),
         }}
       />
     </Tabs>
