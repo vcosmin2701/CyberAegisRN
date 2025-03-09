@@ -4,11 +4,24 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
+// Define TypeScript interfaces
+interface Section {
+  title: string;
+  content: string[];
+  image?: ImageSourcePropType;
+}
+
+interface ChapterContent {
+  sections: Section[];
+}
+
 // Define chapter content
-const chapterContents = {
+const chapterContents: Record<string, ChapterContent> = {
   '1-1': {
     sections: [
       {
@@ -16,7 +29,8 @@ const chapterContents = {
         content: [
           'O parolă este un cod secret pe care îl folosim pentru a proteja conturile noastre online. Este ca un gard invizibil care ține hoții departe de informațiile noastre personale.',
           'Imaginează-ți că parola ta este cheia casei tale. Dacă o faci prea simplă, oricine poate intra! Dar dacă e puternică, doar TU vei putea deschide ușa contului tău.'
-        ]
+        ],
+        image: require('../../assets/images/lessons/Passwords comic.png')
       },
       {
         title: 'Cum să îți faci o parolă SUPER SIGURĂ!',
@@ -298,6 +312,15 @@ export default function ChapterContent() {
                   {paragraph}
                 </Text>
               ))}
+              {section.image && (
+                <View style={styles.imageContainer}>
+                  <Image 
+                    source={section.image} 
+                    style={styles.sectionImage}
+                    resizeMode="contain"
+                  />
+                </View>
+              )}
             </View>
           ))
         ) : (
@@ -356,5 +379,16 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 24,
     marginBottom: 8,
+  },
+  imageContainer: {
+    width: '100%',
+    height: 250,
+    marginVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sectionImage: {
+    width: '100%',
+    height: '100%',
   },
 }); 
