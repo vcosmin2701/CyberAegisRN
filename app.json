@@ -3,7 +3,7 @@
     "name": "CyberAegiesRN",
     "slug": "cyberaegiesrn",
     "sdkVersion": "52.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": ["ios"],
     "orientation": "portrait",
     "version": "1.0.0",
     "icon": "./assets/images/icon.png",
@@ -11,13 +11,23 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "requireFullScreen": true,
+      "bundleIdentifier": "com.cyberaegis.app",
+      "infoPlist": {
+        "UISupportedInterfaceOrientations": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.cyberaegis.app"
     },
     "web": {
       "bundler": "metro",

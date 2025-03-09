@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,12 @@ import {
   ScrollView,
   Image,
   ImageSourcePropType,
+  Platform,
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, Stack } from 'expo-router';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import { useNavigation } from '@react-navigation/native';
 
-// Define TypeScript interfaces
 interface Section {
   title: string;
   content: string[];
@@ -28,9 +30,9 @@ const chapterContents: Record<string, ChapterContent> = {
         title: 'Ce este o parolă și de ce este importantă?',
         content: [
           'O parolă este un cod secret pe care îl folosim pentru a proteja conturile noastre online. Este ca un gard invizibil care ține hoții departe de informațiile noastre personale.',
-          'Imaginează-ți că parola ta este cheia casei tale. Dacă o faci prea simplă, oricine poate intra! Dar dacă e puternică, doar TU vei putea deschide ușa contului tău.'
+          'Imaginează-ți că parola ta este cheia casei tale. Dacă o faci prea simplă, oricine poate intra! Dar dacă e puternică, doar TU vei putea deschide ușa contului tău.',
         ],
-        image: require('../../assets/images/lessons/Passwords comic.png')
+        image: require('../../assets/images/lessons/Passwords comic.png'),
       },
       {
         title: 'Cum să îți faci o parolă SUPER SIGURĂ!',
@@ -38,8 +40,8 @@ const chapterContents: Record<string, ChapterContent> = {
           '• Să fie LUNGĂ – cel puțin 8-12 caractere.',
           '• Să conțină litere mari și mici – "A" și "a" fac diferența.',
           '• Să includă cifre și simboluri – "P@ssw0rd!2024" este mai sigur decât "parola123".',
-          '• Să fie ușor de reținut pentru tine, dar greu de ghicit pentru alții!'
-        ]
+          '• Să fie ușor de reținut pentru tine, dar greu de ghicit pentru alții!',
+        ],
       },
       {
         title: 'Cum să-ți amintești parolele?',
@@ -51,18 +53,18 @@ const chapterContents: Record<string, ChapterContent> = {
           '',
           'Truc: Folosește o propoziție pe care doar tu o știi!',
           'Exemplu: "ImiPlAcMereleVerzi!22" – Ușor de ținut minte, dar greu de ghicit!',
-          'NU spune nimănui parola ta! Nici măcar celui mai bun prieten.'
-        ]
+          'NU spune nimănui parola ta! Nici măcar celui mai bun prieten.',
+        ],
       },
       {
         title: 'Cum să NU îți faci parola',
         content: [
           '• Nu folosi parole scurte – "12345" sau "parola" sunt foarte ușor de ghicit!',
           '• Nu folosi numele tău sau data de naștere – Dacă cineva știe cum te cheamă, poate încerca asta.',
-          '• Nu folosi aceeași parolă peste tot – Dacă cineva o află, îți poate accesa toate conturile!'
-        ]
-      }
-    ]
+          '• Nu folosi aceeași parolă peste tot – Dacă cineva o află, îți poate accesa toate conturile!',
+        ],
+      },
+    ],
   },
   '1-2': {
     sections: [
@@ -292,49 +294,89 @@ export default function ChapterContent() {
   const params = useLocalSearchParams();
   const { id, title, description } = params;
   const chapterId = id as string;
-  
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function setOrientation(
+      targetOrientation: ScreenOrientation.OrientationLock
+    ) {
+      if (!isMounted) return;
+
+      try {
+        await ScreenOrientation.lockAsync(targetOrientation);
+      } catch (error) {
+        console.warn('Orientation change failed:', error);
+      }
+    }
+
+    // Initial orientation setup
+    setOrientation(ScreenOrientation.OrientationLock.LANDSCAPE);
+
+    // Navigation listeners
+    const unsubscribeFocus = navigation.addListener('focus', () => {
+      setOrientation(ScreenOrientation.OrientationLock.LANDSCAPE);
+    });
+
+    const unsubscribeBlur = navigation.addListener('blur', () => {
+      setOrientation(ScreenOrientation.OrientationLock.PORTRAIT);
+    });
+
+    return () => {
+      isMounted = false;
+      unsubscribeFocus();
+      unsubscribeBlur();
+      setOrientation(ScreenOrientation.OrientationLock.PORTRAIT);
+    };
+  }, [navigation]);
+
   // Get chapter content if available
-  const chapterContent = chapterContents[chapterId as keyof typeof chapterContents];
+  const chapterContent =
+    chapterContents[chapterId as keyof typeof chapterContents];
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>{title as string}</Text>
-        <Text style={styles.description}>{description as string}</Text>
-        
-        {chapterContent ? (
-          // Display structured content if available
-          chapterContent.sections.map((section, index) => (
-            <View key={index} style={styles.section}>
-              <Text style={styles.sectionTitle}>{section.title}</Text>
-              {section.content.map((paragraph, pIndex) => (
-                <Text key={pIndex} style={styles.sectionText}>
-                  {paragraph}
-                </Text>
-              ))}
-              {section.image && (
-                <View style={styles.imageContainer}>
-                  <Image 
-                    source={section.image} 
-                    style={styles.sectionImage}
-                    resizeMode="contain"
-                  />
-                </View>
-              )}
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollView style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.title}>{title as string}</Text>
+          <Text style={styles.description}>{description as string}</Text>
+
+          {chapterContent ? (
+            // Display structured content if available
+            chapterContent.sections.map((section, index) => (
+              <View key={index} style={styles.section}>
+                <Text style={styles.sectionTitle}>{section.title}</Text>
+                {section.content.map((paragraph, pIndex) => (
+                  <Text key={pIndex} style={styles.sectionText}>
+                    {paragraph}
+                  </Text>
+                ))}
+                {section.image && (
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={section.image}
+                      style={styles.sectionImage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                )}
+              </View>
+            ))
+          ) : (
+            // Default content if no specific content is available
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Content</Text>
+              <Text style={styles.sectionText}>
+                This is where you can add the actual content for each chapter.
+                You can include text, images, videos, or interactive elements.
+              </Text>
             </View>
-          ))
-        ) : (
-          // Default content if no specific content is available
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Content</Text>
-            <Text style={styles.sectionText}>
-              This is where you can add the actual content for each chapter.
-              You can include text, images, videos, or interactive elements.
-            </Text>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
@@ -391,4 +433,4 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-}); 
+});

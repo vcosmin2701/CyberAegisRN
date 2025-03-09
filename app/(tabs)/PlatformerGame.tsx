@@ -341,18 +341,18 @@ const PlatformerGame: React.FC = () => {
   return (
     <SafeAreaView style={platformerGameStyles.container}>
       {/* Back button */}
-      <TouchableOpacity 
-        style={navigationStyles.backButton} 
+      <TouchableOpacity
+        style={navigationStyles.backButton}
         onPress={handleBackToLevels}
       >
         <Text style={navigationStyles.backButtonText}>← Back to Levels</Text>
       </TouchableOpacity>
-
       {/* Level title */}
       <View style={navigationStyles.levelTitleContainer}>
-        <Text style={navigationStyles.levelTitle}>Level 1: Cyber Security Basics</Text>
+        <Text style={navigationStyles.levelTitle}>
+          Level 1: Cyber Security Basics
+        </Text>
       </View>
-
       {/* Score Display */}
       <View style={platformerGameStyles.scoreContainer}>
         <Text style={platformerGameStyles.scoreText}>SCOR: {score}</Text>
