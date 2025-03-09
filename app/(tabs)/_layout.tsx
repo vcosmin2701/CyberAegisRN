@@ -32,6 +32,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="LevelSelector"
+
         options={{
           title: 'Levels',
           tabBarIcon: ({ color, size }) => (
