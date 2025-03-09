@@ -14,6 +14,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
+
           backgroundColor: Colors[theme].background,
           paddingBottom: Platform.OS === 'ios' ? 20 : 10, // Evită suprapunerea
           height: Platform.OS === 'ios' ? 80 : 60, // Ajustează înălțimea
