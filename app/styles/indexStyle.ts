@@ -206,6 +206,24 @@ const indexStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  dailyRewardButton: {
+    backgroundColor: '#0074B7',
+    padding: 15,
+    borderRadius: 12,
+    marginHorizontal: 16,
+    marginVertical: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  dailyRewardButtonText: {
+    color: '#BFD7ED',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default indexStyles;
