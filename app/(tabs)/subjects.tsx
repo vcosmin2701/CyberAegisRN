@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import exploreScreenStyles from '../styles/explorescreenStyle';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 interface Module {
   id: string;
@@ -29,8 +31,10 @@ const sampleModules: Module[] = [
     chapters: [
       {
         id: '1-1',
-        title: 'Capitolul 1: Parolele - Supereroii care ne protejează conturile!',
-        description: 'Cum să fii în siguranță pe internet! Învață despre parole puternice.',
+        title:
+          'Capitolul 1: Parolele - Supereroii care ne protejează conturile!',
+        description:
+          'Cum să fii în siguranță pe internet! Învață despre parole puternice.',
       },
       {
         id: '1-2',
@@ -84,6 +88,19 @@ const sampleModules: Module[] = [
 ];
 
 export default function SubjectsScreen() {
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+      );
+    };
+    lockOrientation();
+
+    return () => {
+      ScreenOrientation.unlockAsync();
+    };
+  }, []);
+
   const router = useRouter();
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
@@ -96,8 +113,12 @@ export default function SubjectsScreen() {
       style={styles.chapterItem}
       onPress={() => {
         router.push({
-          pathname: "/lessonsComponent/ChapterContent",
-          params: { id: item.id, title: item.title, description: item.description }
+          pathname: '/lessonsComponent/ChapterContent',
+          params: {
+            id: item.id,
+            title: item.title,
+            description: item.description,
+          },
         } as any);
       }}
     >
@@ -129,17 +150,20 @@ export default function SubjectsScreen() {
   );
 
   return (
-    <ScrollView style={exploreScreenStyles.container}>
-      <View style={exploreScreenStyles.content}>
-        <Text style={exploreScreenStyles.title}>Learning Modules</Text>
-        <FlatList
-          data={sampleModules}
-          renderItem={renderModule}
-          keyExtractor={(module) => module.id}
-          style={styles.modulesList}
-        />
-      </View>
-    </ScrollView>
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollView style={exploreScreenStyles.container}>
+        <View style={exploreScreenStyles.content}>
+          <Text style={exploreScreenStyles.title}>Learning Modules</Text>
+          <FlatList
+            data={sampleModules}
+            renderItem={renderModule}
+            keyExtractor={(module) => module.id}
+            style={styles.modulesList}
+          />
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
@@ -193,4 +217,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-}); 
+});
