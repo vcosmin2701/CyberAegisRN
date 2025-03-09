@@ -333,7 +333,6 @@ const PlatformerGame: React.FC = () => {
     setMovementDirection(null);
   };
 
-  // Add a function to handle returning to level selector
   const handleBackToLevels = () => {
     router.back();
   };
