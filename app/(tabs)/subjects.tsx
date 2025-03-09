@@ -11,6 +11,7 @@ import { useRouter } from 'expo-router';
 import { Stack } from 'expo-router';
 import exploreScreenStyles from '../styles/explorescreenStyle';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { useNavigation } from '@react-navigation/native';
 
 interface Module {
   id: string;
@@ -88,6 +89,10 @@ const sampleModules: Module[] = [
 ];
 
 export default function SubjectsScreen() {
+  const router = useRouter();
+  const navigation = useNavigation();
+  const [expandedModule, setExpandedModule] = useState<string | null>(null);
+
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(
@@ -96,13 +101,19 @@ export default function SubjectsScreen() {
     };
     lockOrientation();
 
-    return () => {
-      ScreenOrientation.unlockAsync();
-    };
-  }, []);
+    const unsubscribe = navigation.addListener('blur', () => {
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    });
 
-  const router = useRouter();
-  const [expandedModule, setExpandedModule] = useState<string | null>(null);
+    return () => {
+      unsubscribe();
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    };
+  }, [navigation]);
 
   const toggleModule = (moduleId: string) => {
     setExpandedModule(expandedModule === moduleId ? null : moduleId);
