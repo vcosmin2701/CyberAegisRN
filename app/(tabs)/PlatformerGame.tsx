@@ -12,9 +12,11 @@ import {
   Vibration,
   Animated,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { platformerGameStyles } from '../styles/platformerGameStyle';
 import NetworkCables from '../../components/platfomerComponents/networkCables';
-
+import ServerLeft from '@/components/platfomerComponents/serverLeft';
+import TutorialOverlay from '@/components/platfomerComponents/tutorialOverlay';
 // import LottieView from 'lottie-react-native';
 
 // Get screen dimensions
@@ -69,6 +71,7 @@ const quizQuestions: QuizQuestion[] = [
 ];
 
 const PlatformerGame: React.FC = () => {
+  const router = useRouter();
   const [solvedComputers, setSolvedComputers] = useState<boolean[]>([
     false,
     false,
@@ -78,7 +81,7 @@ const PlatformerGame: React.FC = () => {
   const [activeQuiz, setActiveQuiz] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [securityLevel, setSecurityLevel] = useState('Low');
-  const [showTutorial, setShowTutorial] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(false);
   const [engineerPosition, setEngineerPosition] = useState({
     left: 40,
     top: 150,
@@ -126,11 +129,6 @@ const PlatformerGame: React.FC = () => {
 
   // Animation timing
   useEffect(() => {
-    // Hide tutorial after 5 seconds
-    const tutorialTimer = setTimeout(() => {
-      setShowTutorial(false);
-    }, 5000);
-
     // Simulate more frequent hacker attacks
     const attackInterval = setInterval(() => {
       if (Math.random() > 0.5 && !solvedComputers.every((solved) => solved)) {
@@ -139,7 +137,6 @@ const PlatformerGame: React.FC = () => {
     }, 8000);
 
     return () => {
-      clearTimeout(tutorialTimer);
       clearInterval(attackInterval);
     };
   }, [solvedComputers]);
@@ -336,13 +333,30 @@ const PlatformerGame: React.FC = () => {
     setMovementDirection(null);
   };
 
+  // Add a function to handle returning to level selector
+  const handleBackToLevels = () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView style={platformerGameStyles.container}>
+      {/* Back button */}
+      <TouchableOpacity 
+        style={navigationStyles.backButton} 
+        onPress={handleBackToLevels}
+      >
+        <Text style={navigationStyles.backButtonText}>← Back to Levels</Text>
+      </TouchableOpacity>
+
+      {/* Level title */}
+      <View style={navigationStyles.levelTitleContainer}>
+        <Text style={navigationStyles.levelTitle}>Level 1: Cyber Security Basics</Text>
+      </View>
+
       {/* Score Display */}
       <View style={platformerGameStyles.scoreContainer}>
         <Text style={platformerGameStyles.scoreText}>SCOR: {score}</Text>
       </View>
-
       {/* Progress Bar - Animated */}
       <View style={platformerGameStyles.progressContainer}>
         <Animated.View
@@ -360,7 +374,6 @@ const PlatformerGame: React.FC = () => {
           {gameProgress}% Securizat
         </Text>
       </View>
-
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={true}
@@ -430,27 +443,10 @@ const PlatformerGame: React.FC = () => {
           <View style={platformerGameStyles.mainContent}>
             {/* Left Section - Server Racks */}
             <View style={platformerGameStyles.leftSection}>
-              <View style={platformerGameStyles.serverRack}>
-                {[...Array(6)].map((_, i) => (
-                  <View key={i} style={platformerGameStyles.server}>
-                    <View style={platformerGameStyles.serverLights}>
-                      <View
-                        style={[
-                          platformerGameStyles.light,
-                          platformerGameStyles.lightGreen,
-                        ]}
-                      />
-                      <View
-                        style={[
-                          platformerGameStyles.light,
-                          platformerGameStyles.lightBlue,
-                        ]}
-                      />
-                    </View>
-                  </View>
-                ))}
+              {/* srever left */}
+              <View>
+                <ServerLeft />
               </View>
-
               {/* Network Cables */}
               <View style={platformerGameStyles.networkCables}>
                 <NetworkCables />
@@ -664,30 +660,10 @@ const PlatformerGame: React.FC = () => {
           <View style={styles.bottomPadding} />
         </View>
       </ScrollView>
-
       {/* Tutorial Overlay */}
       {showTutorial && (
-        <View style={platformerGameStyles.tutorialOverlay}>
-          <View style={platformerGameStyles.tutorialBox}>
-            <Text style={platformerGameStyles.tutorialTitle}>
-              Bine ai venit, Inginer de Securitate!
-            </Text>
-            <Text style={platformerGameStyles.tutorialText}>
-              Misiunea ta este să securizezi toate computerele din laborator.
-              Apasă pe computere pentru a rezolva provocările de securitate.
-            </Text>
-            <TouchableOpacity
-              style={platformerGameStyles.tutorialButton}
-              onPress={() => setShowTutorial(false)}
-            >
-              <Text style={platformerGameStyles.tutorialButtonText}>
-                Am înțeles!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <TutorialOverlay onClose={() => setShowTutorial(false)} />
       )}
-
       {/* Success Message */}
       {showSuccessMessage && (
         <View style={platformerGameStyles.successOverlay}>
@@ -704,7 +680,6 @@ const PlatformerGame: React.FC = () => {
           </View>
         </View>
       )}
-
       {/* Quiz Modal */}
       <Modal visible={showModal} transparent={true} animationType="fade">
         <View style={platformerGameStyles.modalOverlay}>
@@ -739,8 +714,7 @@ const PlatformerGame: React.FC = () => {
           </View>
         </View>
       </Modal>
-
-      {/* Control buttons at the bottom */}
+      {/* Control buttons at the bottom */}.{' '}
       <View style={platformerGameStyles.controls}>
         <View style={platformerGameStyles.controlRow}>
           <TouchableOpacity
@@ -778,7 +752,6 @@ const PlatformerGame: React.FC = () => {
           </TouchableOpacity>
         </View>
       </View>
-
       {/* Game Instructions */}
       <TouchableOpacity
         style={platformerGameStyles.helpButton}
@@ -786,7 +759,6 @@ const PlatformerGame: React.FC = () => {
       >
         <Text style={platformerGameStyles.helpButtonText}>?</Text>
       </TouchableOpacity>
-
       {/* Security Tip Popup */}
       {showTip && (
         <View style={platformerGameStyles.tipContainer}>
@@ -811,6 +783,40 @@ export const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: TAB_BAR_HEIGHT + 20, // Extra padding at the bottom
+  },
+});
+
+// Additional styles for navigation
+const navigationStyles = StyleSheet.create({
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    padding: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 5,
+  },
+  backButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  levelTitleContainer: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 5,
+  },
+  levelTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 20,
   },
 });
 
