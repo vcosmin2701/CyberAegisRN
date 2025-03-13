@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
   scoreContainer: {
     ...platformerGameStyles.scoreContainer,
     position: 'absolute',
-    top: 10,
+    top: 130,
     right: 10,
+
     zIndex: 10,
   },
 });

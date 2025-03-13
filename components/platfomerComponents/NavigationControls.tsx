@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
 interface NavigationControlsProps {
   onBackPress: () => void;
@@ -9,16 +9,18 @@ const NavigationControls: React.FC<NavigationControlsProps> = ({
   onBackPress,
 }) => {
   return (
-    <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-      <Text style={styles.backButtonText}>← Back to Levels</Text>
-    </TouchableOpacity>
+    <View style={styles.backView}>
+      <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
+        <Text style={styles.backButtonText}>← Back to Levels</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
-    top: 10,
+    top: 20,
     left: 10,
     zIndex: 10,
     padding: 8,
@@ -28,6 +30,13 @@ const styles = StyleSheet.create({
   backButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  backView: {
+    position: 'absolute',
+    top: 150,
+    left: 10,
+    zIndex: 10,
+    padding: 8,
   },
 });
 
