@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Modal,
   ScrollView,
   SafeAreaView,
   Dimensions,
@@ -18,7 +17,11 @@ import NetworkCables from '../../components/platfomerComponents/networkCables';
 import ServerLeft from '@/components/platfomerComponents/serverLeft';
 import TutorialOverlay from '@/components/platfomerComponents/tutorialOverlay';
 import MovementController from '@/components/platfomerComponents/MovementController';
-// import LottieView from 'lottie-react-native';
+import EngineerCharacter from '@/components/platfomerComponents/EngineerCharacter';
+import ComputerWorkstation from '@/components/platfomerComponents/ComputerWorkstation';
+import MalwareThreat from '@/components/platfomerComponents/MalwareThreat';
+import QuizModal from '@/components/platfomerComponents/QuizModal';
+import SecurityStatus from '@/components/platfomerComponents/SecurityStatus';
 
 // Get screen dimensions
 const { width, height } = Dimensions.get('window');
@@ -273,6 +276,22 @@ const PlatformerGame: React.FC = () => {
     setEngineerPosition(newPosition);
   };
 
+  // Get the position type for a computer workstation
+  const getComputerPosition = (index: number) => {
+    switch (index) {
+      case 0:
+        return 'topLeft';
+      case 1:
+        return 'topRight';
+      case 2:
+        return 'bottomLeft';
+      case 3:
+        return 'bottomRight';
+      default:
+        return 'topLeft';
+    }
+  };
+
   return (
     <SafeAreaView style={platformerGameStyles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -345,35 +364,10 @@ const PlatformerGame: React.FC = () => {
           </View>
 
           {/* Security Status Display */}
-          <View style={platformerGameStyles.securityStatus}>
-            <Text style={platformerGameStyles.securityLabel}>
-              NIVEL SECURITATE:
-            </Text>
-            <View
-              style={[
-                platformerGameStyles.securityIndicator,
-                securityLevel === 'Low' && platformerGameStyles.securityLow,
-                securityLevel === 'Medium' &&
-                  platformerGameStyles.securityMedium,
-                securityLevel === 'High' && platformerGameStyles.securityHigh,
-              ]}
-            >
-              <Text style={platformerGameStyles.securityText}>
-                {securityLevel === 'Low'
-                  ? 'Scăzut'
-                  : securityLevel === 'Medium'
-                  ? 'Mediu'
-                  : 'Ridicat'}
-              </Text>
-            </View>
-            {hackerAttack && (
-              <View style={platformerGameStyles.alertBadge}>
-                <Text style={platformerGameStyles.alertText}>
-                  ATAC DETECTAT!
-                </Text>
-              </View>
-            )}
-          </View>
+          <SecurityStatus
+            securityLevel={securityLevel as 'Low' | 'Medium' | 'High'}
+            isUnderAttack={hackerAttack}
+          />
 
           {/* Main Content Area */}
           <View style={platformerGameStyles.mainContent}>
@@ -393,157 +387,37 @@ const PlatformerGame: React.FC = () => {
             <View style={platformerGameStyles.centerSection}>
               <View style={platformerGameStyles.workstationArea}>
                 {[0, 1, 2, 3].map((index) => (
-                  <TouchableOpacity
+                  <ComputerWorkstation
                     key={index}
-                    style={[
-                      platformerGameStyles.desk,
-                      index % 2 === 0
-                        ? platformerGameStyles.leftDesk
-                        : platformerGameStyles.rightDesk,
-                      index < 2
-                        ? platformerGameStyles.topRow
-                        : platformerGameStyles.bottomRow,
-                      !solvedComputers[index] &&
-                        platformerGameStyles.interactiveDesk,
-                    ]}
-                    onPress={() => handleComputerPress(index)}
-                  >
-                    <View style={platformerGameStyles.monitor}>
-                      <View
-                        style={[
-                          platformerGameStyles.screen,
-                          solvedComputers[index] &&
-                            platformerGameStyles.solvedScreen,
-                          hackerAttack &&
-                            !solvedComputers[index] &&
-                            platformerGameStyles.hackedScreen,
-                        ]}
-                      >
-                        <View style={platformerGameStyles.screenContent} />
-                        <View style={platformerGameStyles.screenContent} />
-                        {solvedComputers[index] && (
-                          <View style={platformerGameStyles.checkmark}>
-                            <Text style={platformerGameStyles.checkmarkText}>
-                              ✓
-                            </Text>
-                          </View>
-                        )}
-                        {hackerAttack && !solvedComputers[index] && (
-                          <Text style={platformerGameStyles.hackerText}>!</Text>
-                        )}
-                      </View>
-                      <View style={platformerGameStyles.monitorStand} />
-                    </View>
-                    <View style={platformerGameStyles.keyboard}>
-                      {[...Array(3)].map((_, j) => (
-                        <View
-                          key={j}
-                          style={platformerGameStyles.keyboardRow}
-                        />
-                      ))}
-                    </View>
-                    <View style={platformerGameStyles.mouse} />
-                  </TouchableOpacity>
+                    index={index}
+                    isSolved={solvedComputers[index]}
+                    isUnderAttack={hackerAttack}
+                    onPress={handleComputerPress}
+                    position={
+                      getComputerPosition(index) as
+                        | 'topLeft'
+                        | 'topRight'
+                        | 'bottomLeft'
+                        | 'bottomRight'
+                    }
+                  />
                 ))}
               </View>
 
-              {/* Malware Threats with Pulse Animation */}
+              {/* Malware Threats */}
               {malwareThreats.map(
                 (threat, index) =>
                   !threat.eliminated && (
-                    <Animated.View
+                    <MalwareThreat
                       key={index}
-                      style={[
-                        platformerGameStyles.malwareThreat,
-                        {
-                          left: threat.x,
-                          top: threat.y,
-                          transform: [
-                            {
-                              scale: new Animated.Value(1).interpolate({
-                                inputRange: [0, 0.5, 1],
-                                outputRange: [1, 1.2, 1],
-                                extrapolate: 'clamp',
-                              }),
-                            },
-                          ],
-                        },
-                      ]}
-                    >
-                      <Text style={platformerGameStyles.malwareIcon}>
-                        {threat.type === 'virus'
-                          ? '🦠'
-                          : threat.type === 'trojan'
-                          ? '🐴'
-                          : threat.type === 'ransomware'
-                          ? '🔒'
-                          : '🐛'}
-                      </Text>
-                    </Animated.View>
+                      type={threat.type}
+                      position={{ x: threat.x, y: threat.y }}
+                    />
                   )
               )}
 
-              {/* Movable Engineer Character */}
-              <Animated.View
-                style={[
-                  platformerGameStyles.staticEngineer,
-                  {
-                    left: engineerPosition.left,
-                    top: engineerPosition.top,
-                  },
-                ]}
-              >
-                {/* Chair */}
-                <View style={platformerGameStyles.chair}>
-                  <View style={platformerGameStyles.chairBack} />
-                  <View style={platformerGameStyles.chairSeat} />
-                  <View style={platformerGameStyles.chairBase} />
-                  <View style={platformerGameStyles.chairWheels}>
-                    <View style={platformerGameStyles.wheel} />
-                    <View style={platformerGameStyles.wheel} />
-                    <View style={platformerGameStyles.wheel} />
-                  </View>
-                </View>
-
-                {/* Engineer - Sitting position */}
-                <View style={platformerGameStyles.engineerBody}>
-                  <View style={platformerGameStyles.head}>
-                    <View style={platformerGameStyles.hair} />
-                    <View style={platformerGameStyles.face}>
-                      <View style={platformerGameStyles.glasses} />
-                      <View style={platformerGameStyles.smile} />
-                    </View>
-                  </View>
-                  <View
-                    style={[
-                      platformerGameStyles.body,
-                      platformerGameStyles.sittingBody,
-                    ]}
-                  >
-                    <View style={platformerGameStyles.labCoat} />
-                    <View style={platformerGameStyles.badge} />
-                  </View>
-                  <View
-                    style={[
-                      platformerGameStyles.legs,
-                      platformerGameStyles.sittingLegs,
-                    ]}
-                  >
-                    <View
-                      style={[
-                        platformerGameStyles.leftLeg,
-                        platformerGameStyles.sittingLeg,
-                      ]}
-                    />
-                    <View
-                      style={[
-                        platformerGameStyles.rightLeg,
-                        platformerGameStyles.sittingLeg,
-                      ]}
-                    />
-                  </View>
-                </View>
-              </Animated.View>
+              {/* Engineer Character */}
+              <EngineerCharacter position={engineerPosition} />
             </View>
 
             {/* Right Section - Security Features */}
@@ -607,6 +481,7 @@ const PlatformerGame: React.FC = () => {
       {showTutorial && (
         <TutorialOverlay onClose={() => setShowTutorial(false)} />
       )}
+
       {/* Success Message */}
       {showSuccessMessage && (
         <View style={platformerGameStyles.successOverlay}>
@@ -623,40 +498,14 @@ const PlatformerGame: React.FC = () => {
           </View>
         </View>
       )}
+
       {/* Quiz Modal */}
-      <Modal visible={showModal} transparent={true} animationType="fade">
-        <View style={platformerGameStyles.modalOverlay}>
-          <View style={platformerGameStyles.modalContent}>
-            {activeQuiz !== null && (
-              <>
-                <Text style={platformerGameStyles.modalTitle}>
-                  Provocare de Securitate
-                </Text>
-                <Text style={platformerGameStyles.questionText}>
-                  {quizQuestions[activeQuiz % quizQuestions.length].question}
-                </Text>
-                {quizQuestions[activeQuiz % quizQuestions.length].options.map(
-                  (option, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={[
-                        platformerGameStyles.optionButton,
-                        { transform: [{ scale: 1 }] },
-                      ]}
-                      onPress={() => handleAnswer(index)}
-                      activeOpacity={0.7}
-                    >
-                      <Text style={platformerGameStyles.optionText}>
-                        {option}
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                )}
-              </>
-            )}
-          </View>
-        </View>
-      </Modal>
+      <QuizModal
+        visible={showModal}
+        activeQuiz={activeQuiz}
+        questions={quizQuestions}
+        onAnswer={handleAnswer}
+      />
 
       {/* Game Instructions */}
       <TouchableOpacity
@@ -665,6 +514,7 @@ const PlatformerGame: React.FC = () => {
       >
         <Text style={platformerGameStyles.helpButtonText}>?</Text>
       </TouchableOpacity>
+
       {/* Security Tip Popup */}
       {showTip && (
         <View style={platformerGameStyles.tipContainer}>

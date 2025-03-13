@@ -8,21 +8,18 @@ import {
   StatusBar,
 } from 'react-native';
 
-// Get screen dimensions
 const { width, height } = Dimensions.get('window');
 
-// Define movement constants
 const MOVEMENT_SPEED = 10;
-const TAB_BAR_HEIGHT = 49; // Standard tab bar height
+const TAB_BAR_HEIGHT = 49;
 const AVAILABLE_HEIGHT =
   height - TAB_BAR_HEIGHT - (StatusBar.currentHeight || 0);
 
-// Define boundary constants
 const BOUNDARY = {
   minX: 0,
-  maxX: width - 50, // Adjust based on engineer width
+  maxX: width - 50,
   minY: 0,
-  maxY: AVAILABLE_HEIGHT - 100, // Adjust based on engineer height
+  maxY: AVAILABLE_HEIGHT - 100,
 };
 
 interface MovementControllerProps {
