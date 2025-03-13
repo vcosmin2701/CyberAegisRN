@@ -22,6 +22,15 @@ import ComputerWorkstation from '@/components/platfomerComponents/ComputerWorkst
 import MalwareThreat from '@/components/platfomerComponents/MalwareThreat';
 import QuizModal from '@/components/platfomerComponents/QuizModal';
 import SecurityStatus from '@/components/platfomerComponents/SecurityStatus';
+import ProgressBar from '@/components/platfomerComponents/ProgressBar';
+import LevelTitle from '@/components/platfomerComponents/LevelTitle';
+import ScoreDisplay from '@/components/platfomerComponents/ScoreDisplay';
+import GridBackground from '@/components/platfomerComponents/GridBackground';
+import NavigationControls from '@/components/platfomerComponents/NavigationControls';
+import SecurityTip from '@/components/platfomerComponents/SecurityTip';
+import SuccessMessage from '@/components/platfomerComponents/SuccessMessage';
+import HelpButton from '@/components/platfomerComponents/HelpButton';
+import RightSection from '@/components/platfomerComponents/RightSection';
 
 // Get screen dimensions
 const { width, height } = Dimensions.get('window');
@@ -295,73 +304,29 @@ const PlatformerGame: React.FC = () => {
   return (
     <SafeAreaView style={platformerGameStyles.container}>
       <Stack.Screen options={{ headerShown: false }} />
-      {/* Back button */}
-      <TouchableOpacity
-        style={navigationStyles.backButton}
-        onPress={handleBackToLevels}
-      >
-        <Text style={navigationStyles.backButtonText}>← Back to Levels</Text>
-      </TouchableOpacity>
+
+      {/* Navigation Controls */}
+      <NavigationControls onBackPress={handleBackToLevels} />
+
       {/* Level title */}
-      <View style={navigationStyles.levelTitleContainer}>
-        <Text style={navigationStyles.levelTitle}>
-          Level 1: Cyber Security Basics
-        </Text>
-      </View>
+      <LevelTitle title="Level 1: Cyber Security Basics" />
+
       {/* Score Display */}
-      <View style={platformerGameStyles.scoreContainer}>
-        <Text style={platformerGameStyles.scoreText}>SCOR: {score}</Text>
-      </View>
-      {/* Progress Bar - Animated */}
-      <View style={platformerGameStyles.progressContainer}>
-        <Animated.View
-          style={[
-            platformerGameStyles.progressBar,
-            {
-              width: progressAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['0%', '100%'],
-              }),
-            },
-          ]}
-        />
-        <Text style={platformerGameStyles.progressText}>
-          {gameProgress}% Securizat
-        </Text>
-      </View>
+      <ScoreDisplay score={score} />
+
+      {/* Progress Bar */}
+      <ProgressBar
+        progress={gameProgress}
+        progressAnimation={progressAnimation}
+      />
+
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={true}
       >
         <View style={styles.labRoom}>
           {/* Lab Background with Grid */}
-          <View
-            style={[
-              platformerGameStyles.labBackground,
-              hackerAttack && platformerGameStyles.hackerAttackBackground,
-            ]}
-          >
-            <View style={platformerGameStyles.gridLines}>
-              {[...Array(10)].map((_, i) => (
-                <View
-                  key={`h${i}`}
-                  style={[
-                    platformerGameStyles.horizontalLine,
-                    { top: `${i * 10}%` },
-                  ]}
-                />
-              ))}
-              {[...Array(10)].map((_, i) => (
-                <View
-                  key={`v${i}`}
-                  style={[
-                    platformerGameStyles.verticalLine,
-                    { left: `${i * 10}%` },
-                  ]}
-                />
-              ))}
-            </View>
-          </View>
+          <GridBackground isUnderAttack={hackerAttack} />
 
           {/* Security Status Display */}
           <SecurityStatus
@@ -421,49 +386,9 @@ const PlatformerGame: React.FC = () => {
             </View>
 
             {/* Right Section - Security Features */}
-            <View style={platformerGameStyles.rightSection}>
-              {/* Security Monitors */}
-              <View style={platformerGameStyles.securityMonitors}>
-                <View style={platformerGameStyles.securityMonitor}>
-                  <View style={platformerGameStyles.monitorScreen}>
-                    <View style={platformerGameStyles.monitorGraph} />
-                  </View>
-                </View>
-                <View style={platformerGameStyles.securityMonitor}>
-                  <View style={platformerGameStyles.monitorScreen}>
-                    <View style={platformerGameStyles.monitorData} />
-                    <View style={platformerGameStyles.monitorData} />
-                    <View style={platformerGameStyles.monitorData} />
-                  </View>
-                </View>
-              </View>
-
-              {/* Security Features */}
-              <View style={platformerGameStyles.securityFeatures}>
-                <View style={platformerGameStyles.camera}>
-                  <View style={platformerGameStyles.cameraLens} />
-                  <View style={platformerGameStyles.cameraBody} />
-                </View>
-                <View style={platformerGameStyles.keypad}>
-                  {[...Array(9)].map((_, i) => (
-                    <View key={i} style={platformerGameStyles.keypadButton} />
-                  ))}
-                </View>
-              </View>
-
-              {/* Firewall Status */}
-              <View style={platformerGameStyles.firewallStatus}>
-                <Text style={platformerGameStyles.firewallLabel}>FIREWALL</Text>
-                <View
-                  style={[
-                    platformerGameStyles.firewallIndicator,
-                    solvedComputers.every((solved) => solved)
-                      ? platformerGameStyles.firewallActive
-                      : platformerGameStyles.firewallInactive,
-                  ]}
-                />
-              </View>
-            </View>
+            <RightSection
+              isFirewallActive={solvedComputers.every((solved) => solved)}
+            />
           </View>
 
           {/* Bottom Padding to ensure content is above tab bar */}
@@ -483,21 +408,7 @@ const PlatformerGame: React.FC = () => {
       )}
 
       {/* Success Message */}
-      {showSuccessMessage && (
-        <View style={platformerGameStyles.successOverlay}>
-          <View style={platformerGameStyles.successBox}>
-            <Text style={platformerGameStyles.successTitle}>
-              Securitate Restabilită!
-            </Text>
-            <Text style={platformerGameStyles.successText}>
-              Bravo! Ai securizat toate sistemele din laborator.
-            </Text>
-            <View style={platformerGameStyles.successIcon}>
-              <Text style={platformerGameStyles.successIconText}>✓</Text>
-            </View>
-          </View>
-        </View>
-      )}
+      <SuccessMessage visible={showSuccessMessage} />
 
       {/* Quiz Modal */}
       <QuizModal
@@ -508,21 +419,10 @@ const PlatformerGame: React.FC = () => {
       />
 
       {/* Game Instructions */}
-      <TouchableOpacity
-        style={platformerGameStyles.helpButton}
-        onPress={() => setShowTutorial(true)}
-      >
-        <Text style={platformerGameStyles.helpButtonText}>?</Text>
-      </TouchableOpacity>
+      <HelpButton onPress={() => setShowTutorial(true)} />
 
       {/* Security Tip Popup */}
-      {showTip && (
-        <View style={platformerGameStyles.tipContainer}>
-          <View style={platformerGameStyles.tipBox}>
-            <Text style={platformerGameStyles.tipText}>{currentTip}</Text>
-          </View>
-        </View>
-      )}
+      <SecurityTip tip={currentTip} visible={showTip} />
     </SafeAreaView>
   );
 };
@@ -531,6 +431,7 @@ export const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingBottom: TAB_BAR_HEIGHT + 20, // Add extra padding at bottom
+    marginTop: 80, // Add margin to avoid overlapping with the title and progress bar
   },
   labRoom: {
     flex: 1,
@@ -539,40 +440,6 @@ export const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: TAB_BAR_HEIGHT + 20, // Extra padding at the bottom
-  },
-});
-
-// Additional styles for navigation
-const navigationStyles = StyleSheet.create({
-  backButton: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    zIndex: 10,
-    padding: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 5,
-  },
-  backButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  levelTitleContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    zIndex: 5,
-  },
-  levelTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 20,
   },
 });
 
