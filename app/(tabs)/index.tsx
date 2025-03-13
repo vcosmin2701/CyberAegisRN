@@ -26,7 +26,7 @@ export default function HomeScreen() {
   };
 
   const handleStartGame = () => {
-    router.push('/(tabs)/PlatformerGame');
+    router.push('/(tabs)/LevelSelector');
   };
 
   const handleContinueLearning = () => {
@@ -96,10 +96,8 @@ export default function HomeScreen() {
             activeOpacity={0.7}
           >
             <View style={styles.mainGameContent}>
-              <Text style={styles.mainGameTitle}>🎮 Start Platformer Game</Text>
-              <Text style={styles.mainGameSubtitle}>
-                Begin Your Cyber Adventure
-              </Text>
+              <Text style={styles.mainGameTitle}>🎮 Platformer Game</Text>
+              <Text style={styles.mainGameSubtitle}>Choose Your Level</Text>
             </View>
           </TouchableOpacity>
 

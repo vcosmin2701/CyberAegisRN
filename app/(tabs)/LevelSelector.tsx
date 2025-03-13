@@ -1,173 +1,195 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
   Text,
+  StyleSheet,
   TouchableOpacity,
-  FlatList,
+  ScrollView,
   SafeAreaView,
-  Dimensions,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 
-// Get screen dimensions
-const { width } = Dimensions.get('window');
-
-// Define the Level interface
-interface Level {
-  id: string;
-  title: string;
-  description: string;
-  locked?: boolean;
-}
-
-// Sample levels data
-const levels: Level[] = [
+const levels = [
   {
-    id: '1',
-    title: 'Nivelul 1: Baze',
-    description: 'Navighează prin jocul platformer și îndepărtează amenințările malware.',
-    locked: false,
+    id: 1,
+    title: 'Level 1: Cyber Security Basics',
+    description: 'Learn the fundamentals of cyber security',
+    difficulty: 'Easy',
+    unlocked: true,
   },
   {
-    id: '2',
-    title: 'Nivelul 2: Apararea rețelei',
-    description: 'Protejează rețeaua ta de atacuri cyber.',
-    locked: true,
+    id: 2,
+    title: 'Level 2: Password Protection',
+    description: 'Master the art of creating secure passwords',
+    difficulty: 'Medium',
+    unlocked: false,
   },
   {
-    id: '3',
-    title: 'Nivelul 3: Protecția parolelor',
-    description: 'Învață cum să creezi și să gestionezi parolele securizate.',
-    locked: true,
+    id: 3,
+    title: 'Level 3: Network Defense',
+    description: 'Protect your network from cyber attacks',
+    difficulty: 'Hard',
+    unlocked: false,
+  },
+  {
+    id: 4,
+    title: 'Level 4: Advanced Security',
+    description: 'Advanced cyber security challenges',
+    difficulty: 'Expert',
+    unlocked: false,
   },
 ];
 
-const LevelSelector: React.FC = () => {
+export default function LevelSelector() {
   const router = useRouter();
 
-  const handleLevelSelect = (level: Level) => {
-    if (level.locked) {
-      // Show locked level message
-      return;
-    }
-    
-    // Navigate to the selected level
-    if (level.id === '1') {
-      // Use index-based navigation instead of path-based
-      router.navigate({
-        pathname: "/(tabs)/PlatformerGame"
-      });
+  const handleLevelSelect = (levelId: number) => {
+    if (levelId === 1) {
+      router.push('/(tabs)/PlatformerGame');
+    } else {
+      // For locked levels, you might want to show a message
+      console.log('This level is locked!');
     }
   };
 
-  const renderLevelItem = ({ item }: { item: Level }) => (
-    <TouchableOpacity
-      style={[
-        styles.levelCard,
-        item.locked ? styles.lockedLevel : styles.unlockedLevel,
-      ]}
-      onPress={() => handleLevelSelect(item)}
-      disabled={item.locked}
-    >
-      <View style={styles.levelContent}>
-        <Text style={styles.levelTitle}>{item.title}</Text>
-        <Text style={styles.levelDescription}>{item.description}</Text>
-        {item.locked && (
-          <View style={styles.lockedOverlay}>
-            <Text style={styles.lockedText}>🔒 Locked</Text>
-          </View>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-
   return (
     <SafeAreaView style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Nivele</Text>
-        <Text style={styles.headerSubtitle}>
-          Completează nivelele pentru a deveni un expert în securitatea informației!
-        </Text>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.backButtonText}>← Back</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Select Level</Text>
       </View>
 
-      <FlatList
-        data={levels}
-        renderItem={renderLevelItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.levelList}
-      />
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.levelsContainer}>
+          {levels.map((level) => (
+            <TouchableOpacity
+              key={level.id}
+              style={[styles.levelCard, !level.unlocked && styles.lockedLevel]}
+              onPress={() => handleLevelSelect(level.id)}
+              disabled={!level.unlocked}
+            >
+              <View style={styles.levelContent}>
+                <Text style={styles.levelTitle}>{level.title}</Text>
+                <Text style={styles.levelDescription}>{level.description}</Text>
+                <View style={styles.levelFooter}>
+                  <Text
+                    style={[
+                      styles.difficultyBadge,
+                      styles[
+                        level.difficulty.toLowerCase() as keyof typeof styles
+                      ],
+                    ]}
+                  >
+                    {level.difficulty}
+                  </Text>
+                  {!level.unlocked && (
+                    <Text style={styles.lockedText}>🔒 Locked</Text>
+                  )}
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f2f5',
+    backgroundColor: '#f5f5f5',
   },
   header: {
-    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
     backgroundColor: '#2c3e50',
   },
-  headerTitle: {
-    fontSize: 24,
+  backButton: {
+    padding: 8,
+  },
+  backButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  title: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 5,
+    marginLeft: 16,
   },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#ecf0f1',
+  scrollView: {
+    flex: 1,
   },
-  levelList: {
-    padding: 15,
+  levelsContainer: {
+    padding: 16,
   },
   levelCard: {
-    borderRadius: 10,
-    marginBottom: 15,
-    overflow: 'hidden',
-    elevation: 3,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    marginBottom: 16,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-  },
-  levelContent: {
-    padding: 20,
-    position: 'relative',
-  },
-  unlockedLevel: {
-    backgroundColor: '#3498db',
+    overflow: 'hidden',
   },
   lockedLevel: {
-    backgroundColor: '#7f8c8d',
+    opacity: 0.7,
+  },
+  levelContent: {
+    padding: 16,
   },
   levelTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#2c3e50',
     marginBottom: 8,
   },
   levelDescription: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: '#7f8c8d',
+    marginBottom: 12,
   },
-  lockedOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
+  levelFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  lockedText: {
-    color: 'white',
-    fontSize: 18,
+  difficultyBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    overflow: 'hidden',
+    fontSize: 12,
     fontWeight: 'bold',
   },
+  easy: {
+    backgroundColor: '#2ecc71',
+    color: 'white',
+  },
+  medium: {
+    backgroundColor: '#f1c40f',
+    color: 'white',
+  },
+  hard: {
+    backgroundColor: '#e74c3c',
+    color: 'white',
+  },
+  expert: {
+    backgroundColor: '#8e44ad',
+    color: 'white',
+  },
+  lockedText: {
+    fontSize: 14,
+    color: '#95a5a6',
+  },
 });
-
-export default LevelSelector; 

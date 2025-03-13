@@ -12,11 +12,12 @@ import {
   Vibration,
   Animated,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 import { platformerGameStyles } from '../styles/platformerGameStyle';
 import NetworkCables from '../../components/platfomerComponents/networkCables';
 import ServerLeft from '@/components/platfomerComponents/serverLeft';
 import TutorialOverlay from '@/components/platfomerComponents/tutorialOverlay';
+import MovementController from '@/components/platfomerComponents/MovementController';
 // import LottieView from 'lottie-react-native';
 
 // Get screen dimensions
@@ -100,9 +101,6 @@ const PlatformerGame: React.FC = () => {
     { x: 220, y: 120, eliminated: false, type: 'trojan' },
   ]);
   const [score, setScore] = useState(0);
-  const [movementDirection, setMovementDirection] = useState<string | null>(
-    null
-  );
   const [correctAnswersInARow, setCorrectAnswersInARow] = useState(0);
   const [showTip, setShowTip] = useState(false);
   const [currentTip, setCurrentTip] = useState('');
@@ -118,15 +116,6 @@ const PlatformerGame: React.FC = () => {
     'Ai grijă ce linkuri deschizi!',
   ];
 
-  // Add movement speed and boundaries
-  const MOVEMENT_SPEED = 10;
-  const BOUNDARY = {
-    minX: 0,
-    maxX: width - 50, // Adjust based on engineer width
-    minY: 0,
-    maxY: AVAILABLE_HEIGHT - 100, // Adjust based on engineer height
-  };
-
   // Animation timing
   useEffect(() => {
     // Simulate more frequent hacker attacks
@@ -140,17 +129,6 @@ const PlatformerGame: React.FC = () => {
       clearInterval(attackInterval);
     };
   }, [solvedComputers]);
-
-  // Add continuous movement when holding down arrow keys
-  useEffect(() => {
-    if (!movementDirection) return;
-
-    const moveInterval = setInterval(() => {
-      moveEngineer(movementDirection as 'up' | 'down' | 'left' | 'right');
-    }, 100);
-
-    return () => clearInterval(moveInterval);
-  }, [movementDirection]);
 
   // Check for malware elimination with improved feedback
   useEffect(() => {
@@ -286,59 +264,18 @@ const PlatformerGame: React.FC = () => {
     }
   };
 
-  // Add movement handler with press and release functions
-  const moveEngineer = (direction: 'up' | 'down' | 'left' | 'right') => {
-    setEngineerPosition((current) => {
-      let newPosition = { ...current };
-
-      switch (direction) {
-        case 'up':
-          newPosition.top = Math.max(
-            BOUNDARY.minY,
-            current.top - MOVEMENT_SPEED
-          );
-          break;
-        case 'down':
-          newPosition.top = Math.min(
-            BOUNDARY.maxY,
-            current.top + MOVEMENT_SPEED
-          );
-          break;
-        case 'left':
-          newPosition.left = Math.max(
-            BOUNDARY.minX,
-            current.left - MOVEMENT_SPEED
-          );
-          break;
-        case 'right':
-          newPosition.left = Math.min(
-            BOUNDARY.maxX,
-            current.left + MOVEMENT_SPEED
-          );
-          break;
-      }
-
-      return newPosition;
-    });
-  };
-
-  const handleDirectionPress = (
-    direction: 'up' | 'down' | 'left' | 'right'
-  ) => {
-    setMovementDirection(direction);
-    moveEngineer(direction);
-  };
-
-  const handleDirectionRelease = () => {
-    setMovementDirection(null);
-  };
-
   const handleBackToLevels = () => {
     router.back();
   };
 
+  // Handle position updates from the MovementController
+  const handlePositionChange = (newPosition: { left: number; top: number }) => {
+    setEngineerPosition(newPosition);
+  };
+
   return (
     <SafeAreaView style={platformerGameStyles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       {/* Back button */}
       <TouchableOpacity
         style={navigationStyles.backButton}
@@ -659,6 +596,13 @@ const PlatformerGame: React.FC = () => {
           <View style={styles.bottomPadding} />
         </View>
       </ScrollView>
+
+      {/* Movement Controller */}
+      <MovementController
+        initialPosition={engineerPosition}
+        onPositionChange={handlePositionChange}
+      />
+
       {/* Tutorial Overlay */}
       {showTutorial && (
         <TutorialOverlay onClose={() => setShowTutorial(false)} />
@@ -713,44 +657,7 @@ const PlatformerGame: React.FC = () => {
           </View>
         </View>
       </Modal>
-      {/* Control buttons at the bottom */}.{' '}
-      <View style={platformerGameStyles.controls}>
-        <View style={platformerGameStyles.controlRow}>
-          <TouchableOpacity
-            style={platformerGameStyles.controlButton}
-            onPressIn={() => handleDirectionPress('up')}
-            onPressOut={handleDirectionRelease}
-          >
-            <Text style={platformerGameStyles.controlButtonText}>↑</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={platformerGameStyles.controlRow}>
-          <TouchableOpacity
-            style={platformerGameStyles.controlButton}
-            onPressIn={() => handleDirectionPress('left')}
-            onPressOut={handleDirectionRelease}
-          >
-            <Text style={platformerGameStyles.controlButtonText}>←</Text>
-          </TouchableOpacity>
-          <View style={platformerGameStyles.controlButtonSpacer} />
-          <TouchableOpacity
-            style={platformerGameStyles.controlButton}
-            onPressIn={() => handleDirectionPress('right')}
-            onPressOut={handleDirectionRelease}
-          >
-            <Text style={platformerGameStyles.controlButtonText}>→</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={platformerGameStyles.controlRow}>
-          <TouchableOpacity
-            style={platformerGameStyles.controlButton}
-            onPressIn={() => handleDirectionPress('down')}
-            onPressOut={handleDirectionRelease}
-          >
-            <Text style={platformerGameStyles.controlButtonText}>↓</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+
       {/* Game Instructions */}
       <TouchableOpacity
         style={platformerGameStyles.helpButton}
