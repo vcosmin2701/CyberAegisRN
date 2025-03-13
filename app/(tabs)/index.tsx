@@ -25,6 +25,14 @@ export default function HomeScreen() {
     router.push('/profile');
   };
 
+  const handleStartGame = () => {
+    router.push('/(tabs)/PlatformerGame');
+  };
+
+  const handleContinueLearning = () => {
+    router.push('/(tabs)/subjects');
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -71,14 +79,22 @@ export default function HomeScreen() {
           <Text style={styles.progressText}>
             {userData.lessonProgress}% Complete
           </Text>
-          <TouchableOpacity style={styles.continueButton}>
+          <TouchableOpacity
+            style={styles.continueButton}
+            onPress={handleContinueLearning}
+            activeOpacity={0.7}
+          >
             <Text style={styles.continueButtonText}>Continue Learning</Text>
           </TouchableOpacity>
         </View>
 
         {/* Main Game Buttons */}
         <View style={styles.gameButtonsContainer}>
-          <TouchableOpacity style={styles.mainGameButton}>
+          <TouchableOpacity
+            style={styles.mainGameButton}
+            onPress={handleStartGame}
+            activeOpacity={0.7}
+          >
             <View style={styles.mainGameContent}>
               <Text style={styles.mainGameTitle}>🎮 Start Platformer Game</Text>
               <Text style={styles.mainGameSubtitle}>
@@ -87,14 +103,14 @@ export default function HomeScreen() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.mainGameButton}>
+          {/* <TouchableOpacity style={styles.mainGameButton}>
             <View style={styles.mainGameContent}>
               <Text style={styles.mainGameTitle}>🥼 Alex's Lab</Text>
               <Text style={styles.mainGameSubtitle}>
                 See the results of Alex's experiments
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Daily Reward Button */}
