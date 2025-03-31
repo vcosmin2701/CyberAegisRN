@@ -26,7 +26,7 @@ const scenarios: Scenario[] = [
     text: 'Ana a primit un mesaj răutăcios de la un coleg. Ce ar trebui să facă?',
     options: [
       {
-        text: 'Răspunde și se ceartă',
+        text: 'Răspunde cu aceeași monedă și se ceartă',
         isCorrect: false,
         feedback:
           'Răspunsul agresiv poate agrava situația. Este mai bine să păstrezi calmul și să ceri ajutor.',
@@ -36,14 +36,14 @@ const scenarios: Scenario[] = [
         text: 'Ignoră și blochează persoana',
         isCorrect: true,
         feedback:
-          'Excelent! Ignorarea și blocarea sunt acțiuni mature care protejează și evită escaladarea situației.',
+          'Excelent! Ignorarea și blocarea sunt reacții mature, care te protejează și previn escaladarea situației.',
         icon: 'shield',
       },
       {
-        text: 'Face captură și spune unui adult',
+        text: 'Face o captură de ecran și spune unui adult',
         isCorrect: true,
         feedback:
-          'Foarte bine! Documentarea și raportarea unui adult sunt pași importanți pentru a rezolva situația.',
+          'Foarte bine! Documentarea și raportarea către un adult sunt pași importanți pentru a rezolva situația.',
         icon: 'camera',
       },
     ],
@@ -53,7 +53,7 @@ const scenarios: Scenario[] = [
     text: 'Mihai primește o cerere de prietenie de la un necunoscut. Ce ar trebui să facă?',
     options: [
       {
-        text: 'Acceptă cererea pentru că are multe prieteni în comun',
+        text: 'Acceptă cererea pentru că are mulți prieteni în comun',
         isCorrect: false,
         feedback:
           'Numărul de prieteni în comun nu garantează siguranța. Este important să cunoști persoana înainte de a accepta.',
@@ -67,7 +67,7 @@ const scenarios: Scenario[] = [
         icon: 'ban',
       },
       {
-        text: 'Trimite un mesaj pentru a cunoaște persoana',
+        text: 'Trimite un mesaj ca să cunoască persoana',
         isCorrect: false,
         feedback:
           'Nu este recomandat să inițiezi conversații cu necunoscuți online.',
@@ -80,10 +80,10 @@ const scenarios: Scenario[] = [
     text: 'Elena primește un link de la un prieten care pare suspect. Ce ar trebui să facă?',
     options: [
       {
-        text: 'Deschide link-ul pentru că vine de la un prieten',
+        text: 'Deschide linkul pentru că vine de la un prieten',
         isCorrect: false,
         feedback:
-          'Chiar și link-urile de la prieteni pot fi periculoase dacă conturile lor au fost compromise.',
+          'Chiar și linkurile trimise de prieteni pot fi periculoase, dacă le-au fost compromise conturile.',
         icon: 'link',
       },
       {
@@ -94,16 +94,15 @@ const scenarios: Scenario[] = [
         icon: 'check-circle',
       },
       {
-        text: 'Trimite mai departe la alți prieteni',
+        text: 'Trimite mai departe altor prieteni',
         isCorrect: false,
         feedback:
-          'Nu trimite niciodată link-uri suspecte mai departe, chiar dacă vin de la prieteni.',
+          'Nu trimite niciodată linkuri suspecte mai departe, chiar dacă vin de la prieteni.',
         icon: 'share',
       },
     ],
   },
 ];
-
 export default function DetectiveGame() {
   const [currentScenario, setCurrentScenario] = useState(0);
   const [score, setScore] = useState(0);

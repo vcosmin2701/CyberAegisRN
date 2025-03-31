@@ -3,7 +3,7 @@
     "name": "CyberAegiesRN",
     "slug": "cyberaegiesrn",
     "sdkVersion": "52.0.0",
-    "platforms": ["ios"],
+    "platforms": ["ios", "android", "web"],
     "orientation": "portrait",
     "version": "1.0.0",
     "icon": "./assets/images/icon.png",
