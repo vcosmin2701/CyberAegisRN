@@ -1,228 +1,198 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Stack } from 'expo-router';
-import exploreScreenStyles from '../styles/explorescreenStyle';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Link } from 'expo-router';
+import { useState } from 'react';
 
 interface Module {
   id: string;
   title: string;
-  chapters: Chapter[];
-}
-
-interface Chapter {
-  id: string;
-  title: string;
-  description: string;
+  chapters: {
+    id: string;
+    title: string;
+    description: string;
+  }[];
 }
 
 const sampleModules: Module[] = [
   {
     id: '1',
-    title: 'Modulul I – Siguranta Online pentru Copii',
+    title: 'Capitolul I – Noțiuni de bază',
     chapters: [
       {
         id: '1-1',
-        title:
-          'Capitolul 1: Parolele - Supereroii care ne protejează conturile!',
-        description:
-          'Cum să fii în siguranță pe internet! Învață despre parole puternice.',
+        title: 'Lecția 1: Ce este securitatea cibernetică?',
+        description: 'Înțelege noțiunile fundamentale despre siguranța online.',
       },
       {
         id: '1-2',
-        title: 'Types of Cyber Threats',
-        description: 'Understanding different types of cyber threats',
+        title: 'Lecția 2: Cum ne protejăm calculatorul?',
+        description: 'Sfaturi practice pentru a-ți menține dispozitivul în siguranță.',
       },
       {
         id: '1-3',
-        title: 'Basic Security Principles',
-        description: 'Fundamental principles of information security',
+        title: 'Lecția 3: De ce nu dăm parola nimănui?',
+        description: 'Află importanța păstrării parolelor în siguranță.',
+      },
+      {
+        id: '1-4',
+        title: 'Lecția 4: Ce este o parolă bună?',
+        description: 'Cum creezi o parolă puternică și ușor de reținut.',
+      },
+      {
+        id: '1-5',
+        title: 'Lecția 5: Cum recunoaștem un mesaj ciudat?',
+        description: 'Semnale care indică mesaje suspecte sau periculoase.',
+      },
+      {
+        id: '1-6',
+        title: 'Lecția 6: De ce nu deschidem fișiere necunoscute?',
+        description: 'Pericolele ascunse în atașamentele necunoscute.',
+      },
+      {
+        id: '1-7',
+        title: 'Lecția 7: Ce este un antivirus?',
+        description: 'Rolul programelor antivirus și cum te protejează.',
+      },
+      {
+        id: '1-8',
+        title: 'Lecția 8: Joc: Ghiceste pericolul online!',
+        description: 'Un joc interactiv pentru identificarea amenințărilor.',
       },
     ],
   },
   {
     id: '2',
-    title: 'Introduction to Cybersecurity',
+    title: 'Capitolul II – Contextul actual',
     chapters: [
       {
         id: '2-1',
-        title: 'What is Cybersecurity?',
-        description: 'Learn the basics of cybersecurity and its importance',
+        title: 'Lecția 1: Ce este internetul?',
+        description: 'Descoperă cum funcționează internetul și cum ne conectează pe toți.',
       },
       {
         id: '2-2',
-        title: 'Types of Cyber Threats',
-        description: 'Understanding different types of cyber threats',
+        title: 'Lecția 2: Cum folosim internetul în siguranță?',
+        description: 'Învață regulile de bază pentru o experiență sigură online.',
       },
       {
         id: '2-3',
-        title: 'Basic Security Principles',
-        description: 'Fundamental principles of information security',
-      },
-    ],
-  },
-  {
-    id: '3',
-    title: 'Network Security',
-    chapters: [
-      {
-        id: '3-1',
-        title: 'Network Fundamentals',
-        description: 'Understanding network basics and protocols',
+        title: 'Lecția 3: De ce este important să fim atenți online?',
+        description: 'Înțelege riscurile și responsabilitățile în mediul online.',
       },
       {
-        id: '3-2',
-        title: 'Firewalls and IDS',
-        description: 'Network security devices and their functions',
+        id: '2-4',
+        title: 'Lecția 4: Ce este o aplicație?',
+        description: 'Află ce sunt aplicațiile și cum să le folosești în siguranță.',
+      },
+      {
+        id: '2-5',
+        title: 'Lecția 5: Ce este o rețea?',
+        description: 'Descoperă cum funcționează rețelele de calculatoare.',
+      },
+      {
+        id: '2-6',
+        title: 'Lecția 6: Cine sunt oamenii răi online?',
+        description: 'Învață să recunoști și să te ferești de pericolele online.',
+      },
+      {
+        id: '2-7',
+        title: 'Lecția 7: Cum ne pot ajuta părinții să fim protejați?',
+        description: 'Importanța supravegherii și ajutorului părintesc în mediul online.',
+      },
+      {
+        id: '2-8',
+        title: 'Lecția 8: Poveste: Aventurile lui Andrei pe internet',
+        description: 'O poveste educativă despre siguranța online.',
       },
     ],
   },
 ];
 
 export default function SubjectsScreen() {
-  const router = useRouter();
-  const navigation = useNavigation();
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
-
-  useEffect(() => {
-    const lockOrientation = async () => {
-      await ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-      );
-    };
-    lockOrientation();
-
-    const unsubscribe = navigation.addListener('blur', () => {
-      ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.PORTRAIT_UP
-      );
-    });
-
-    return () => {
-      unsubscribe();
-      ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.PORTRAIT_UP
-      );
-    };
-  }, [navigation]);
 
   const toggleModule = (moduleId: string) => {
     setExpandedModule(expandedModule === moduleId ? null : moduleId);
   };
 
-  const renderChapter = ({ item }: { item: Chapter }) => (
-    <TouchableOpacity
-      style={styles.chapterItem}
-      onPress={() => {
-        router.push({
-          pathname: '/lessonsComponent/ChapterContent',
-          params: {
-            id: item.id,
-            title: item.title,
-            description: item.description,
-          },
-        } as any);
-      }}
-    >
-      <Text style={styles.chapterTitle}>{item.title}</Text>
-      <Text style={styles.chapterDescription}>{item.description}</Text>
-    </TouchableOpacity>
-  );
-
-  const renderModule = ({ item }: { item: Module }) => (
-    <View style={styles.moduleContainer}>
-      <TouchableOpacity
-        style={styles.moduleHeader}
-        onPress={() => toggleModule(item.id)}
-      >
-        <Text style={styles.moduleTitle}>{item.title}</Text>
-        <Text style={styles.moduleIndicator}>
-          {expandedModule === item.id ? '▼' : '▶'}
-        </Text>
-      </TouchableOpacity>
-      {expandedModule === item.id && (
-        <FlatList
-          data={item.chapters}
-          renderItem={renderChapter}
-          keyExtractor={(chapter) => chapter.id}
-          style={styles.chaptersList}
-        />
-      )}
-    </View>
-  );
-
   return (
-    <>
-      <Stack.Screen options={{ headerShown: false }} />
-      <ScrollView style={exploreScreenStyles.container}>
-        <View style={exploreScreenStyles.content}>
-          <Text style={exploreScreenStyles.title}>Learning Modules</Text>
-          <FlatList
-            data={sampleModules}
-            renderItem={renderModule}
-            keyExtractor={(module) => module.id}
-            style={styles.modulesList}
-          />
+    <ScrollView style={styles.container}>
+      {sampleModules.map((module) => (
+        <View key={module.id} style={styles.moduleContainer}>
+          <TouchableOpacity 
+            style={styles.moduleButton}
+            onPress={() => toggleModule(module.id)}
+          >
+            <Text style={styles.moduleTitle}>{module.title}</Text>
+          </TouchableOpacity>
+          
+          {expandedModule === module.id && (
+            <View style={styles.chaptersContainer}>
+              {module.chapters.map((chapter) => (
+                <Link
+                  key={chapter.id}
+                  href={{
+                    pathname: "/lessonsComponent/ChapterContent",
+                    params: { 
+                      id: chapter.id,
+                      title: chapter.title,
+                      description: chapter.description
+                    }
+                  }}
+                  asChild
+                >
+                  <TouchableOpacity style={styles.chapterButton}>
+                    <Text style={styles.chapterTitle}>{chapter.title}</Text>
+                    <Text style={styles.chapterDescription}>{chapter.description}</Text>
+                  </TouchableOpacity>
+                </Link>
+              ))}
+            </View>
+          )}
         </View>
-      </ScrollView>
-    </>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  modulesList: {
+  container: {
     flex: 1,
+    padding: 16,
+    backgroundColor: '#f5f5f5',
   },
   moduleContainer: {
-    backgroundColor: '#fff',
-    marginHorizontal: 16,
-    marginBottom: 8,
+    marginBottom: 16,
+  },
+  moduleButton: {
+    backgroundColor: '#2c3e50',
+    padding: 16,
     borderRadius: 8,
+    marginBottom: 8,
+  },
+  moduleTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  chaptersContainer: {
+    marginLeft: 16,
+  },
+  chapterButton: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 8,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  moduleHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  moduleTitle: {
+  chapterTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
-  },
-  moduleIndicator: {
-    fontSize: 16,
-    color: '#666',
-  },
-  chaptersList: {
-    backgroundColor: '#f9f9f9',
-  },
-  chapterItem: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  chapterTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#444',
     marginBottom: 4,
+    color: '#2c3e50',
   },
   chapterDescription: {
     fontSize: 14,

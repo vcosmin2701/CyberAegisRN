@@ -69,5 +69,10 @@ export const styles = StyleSheet.create({
       height: '100%',
       resizeMode: 'contain',
     },
+    sectionTextWrapper: {
+      marginBottom: 8,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
 });
   
