@@ -10,6 +10,7 @@ import {
   StatusBar,
   Vibration,
   Animated,
+  Modal,
 } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
 import { platformerGameStyles } from '../styles/platformerGameStyle';
@@ -45,43 +46,349 @@ interface QuizQuestion {
   correctAnswer: number;
 }
 
-const quizQuestions: QuizQuestion[] = [
+// All available quiz questions
+const allQuizQuestions: QuizQuestion[] = [
   {
-    question: 'Ce trebuie să faci când primești un mesaj de la un străin?',
+    question: 'Ce înseamnă securitatea cibernetică?',
     options: [
-      'Deschid mesajul',
-      'Spun unui adult',
-      'Răspund imediat',
-      'Dau click pe link',
+      'Să instalezi multe jocuri gratuite',
+      'Să te conectezi la orice rețea Wi-Fi',
+      'Să te protejezi când folosești internetul',
+      'Să postezi poze cu prietenii'
     ],
-    correctAnswer: 1,
+    correctAnswer: 2
   },
   {
-    question: 'Care este o parolă bună?',
-    options: ['123456', 'numele meu', 'Fl0@re!Alb@stră', 'parola'],
-    correctAnswer: 2,
-  },
-  {
-    question: 'Ce faci când folosești internetul?',
+    question: 'De ce este important să nu acceptăm prietenii online de la străini?',
     options: [
-      'Dau informații personale',
-      'Vorbesc doar cu prieteni',
-      'Descărc orice joc',
-      'Deschid toate emailurile',
+      'Pentru că pot trimite invitații neinteresante',
+      'Pentru că îți pot trimite temele',
+      'Pentru că pot fi persoane rău intenționate',
+      'Pentru că nu știu să scrie corect'
     ],
-    correctAnswer: 1,
+    correctAnswer: 2
   },
   {
-    question: 'Cum protejezi tableta sau telefonul?',
+    question: 'Ce comportament nu este potrivit pe internet?',
     options: [
-      'O las oriunde',
-      'Folosesc o parolă',
-      'O împrumut oricui',
-      'Nu am grijă de ea',
+      'Să comentezi frumos la poze',
+      'Să postezi lucruri despre alți colegi care i-ar putea supăra',
+      'Să ceri ajutorul unui adult',
+      'Să folosești emoji-uri'
     ],
-    correctAnswer: 1,
+    correctAnswer: 1
   },
+  {
+    question: 'Ce trebuie să faci dacă primești un mesaj care te sperie?',
+    options: [
+      'Îl închizi și uiți de el',
+      'Îl trimiți colegului tău',
+      'Îl postezi pe rețele sociale',
+      'Îl arăți imediat unui adult'
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: 'Ce reprezintă datele personale online, cum ar fi poze și parole?',
+    options: [
+      'Fișiere neimportante',
+      'Mesaje automate',
+      'Informații valoroase ce trebuie protejate',
+      'Glume amuzante pentru prieteni'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'De ce e important să verificăm un site cu un adult dacă pare ciudat?',
+    options: [
+      'Pentru a-l salva în calculator',
+      'Pentru că adulții pot citi mai repede',
+      'Pentru a ne asigura că nu e periculos',
+      'Pentru a găsi jocuri noi'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Care este rolul unui antivirus?',
+    options: [
+      'Să decoreze calculatorul',
+      'Să blocheze fișiere periculoase și viruși',
+      'Să îți creeze teme automat',
+      'Să mărească volumul sunetului'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'De ce trebuie să faci actualizările calculatorului?',
+    options: [
+      'Pentru a avea acces la jocuri noi',
+      'Pentru a schimba culoarea tastelor',
+      'Pentru a menține calculatorul sigur și rapid',
+      'Pentru a șterge aplicațiile vechi'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce pericol poate aduce un stick USB necunoscut?',
+    options: [
+      'Poate conține muzică neplăcută',
+      'Poate aduce viruși în calculator',
+      'Poate șterge parola Wi-Fi',
+      'Poate bloca ecranul'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'Ce trebuie să faci înainte de a instala un joc de pe un site necunoscut?',
+    options: [
+      'Să-l descarci cât mai repede',
+      'Să îl trimiți prietenilor',
+      'Să întrebi un adult dacă este sigur',
+      'Să-l deschizi și să vezi ce e'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce rol are parola la pornirea calculatorului?',
+    options: [
+      'Să pornească mai repede',
+      'Să asculți muzică mai ușor',
+      'Să împiedice accesul altora fără permisiune',
+      'Să afișeze un mesaj de bun venit'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'De ce NU e bine să amâni actualizările sistemului?',
+    options: [
+      'Pentru că ocupă spațiu',
+      'Pentru că opresc sunetul',
+      'Pentru că te expun la riscuri de securitate',
+      'Pentru că fac calculatorul mai lent'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce se poate întâmpla dacă cineva îți află parola?',
+    options: [
+      'Poate posta lucruri în numele tău sau șterge date',
+      'Primește teme în locul tău',
+      'Îți trimite flori',
+      'Îți trimite felicitări'
+    ],
+    correctAnswer: 0
+  },
+  {
+    question: 'Cui avem voie să spunem parola?',
+    options: [
+      'Celui mai bun coleg',
+      'Oricui pare prietenos',
+      'Doar părinților',
+      'Oricărui profesor'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'De ce NU trebuie să scriem parola pe bilețele?',
+    options: [
+      'Pentru că ocupă spațiu',
+      'Pentru că le poate găsi altcineva',
+      'Pentru că hârtia se poate pierde',
+      'Pentru că e prea greu de citit'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'Ce trebuie să faci dacă primești un mesaj în care ți se cere parola?',
+    options: [
+      'O trimiți rapid',
+      'O ignori și nu spui nimănui',
+      'O spui părinților și NU o trimiți',
+      'O scrii într-un caiet la școală'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'De ce nu e bine să spui parola nici măcar unui prieten apropiat?',
+    options: [
+      'Pentru că o poate uita',
+      'Pentru că ar putea să o spună altcuiva',
+      'Pentru că nu are calculator',
+      'Pentru că nu știe să o folosească'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'Cum ar trebui să reacționezi dacă cineva pretinde că este administratorul unui joc și cere parola?',
+    options: [
+      'Să te grăbești să i-o dai',
+      'Să verifici pe internet cine este',
+      'Să o spui doar dacă ai încredere',
+      'Să nu o spui și să anunți un adult'
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: 'Cum trebuie să fie o parolă sigură?',
+    options: [
+      'Scurtă și ușor de scris',
+      'Cu litere mari, mici, cifre și simboluri',
+      'Doar cu numele tău',
+      'Formată din cuvinte simple'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'De ce NU este recomandat să folosești data de naștere în parolă?',
+    options: [
+      'Pentru că e greu de scris',
+      'Pentru că nu are simboluri',
+      'Pentru că e ușor de ghicit',
+      'Pentru că nu e în engleză'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce exemplu de parolă este considerat slab în lecție?',
+    options: [
+      'Pisica!2024',
+      'Ana!Joc23',
+      '123456',
+      'Verde8@Copac'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce truc este oferit în lecție pentru a crea o parolă ușor de ținut minte?',
+    options: [
+      'Să o scrii pe mână',
+      'Să alegi un cuvânt preferat',
+      'Să folosești o propoziție cunoscută',
+      'Să o înregistrezi audio'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Cât de des este recomandat să schimbi parola?',
+    options: [
+      'La fiecare 2-3 luni',
+      'O dată pe an',
+      'Doar dacă o uiți',
+      'Niciodată'
+    ],
+    correctAnswer: 0
+  },
+  {
+    question: 'De ce este important ca parola să aibă și simboluri speciale?',
+    options: [
+      'Pentru că arată mai bine',
+      'Pentru că simbolurile o fac mai greu de spart',
+      'Pentru că nu sunt recunoscute de roboți',
+      'Pentru că ajută la sunet'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'Ce metodă poate fi folosită pentru a verifica dacă o parolă este sigură?',
+    options: [
+      'Să o întrebi pe colega ta',
+      'Să vezi dacă o ține minte fratele tău',
+      'Să folosești un generator de parole sau un adult',
+      'Să o scrii pe telefon'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce NU este o parolă bună?',
+    options: [
+      'Ana2024Joc!',
+      'Pisica123',
+      '@VerdeMic2023',
+      'AjR@2024!'
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: 'Care este un avantaj al schimbării regulate a parolei?',
+    options: [
+      'Nu mai trebuie să o ții minte',
+      'Poți folosi cuvinte mai scurte',
+      'Eviți ca cineva să o folosească pe termen lung',
+      'Parola rămâne aceeași, dar mai frumoasă'
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: 'Ce caracteristică are o parolă memorabilă dar sigură?',
+    options: [
+      'Este creată dintr-o frază ușor de reținut',
+      'Este scurtă',
+      'Are doar cifre',
+      'Este scrisă în caiet'
+    ],
+    correctAnswer: 0
+  },
+  {
+    question: 'Ce combinație este cel mai des recomandată într-o parolă?',
+    options: [
+      'Cifre + litere mari',
+      'Doar simboluri',
+      'Litere mici + cifre',
+      'Litere mari, mici, cifre și simboluri'
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: 'De ce NU trebuie să folosești numele tău în parolă?',
+    options: [
+      'Pentru că este greu de tastat',
+      'Pentru că poate fi ușor de ghicit de către alții',
+      'Pentru că se uită',
+      'Pentru că nu e unic'
+    ],
+    correctAnswer: 1
+  }
 ];
+
+// Function to get 4 random questions
+function getRandomQuestions(): QuizQuestion[] {
+  const shuffled = [...allQuizQuestions].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, 4);
+}
+
+// Feedback explanations for each question
+const questionFeedback: Record<number, string> = {
+  0: "Securitatea cibernetică înseamnă protejarea ta când folosești internetul. Nu înseamnă să instalezi jocuri gratuite sau să te conectezi la orice rețea Wi-Fi.",
+  1: "Nu ar trebui să acceptăm prietenii online de la străini pentru că pot fi persoane rău intenționate care ar putea să ne facă rău.",
+  2: "Nu este potrivit să postezi lucruri despre alți colegi care i-ar putea supăra. Este important să fim respectuoși online.",
+  3: "Când primești un mesaj care te sperie, ar trebui să-l arăți imediat unui adult care te poate ajuta.",
+  4: "Datele personale online, cum ar fi poze și parole, sunt informații valoroase ce trebuie protejate, nu fișiere neimportante.",
+  5: "Este important să verificăm un site cu un adult dacă pare ciudat pentru a ne asigura că nu e periculos.",
+  6: "Rolul unui antivirus este să blocheze fișiere periculoase și viruși, nu să decoreze calculatorul.",
+  7: "Trebuie să faci actualizările calculatorului pentru a menține calculatorul sigur și rapid, nu doar pentru a avea acces la jocuri noi.",
+  8: "Un stick USB necunoscut poate aduce viruși în calculator, deci trebuie să fim atenți.",
+  9: "Înainte de a instala un joc de pe un site necunoscut, trebuie să întrebi un adult dacă este sigur.",
+  10: "Parola la pornirea calculatorului are rolul de a împiedica accesul altora fără permisiune, nu de a porni mai repede.",
+  11: "Nu e bine să amâni actualizările sistemului pentru că te expun la riscuri de securitate.",
+  12: "Dacă cineva îți află parola, poate posta lucruri în numele tău sau șterge date.",
+  13: "Avem voie să spunem parola doar părinților, nu colegilor sau oricui pare prietenos.",
+  14: "Nu trebuie să scriem parola pe bilețele pentru că le poate găsi altcineva.",
+  15: "Dacă primești un mesaj în care ți se cere parola, trebuie să o spui părinților și NU să o trimiți.",
+  16: "Nu e bine să spui parola nici măcar unui prieten apropiat pentru că ar putea să o spună altcuiva.",
+  17: "Dacă cineva pretinde că este administratorul unui joc și cere parola, trebuie să nu o spui și să anunți un adult.",
+  18: "O parolă sigură trebuie să fie cu litere mari, mici, cifre și simboluri, nu scurtă și ușor de scris.",
+  19: "Nu este recomandat să folosești data de naștere în parolă pentru că e ușor de ghicit.",
+  20: "Parola '123456' este considerată slabă în lecție pentru că este prea simplă și ușor de ghicit.",
+  21: "Un truc pentru a crea o parolă ușor de ținut minte este să folosești o propoziție cunoscută.",
+  22: "Este recomandat să schimbi parola la fiecare 2-3 luni, nu o dată pe an sau niciodată.",
+  23: "Este important ca parola să aibă și simboluri speciale pentru că simbolurile o fac mai greu de spart.",
+  24: "Pentru a verifica dacă o parolă este sigură, poți folosi un generator de parole sau un adult.",
+  25: "Parola 'Pisica123' nu este o parolă bună pentru că nu conține simboluri speciale.",
+  26: "Un avantaj al schimbării regulate a parolei este că eviți ca cineva să o folosească pe termen lung.",
+  27: "O parolă memorabilă dar sigură este creată dintr-o frază ușor de reținut.",
+  28: "Cea mai des recomandată combinație într-o parolă este litere mari, mici, cifre și simboluri.",
+  29: "Nu trebuie să folosești numele tău în parolă pentru că poate fi ușor de ghicit de către alții."
+};
 
 const PlatformerGame: React.FC = () => {
   const router = useRouter();
@@ -117,6 +424,11 @@ const PlatformerGame: React.FC = () => {
   const [showTip, setShowTip] = useState(false);
   const [currentTip, setCurrentTip] = useState('');
   const [progressAnimation] = useState(new Animated.Value(0));
+  const [currentQuizQuestions, setCurrentQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [failedAttempts, setFailedAttempts] = useState<Record<number, number>>({});
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [currentFeedback, setCurrentFeedback] = useState('');
+  const [failedQuestionIndex, setFailedQuestionIndex] = useState<number | null>(null);
 
   // Security tips in Romanian
   const securityTips = [
@@ -127,6 +439,11 @@ const PlatformerGame: React.FC = () => {
     'Nu da informații personale pe internet.',
     'Ai grijă ce linkuri deschizi!',
   ];
+
+  // Initialize random questions when component mounts
+  useEffect(() => {
+    setCurrentQuizQuestions(getRandomQuestions());
+  }, []);
 
   // Animation timing
   useEffect(() => {
@@ -208,13 +525,21 @@ const PlatformerGame: React.FC = () => {
   const handleAnswer = (answerIndex: number) => {
     if (activeQuiz !== null) {
       // Make sure we don't go out of bounds with the quiz questions
-      const questionIndex = activeQuiz % quizQuestions.length;
-      const question = quizQuestions[questionIndex];
+      const questionIndex = activeQuiz % currentQuizQuestions.length;
+      const question = currentQuizQuestions[questionIndex];
+      
+      // Check if this is a retry after a failed attempt
+      const isRetry = failedAttempts[activeQuiz] === 1;
 
       if (answerIndex === question.correctAnswer) {
         const newSolvedComputers = [...solvedComputers];
         newSolvedComputers[activeQuiz] = true;
         setSolvedComputers(newSolvedComputers);
+
+        // Reset failed attempts for this computer
+        const newFailedAttempts = { ...failedAttempts };
+        delete newFailedAttempts[activeQuiz];
+        setFailedAttempts(newFailedAttempts);
 
         // Increment correct answers counter
         setCorrectAnswersInARow((prev) => prev + 1);
@@ -261,22 +586,57 @@ const PlatformerGame: React.FC = () => {
         setCurrentTip('Excelent! Ai rezolvat provocarea!');
         setShowTip(true);
         setTimeout(() => setShowTip(false), 3000);
+        
+        setShowModal(false);
+        setActiveQuiz(null);
       } else {
-        // Wrong answer feedback
+        // Wrong answer handling
         Vibration.vibrate(200);
-        setCorrectAnswersInARow(0);
-
-        // Show hint
-        setCurrentTip('Încearcă din nou! Gândește-te la securitate.');
-        setShowTip(true);
-        setTimeout(() => setShowTip(false), 3000);
+        
+        // Check if this is the first or second attempt
+        if (!isRetry) {
+          // First attempt - give a second chance
+          const newFailedAttempts = { ...failedAttempts, [activeQuiz]: 1 };
+          setFailedAttempts(newFailedAttempts);
+          
+          // Show hint for retry
+          setCurrentTip('Încearcă din nou! Ai încă o șansă.');
+          setShowTip(true);
+          setTimeout(() => setShowTip(false), 3000);
+        } else {
+          // Second failed attempt - show feedback and reset
+          setCorrectAnswersInARow(0);
+          
+          // Find the question index in the allQuizQuestions array
+          const allQuestionsIndex = allQuizQuestions.findIndex(
+            q => q.question === question.question
+          );
+          
+          // Set feedback and show feedback modal
+          setCurrentFeedback(questionFeedback[allQuestionsIndex] || "Răspunsul corect era: " + question.options[question.correctAnswer]);
+          setFailedQuestionIndex(activeQuiz);
+          setShowFeedback(true);
+          
+          // Reset failed attempts for this computer
+          const newFailedAttempts = { ...failedAttempts };
+          delete newFailedAttempts[activeQuiz];
+          setFailedAttempts(newFailedAttempts);
+          
+          setShowModal(false);
+        }
       }
-      setShowModal(false);
-      setActiveQuiz(null);
     }
   };
 
+  const handleRetry = () => {
+    setShowFeedback(false);
+    setFailedQuestionIndex(null);
+    setShowModal(true);
+  };
+
   const handleBackToLevels = () => {
+    // Generate new random questions when leaving the level
+    setCurrentQuizQuestions(getRandomQuestions());
     router.back();
   };
 
@@ -414,9 +774,36 @@ const PlatformerGame: React.FC = () => {
       <QuizModal
         visible={showModal}
         activeQuiz={activeQuiz}
-        questions={quizQuestions}
+        questions={currentQuizQuestions}
         onAnswer={handleAnswer}
+        isRetry={activeQuiz !== null ? failedAttempts[activeQuiz] === 1 : false}
       />
+
+      {/* Feedback Modal */}
+      <Modal
+        visible={showFeedback}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={platformerGameStyles.modalOverlay}>
+          <View style={platformerGameStyles.modalContent}>
+            <Text style={platformerGameStyles.modalTitle}>
+              Feedback
+            </Text>
+            <Text style={platformerGameStyles.feedbackText}>
+              {currentFeedback}
+            </Text>
+            <TouchableOpacity
+              style={platformerGameStyles.retryButton}
+              onPress={handleRetry}
+            >
+              <Text style={platformerGameStyles.retryButtonText}>
+                Încearcă din nou
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Game Instructions */}
       <HelpButton onPress={() => setShowTutorial(true)} />
