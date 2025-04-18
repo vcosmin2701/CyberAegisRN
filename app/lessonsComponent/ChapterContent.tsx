@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,14 @@ import {
   Image,
   ImageSourcePropType,
   Platform,
+  FlatList,
+  Dimensions,
+  useWindowDimensions,
 } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useNavigation } from '@react-navigation/native';
+import { styles } from '../styles/chapterContentStyles';
 
 interface Section {
   title: string;
@@ -295,6 +299,8 @@ export default function ChapterContent() {
   const { id, title, description } = params;
   const chapterId = id as string;
   const navigation = useNavigation();
+  const { width, height } = useWindowDimensions();
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
 
   useEffect(() => {
     let isMounted = true;
@@ -312,21 +318,29 @@ export default function ChapterContent() {
     }
 
     // Initial orientation setup
-    setOrientation(ScreenOrientation.OrientationLock.LANDSCAPE);
+    setOrientation(ScreenOrientation.OrientationLock.PORTRAIT);
 
     // Navigation listeners
     const unsubscribeFocus = navigation.addListener('focus', () => {
-      setOrientation(ScreenOrientation.OrientationLock.LANDSCAPE);
+      setOrientation(ScreenOrientation.OrientationLock.PORTRAIT);
     });
 
     const unsubscribeBlur = navigation.addListener('blur', () => {
       setOrientation(ScreenOrientation.OrientationLock.PORTRAIT);
     });
 
+    // Handle dimension changes
+    const dimensionChangeListener = Dimensions.addEventListener('change', ({ window }) => {
+      if (isMounted) {
+        setDimensions(window);
+      }
+    });
+
     return () => {
       isMounted = false;
       unsubscribeFocus();
       unsubscribeBlur();
+      dimensionChangeListener.remove();
       setOrientation(ScreenOrientation.OrientationLock.PORTRAIT);
     };
   }, [navigation]);
@@ -338,99 +352,38 @@ export default function ChapterContent() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <ScrollView style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.title}>{title as string}</Text>
-          <Text style={styles.description}>{description as string}</Text>
-
-          {chapterContent ? (
-            // Display structured content if available
-            chapterContent.sections.map((section, index) => (
-              <View key={index} style={styles.section}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-                {section.content.map((paragraph, pIndex) => (
-                  <Text key={pIndex} style={styles.sectionText}>
-                    {paragraph}
-                  </Text>
-                ))}
-                {section.image && (
-                  <View style={styles.imageContainer}>
-                    <Image
-                      source={section.image}
-                      style={styles.sectionImage}
-                      resizeMode="contain"
-                    />
-                  </View>
-                )}
-              </View>
-            ))
-          ) : (
-            // Default content if no specific content is available
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Content</Text>
-              <Text style={styles.sectionText}>
-                This is where you can add the actual content for each chapter.
-                You can include text, images, videos, or interactive elements.
+      <FlatList
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        data={chapterContent ? chapterContent.sections : [{ title: 'Content', content: ['This is where you can add the actual content for each chapter. You can include text, images, videos, or interactive elements.'] }]}
+        keyExtractor={(item, index) => index.toString()}
+        ListHeaderComponent={() => (
+          <>
+            <Text style={styles.title}>{title as string}</Text>
+            <Text style={styles.description}>{description as string}</Text>
+          </>
+        )}
+        renderItem={({ item }) => (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{item.title}</Text>
+            {item.content.map((paragraph, pIndex) => (
+              <Text key={pIndex} style={styles.sectionText}>
+                {paragraph}
               </Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
+            ))}
+            {item.image && (
+              <View style={styles.imageContainer}>
+                <Image
+                  source={item.image}
+                  style={styles.sectionImage}
+                  resizeMode="contain"
+                />
+              </View>
+            )}
+          </View>
+        )}
+      />
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 24,
-  },
-  section: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#444',
-    marginBottom: 12,
-  },
-  sectionText: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 24,
-    marginBottom: 8,
-  },
-  imageContainer: {
-    width: '100%',
-    height: 250,
-    marginVertical: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sectionImage: {
-    width: '100%',
-    height: '100%',
-  },
-});
