@@ -13,6 +13,7 @@ interface QuizModalProps {
   activeQuiz: number | null;
   questions: QuizQuestion[];
   onAnswer: (answerIndex: number) => void;
+  isRetry?: boolean;
 }
 
 const QuizModal: React.FC<QuizModalProps> = ({

@@ -684,7 +684,7 @@ const PlatformerGame: React.FC = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={true}
       >
-        <View style={styles.labRoom}>
+        <View style={styles.mainContent}>
           {/* Lab Background with Grid */}
           <GridBackground isUnderAttack={hackerAttack} />
 
@@ -785,19 +785,19 @@ const PlatformerGame: React.FC = () => {
         transparent={true}
         animationType="fade"
       >
-        <View style={platformerGameStyles.modalOverlay}>
-          <View style={platformerGameStyles.modalContent}>
-            <Text style={platformerGameStyles.modalTitle}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>
               Feedback
             </Text>
-            <Text style={platformerGameStyles.feedbackText}>
+            <Text style={styles.feedbackText}>
               {currentFeedback}
             </Text>
             <TouchableOpacity
-              style={platformerGameStyles.retryButton}
+              style={styles.retryButton}
               onPress={handleRetry}
             >
-              <Text style={platformerGameStyles.retryButtonText}>
+              <Text style={styles.retryButtonText}>
                 Încearcă din nou
               </Text>
             </TouchableOpacity>
@@ -814,16 +814,87 @@ const PlatformerGame: React.FC = () => {
   );
 };
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: TAB_BAR_HEIGHT + 20, // Add extra padding at bottom
-    marginTop: 80, // Add margin to avoid overlapping with the title and progress bar
   },
-  labRoom: {
+  mainContent: {
     flex: 1,
     position: 'relative',
-    minHeight: AVAILABLE_HEIGHT * 0.9, // Use 90% of available height
+  },
+  leftSection: {
+    flex: 1,
+    position: 'relative',
+  },
+  centerSection: {
+    flex: 2,
+    position: 'relative',
+  },
+  workstationArea: {
+    flex: 1,
+    position: 'relative',
+  },
+  networkCables: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+  },
+  livesContainer: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 10,
+    borderRadius: 10,
+    zIndex: 1000,
+  },
+  livesText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color: '#333',
+  },
+  feedbackText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#666',
+  },
+  retryButton: {
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    borderRadius: 8,
+    width: '100%',
+    alignItems: 'center',
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   bottomPadding: {
     height: TAB_BAR_HEIGHT + 20, // Extra padding at the bottom
