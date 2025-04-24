@@ -32,6 +32,7 @@ import SecurityTip from '@/components/platfomerComponents/SecurityTip';
 import SuccessMessage from '@/components/platfomerComponents/SuccessMessage';
 import HelpButton from '@/components/platfomerComponents/HelpButton';
 import RightSection from '@/components/platfomerComponents/RightSection';
+import HackerLab from '@/components/platfomerComponents/HackerLab';
 
 // Get screen dimensions
 const { width, height } = Dimensions.get('window');
@@ -429,6 +430,8 @@ const PlatformerGame: React.FC = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [currentFeedback, setCurrentFeedback] = useState('');
   const [failedQuestionIndex, setFailedQuestionIndex] = useState<number | null>(null);
+  const [showHackerLab, setShowHackerLab] = useState(false);
+  const [levelCompleted, setLevelCompleted] = useState(false);
 
   // Security tips in Romanian
   const securityTips = [
@@ -506,6 +509,23 @@ const PlatformerGame: React.FC = () => {
 
     checkMalwareElimination();
   }, [engineerPosition]);
+
+  const handleTeleportPress = () => {
+    // Verificăm doar dacă toate computerele sunt rezolvate
+    if (solvedComputers.every(solved => solved)) {
+      console.log('Teleporting...'); // Debug log
+      Vibration.vibrate(100);
+      setShowHackerLab(true); // Activăm laboratorul hackerului
+      setCurrentTip('Ai găsit portalul secret!');
+      setShowTip(true);
+      setTimeout(() => setShowTip(false), 3000);
+    } else {
+      // Feedback dacă nu toate computerele sunt rezolvate
+      setCurrentTip('Rezolvă mai întâi toate provocările!');
+      setShowTip(true);
+      setTimeout(() => setShowTip(false), 3000);
+    }
+  };
 
   const handleComputerPress = (index: number) => {
     if (!solvedComputers[index]) {
@@ -661,6 +681,17 @@ const PlatformerGame: React.FC = () => {
     }
   };
 
+  const handleHackerLabComplete = () => {
+    setShowHackerLab(false);
+    setLevelCompleted(true);
+    // Afișează mesajul de succes final
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+      router.back(); // Întoarce la lista de nivele
+    }, 3000);
+  };
+
   return (
     <SafeAreaView style={platformerGameStyles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -810,6 +841,41 @@ const PlatformerGame: React.FC = () => {
 
       {/* Security Tip Popup */}
       <SecurityTip tip={currentTip} visible={showTip} />
+
+      {/* Teleport Area Indicator cu zonă apăsabilă */}
+      {solvedComputers.every(solved => solved) && (
+        <TouchableOpacity 
+          style={[
+            styles.teleportArea,
+            { 
+              position: 'absolute',
+              right: 150,
+              bottom: 120,
+              width: 120,
+              height: 120,
+              borderRadius: 60,
+              borderWidth: 3,
+              borderColor: '#00ff00',
+              backgroundColor: 'rgba(0, 255, 0, 0.2)',
+              zIndex: 1000,
+            }
+          ]} 
+          onPress={handleTeleportPress}
+          activeOpacity={0.6}
+        >
+          <Text style={styles.teleportText}>Apasă pentru{'\n'}teleportare</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* Hacker Lab */}
+      <HackerLab
+        visible={showHackerLab}
+        onComplete={handleHackerLabComplete}
+        onExit={() => {
+          console.log('Exiting hacker lab'); // Debug log
+          setShowHackerLab(false);
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -898,6 +964,29 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: TAB_BAR_HEIGHT + 20, // Extra padding at the bottom
+  },
+  teleportArea: {
+    position: 'absolute',
+    right: 150,
+    bottom: 120,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: '#00ff00',
+    backgroundColor: 'rgba(0, 255, 0, 0.2)',
+    zIndex: 1000,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  teleportText: {
+    color: '#00ff00',
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 });
 
