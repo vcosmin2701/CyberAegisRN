@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -37,6 +37,7 @@ const MovementController: React.FC<MovementControllerProps> = ({
   const [movementDirection, setMovementDirection] = useState<string | null>(
     null
   );
+  const lastReportedPosition = useRef(initialPosition);
 
   // Move character function
   const moveCharacter = (direction: 'up' | 'down' | 'left' | 'right') => {
@@ -85,10 +86,16 @@ const MovementController: React.FC<MovementControllerProps> = ({
     return () => clearInterval(moveInterval);
   }, [movementDirection]);
 
-  // Update parent component when position changes
+  // Update parent component when position changes, but only if it's different
   useEffect(() => {
-    onPositionChange(position);
-  }, [position, onPositionChange]);
+    if (
+      position.left !== lastReportedPosition.current.left ||
+      position.top !== lastReportedPosition.current.top
+    ) {
+      lastReportedPosition.current = position;
+      onPositionChange(position);
+    }
+  }, [position.left, position.top]);
 
   // Handle button press and release
   const handleDirectionPress = (

@@ -55,19 +55,20 @@ const allQuizQuestions: QuizQuestion[] = [
       'Să instalezi multe jocuri gratuite',
       'Să te conectezi la orice rețea Wi-Fi',
       'Să te protejezi când folosești internetul',
-      'Să postezi poze cu prietenii'
+      'Să postezi poze cu prietenii',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
-    question: 'De ce este important să nu acceptăm prietenii online de la străini?',
+    question:
+      'De ce este important să nu acceptăm prietenii online de la străini?',
     options: [
       'Pentru că pot trimite invitații neinteresante',
       'Pentru că îți pot trimite temele',
       'Pentru că pot fi persoane rău intenționate',
-      'Pentru că nu știu să scrie corect'
+      'Pentru că nu știu să scrie corect',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce comportament nu este potrivit pe internet?',
@@ -75,9 +76,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Să comentezi frumos la poze',
       'Să postezi lucruri despre alți colegi care i-ar putea supăra',
       'Să ceri ajutorul unui adult',
-      'Să folosești emoji-uri'
+      'Să folosești emoji-uri',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
     question: 'Ce trebuie să faci dacă primești un mesaj care te sperie?',
@@ -85,29 +86,31 @@ const allQuizQuestions: QuizQuestion[] = [
       'Îl închizi și uiți de el',
       'Îl trimiți colegului tău',
       'Îl postezi pe rețele sociale',
-      'Îl arăți imediat unui adult'
+      'Îl arăți imediat unui adult',
     ],
-    correctAnswer: 3
+    correctAnswer: 3,
   },
   {
-    question: 'Ce reprezintă datele personale online, cum ar fi poze și parole?',
+    question:
+      'Ce reprezintă datele personale online, cum ar fi poze și parole?',
     options: [
       'Fișiere neimportante',
       'Mesaje automate',
       'Informații valoroase ce trebuie protejate',
-      'Glume amuzante pentru prieteni'
+      'Glume amuzante pentru prieteni',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
-    question: 'De ce e important să verificăm un site cu un adult dacă pare ciudat?',
+    question:
+      'De ce e important să verificăm un site cu un adult dacă pare ciudat?',
     options: [
       'Pentru a-l salva în calculator',
       'Pentru că adulții pot citi mai repede',
       'Pentru a ne asigura că nu e periculos',
-      'Pentru a găsi jocuri noi'
+      'Pentru a găsi jocuri noi',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Care este rolul unui antivirus?',
@@ -115,9 +118,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Să decoreze calculatorul',
       'Să blocheze fișiere periculoase și viruși',
       'Să îți creeze teme automat',
-      'Să mărească volumul sunetului'
+      'Să mărească volumul sunetului',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
     question: 'De ce trebuie să faci actualizările calculatorului?',
@@ -125,9 +128,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Pentru a avea acces la jocuri noi',
       'Pentru a schimba culoarea tastelor',
       'Pentru a menține calculatorul sigur și rapid',
-      'Pentru a șterge aplicațiile vechi'
+      'Pentru a șterge aplicațiile vechi',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce pericol poate aduce un stick USB necunoscut?',
@@ -135,19 +138,20 @@ const allQuizQuestions: QuizQuestion[] = [
       'Poate conține muzică neplăcută',
       'Poate aduce viruși în calculator',
       'Poate șterge parola Wi-Fi',
-      'Poate bloca ecranul'
+      'Poate bloca ecranul',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
-    question: 'Ce trebuie să faci înainte de a instala un joc de pe un site necunoscut?',
+    question:
+      'Ce trebuie să faci înainte de a instala un joc de pe un site necunoscut?',
     options: [
       'Să-l descarci cât mai repede',
       'Să îl trimiți prietenilor',
       'Să întrebi un adult dacă este sigur',
-      'Să-l deschizi și să vezi ce e'
+      'Să-l deschizi și să vezi ce e',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce rol are parola la pornirea calculatorului?',
@@ -155,9 +159,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Să pornească mai repede',
       'Să asculți muzică mai ușor',
       'Să împiedice accesul altora fără permisiune',
-      'Să afișeze un mesaj de bun venit'
+      'Să afișeze un mesaj de bun venit',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'De ce NU e bine să amâni actualizările sistemului?',
@@ -165,9 +169,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Pentru că ocupă spațiu',
       'Pentru că opresc sunetul',
       'Pentru că te expun la riscuri de securitate',
-      'Pentru că fac calculatorul mai lent'
+      'Pentru că fac calculatorul mai lent',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce se poate întâmpla dacă cineva îți află parola?',
@@ -175,9 +179,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Poate posta lucruri în numele tău sau șterge date',
       'Primește teme în locul tău',
       'Îți trimite flori',
-      'Îți trimite felicitări'
+      'Îți trimite felicitări',
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
   },
   {
     question: 'Cui avem voie să spunem parola?',
@@ -185,9 +189,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Celui mai bun coleg',
       'Oricui pare prietenos',
       'Doar părinților',
-      'Oricărui profesor'
+      'Oricărui profesor',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'De ce NU trebuie să scriem parola pe bilețele?',
@@ -195,39 +199,42 @@ const allQuizQuestions: QuizQuestion[] = [
       'Pentru că ocupă spațiu',
       'Pentru că le poate găsi altcineva',
       'Pentru că hârtia se poate pierde',
-      'Pentru că e prea greu de citit'
+      'Pentru că e prea greu de citit',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
-    question: 'Ce trebuie să faci dacă primești un mesaj în care ți se cere parola?',
+    question:
+      'Ce trebuie să faci dacă primești un mesaj în care ți se cere parola?',
     options: [
       'O trimiți rapid',
       'O ignori și nu spui nimănui',
       'O spui părinților și NU o trimiți',
-      'O scrii într-un caiet la școală'
+      'O scrii într-un caiet la școală',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
-    question: 'De ce nu e bine să spui parola nici măcar unui prieten apropiat?',
+    question:
+      'De ce nu e bine să spui parola nici măcar unui prieten apropiat?',
     options: [
       'Pentru că o poate uita',
       'Pentru că ar putea să o spună altcuiva',
       'Pentru că nu are calculator',
-      'Pentru că nu știe să o folosească'
+      'Pentru că nu știe să o folosească',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
-    question: 'Cum ar trebui să reacționezi dacă cineva pretinde că este administratorul unui joc și cere parola?',
+    question:
+      'Cum ar trebui să reacționezi dacă cineva pretinde că este administratorul unui joc și cere parola?',
     options: [
       'Să te grăbești să i-o dai',
       'Să verifici pe internet cine este',
       'Să o spui doar dacă ai încredere',
-      'Să nu o spui și să anunți un adult'
+      'Să nu o spui și să anunți un adult',
     ],
-    correctAnswer: 3
+    correctAnswer: 3,
   },
   {
     question: 'Cum trebuie să fie o parolă sigură?',
@@ -235,39 +242,36 @@ const allQuizQuestions: QuizQuestion[] = [
       'Scurtă și ușor de scris',
       'Cu litere mari, mici, cifre și simboluri',
       'Doar cu numele tău',
-      'Formată din cuvinte simple'
+      'Formată din cuvinte simple',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
-    question: 'De ce NU este recomandat să folosești data de naștere în parolă?',
+    question:
+      'De ce NU este recomandat să folosești data de naștere în parolă?',
     options: [
       'Pentru că e greu de scris',
       'Pentru că nu are simboluri',
       'Pentru că e ușor de ghicit',
-      'Pentru că nu e în engleză'
+      'Pentru că nu e în engleză',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce exemplu de parolă este considerat slab în lecție?',
-    options: [
-      'Pisica!2024',
-      'Ana!Joc23',
-      '123456',
-      'Verde8@Copac'
-    ],
-    correctAnswer: 2
+    options: ['Pisica!2024', 'Ana!Joc23', '123456', 'Verde8@Copac'],
+    correctAnswer: 2,
   },
   {
-    question: 'Ce truc este oferit în lecție pentru a crea o parolă ușor de ținut minte?',
+    question:
+      'Ce truc este oferit în lecție pentru a crea o parolă ușor de ținut minte?',
     options: [
       'Să o scrii pe mână',
       'Să alegi un cuvânt preferat',
       'Să folosești o propoziție cunoscută',
-      'Să o înregistrezi audio'
+      'Să o înregistrezi audio',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Cât de des este recomandat să schimbi parola?',
@@ -275,9 +279,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'La fiecare 2-3 luni',
       'O dată pe an',
       'Doar dacă o uiți',
-      'Niciodată'
+      'Niciodată',
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
   },
   {
     question: 'De ce este important ca parola să aibă și simboluri speciale?',
@@ -285,29 +289,25 @@ const allQuizQuestions: QuizQuestion[] = [
       'Pentru că arată mai bine',
       'Pentru că simbolurile o fac mai greu de spart',
       'Pentru că nu sunt recunoscute de roboți',
-      'Pentru că ajută la sunet'
+      'Pentru că ajută la sunet',
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
   },
   {
-    question: 'Ce metodă poate fi folosită pentru a verifica dacă o parolă este sigură?',
+    question:
+      'Ce metodă poate fi folosită pentru a verifica dacă o parolă este sigură?',
     options: [
       'Să o întrebi pe colega ta',
       'Să vezi dacă o ține minte fratele tău',
       'Să folosești un generator de parole sau un adult',
-      'Să o scrii pe telefon'
+      'Să o scrii pe telefon',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce NU este o parolă bună?',
-    options: [
-      'Ana2024Joc!',
-      'Pisica123',
-      '@VerdeMic2023',
-      'AjR@2024!'
-    ],
-    correctAnswer: 1
+    options: ['Ana2024Joc!', 'Pisica123', '@VerdeMic2023', 'AjR@2024!'],
+    correctAnswer: 1,
   },
   {
     question: 'Care este un avantaj al schimbării regulate a parolei?',
@@ -315,9 +315,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Nu mai trebuie să o ții minte',
       'Poți folosi cuvinte mai scurte',
       'Eviți ca cineva să o folosească pe termen lung',
-      'Parola rămâne aceeași, dar mai frumoasă'
+      'Parola rămâne aceeași, dar mai frumoasă',
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   {
     question: 'Ce caracteristică are o parolă memorabilă dar sigură?',
@@ -325,9 +325,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Este creată dintr-o frază ușor de reținut',
       'Este scurtă',
       'Are doar cifre',
-      'Este scrisă în caiet'
+      'Este scrisă în caiet',
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
   },
   {
     question: 'Ce combinație este cel mai des recomandată într-o parolă?',
@@ -335,9 +335,9 @@ const allQuizQuestions: QuizQuestion[] = [
       'Cifre + litere mari',
       'Doar simboluri',
       'Litere mici + cifre',
-      'Litere mari, mici, cifre și simboluri'
+      'Litere mari, mici, cifre și simboluri',
     ],
-    correctAnswer: 3
+    correctAnswer: 3,
   },
   {
     question: 'De ce NU trebuie să folosești numele tău în parolă?',
@@ -345,10 +345,10 @@ const allQuizQuestions: QuizQuestion[] = [
       'Pentru că este greu de tastat',
       'Pentru că poate fi ușor de ghicit de către alții',
       'Pentru că se uită',
-      'Pentru că nu e unic'
+      'Pentru că nu e unic',
     ],
-    correctAnswer: 1
-  }
+    correctAnswer: 1,
+  },
 ];
 
 // Function to get 4 random questions
@@ -359,36 +359,36 @@ function getRandomQuestions(): QuizQuestion[] {
 
 // Feedback explanations for each question
 const questionFeedback: Record<number, string> = {
-  0: "Securitatea cibernetică înseamnă protejarea ta când folosești internetul. Nu înseamnă să instalezi jocuri gratuite sau să te conectezi la orice rețea Wi-Fi.",
-  1: "Nu ar trebui să acceptăm prietenii online de la străini pentru că pot fi persoane rău intenționate care ar putea să ne facă rău.",
-  2: "Nu este potrivit să postezi lucruri despre alți colegi care i-ar putea supăra. Este important să fim respectuoși online.",
-  3: "Când primești un mesaj care te sperie, ar trebui să-l arăți imediat unui adult care te poate ajuta.",
-  4: "Datele personale online, cum ar fi poze și parole, sunt informații valoroase ce trebuie protejate, nu fișiere neimportante.",
-  5: "Este important să verificăm un site cu un adult dacă pare ciudat pentru a ne asigura că nu e periculos.",
-  6: "Rolul unui antivirus este să blocheze fișiere periculoase și viruși, nu să decoreze calculatorul.",
-  7: "Trebuie să faci actualizările calculatorului pentru a menține calculatorul sigur și rapid, nu doar pentru a avea acces la jocuri noi.",
-  8: "Un stick USB necunoscut poate aduce viruși în calculator, deci trebuie să fim atenți.",
-  9: "Înainte de a instala un joc de pe un site necunoscut, trebuie să întrebi un adult dacă este sigur.",
-  10: "Parola la pornirea calculatorului are rolul de a împiedica accesul altora fără permisiune, nu de a porni mai repede.",
-  11: "Nu e bine să amâni actualizările sistemului pentru că te expun la riscuri de securitate.",
-  12: "Dacă cineva îți află parola, poate posta lucruri în numele tău sau șterge date.",
-  13: "Avem voie să spunem parola doar părinților, nu colegilor sau oricui pare prietenos.",
-  14: "Nu trebuie să scriem parola pe bilețele pentru că le poate găsi altcineva.",
-  15: "Dacă primești un mesaj în care ți se cere parola, trebuie să o spui părinților și NU să o trimiți.",
-  16: "Nu e bine să spui parola nici măcar unui prieten apropiat pentru că ar putea să o spună altcuiva.",
-  17: "Dacă cineva pretinde că este administratorul unui joc și cere parola, trebuie să nu o spui și să anunți un adult.",
-  18: "O parolă sigură trebuie să fie cu litere mari, mici, cifre și simboluri, nu scurtă și ușor de scris.",
-  19: "Nu este recomandat să folosești data de naștere în parolă pentru că e ușor de ghicit.",
+  0: 'Securitatea cibernetică înseamnă protejarea ta când folosești internetul. Nu înseamnă să instalezi jocuri gratuite sau să te conectezi la orice rețea Wi-Fi.',
+  1: 'Nu ar trebui să acceptăm prietenii online de la străini pentru că pot fi persoane rău intenționate care ar putea să ne facă rău.',
+  2: 'Nu este potrivit să postezi lucruri despre alți colegi care i-ar putea supăra. Este important să fim respectuoși online.',
+  3: 'Când primești un mesaj care te sperie, ar trebui să-l arăți imediat unui adult care te poate ajuta.',
+  4: 'Datele personale online, cum ar fi poze și parole, sunt informații valoroase ce trebuie protejate, nu fișiere neimportante.',
+  5: 'Este important să verificăm un site cu un adult dacă pare ciudat pentru a ne asigura că nu e periculos.',
+  6: 'Rolul unui antivirus este să blocheze fișiere periculoase și viruși, nu să decoreze calculatorul.',
+  7: 'Trebuie să faci actualizările calculatorului pentru a menține calculatorul sigur și rapid, nu doar pentru a avea acces la jocuri noi.',
+  8: 'Un stick USB necunoscut poate aduce viruși în calculator, deci trebuie să fim atenți.',
+  9: 'Înainte de a instala un joc de pe un site necunoscut, trebuie să întrebi un adult dacă este sigur.',
+  10: 'Parola la pornirea calculatorului are rolul de a împiedica accesul altora fără permisiune, nu de a porni mai repede.',
+  11: 'Nu e bine să amâni actualizările sistemului pentru că te expun la riscuri de securitate.',
+  12: 'Dacă cineva îți află parola, poate posta lucruri în numele tău sau șterge date.',
+  13: 'Avem voie să spunem parola doar părinților, nu colegilor sau oricui pare prietenos.',
+  14: 'Nu trebuie să scriem parola pe bilețele pentru că le poate găsi altcineva.',
+  15: 'Dacă primești un mesaj în care ți se cere parola, trebuie să o spui părinților și NU să o trimiți.',
+  16: 'Nu e bine să spui parola nici măcar unui prieten apropiat pentru că ar putea să o spună altcuiva.',
+  17: 'Dacă cineva pretinde că este administratorul unui joc și cere parola, trebuie să nu o spui și să anunți un adult.',
+  18: 'O parolă sigură trebuie să fie cu litere mari, mici, cifre și simboluri, nu scurtă și ușor de scris.',
+  19: 'Nu este recomandat să folosești data de naștere în parolă pentru că e ușor de ghicit.',
   20: "Parola '123456' este considerată slabă în lecție pentru că este prea simplă și ușor de ghicit.",
-  21: "Un truc pentru a crea o parolă ușor de ținut minte este să folosești o propoziție cunoscută.",
-  22: "Este recomandat să schimbi parola la fiecare 2-3 luni, nu o dată pe an sau niciodată.",
-  23: "Este important ca parola să aibă și simboluri speciale pentru că simbolurile o fac mai greu de spart.",
-  24: "Pentru a verifica dacă o parolă este sigură, poți folosi un generator de parole sau un adult.",
+  21: 'Un truc pentru a crea o parolă ușor de ținut minte este să folosești o propoziție cunoscută.',
+  22: 'Este recomandat să schimbi parola la fiecare 2-3 luni, nu o dată pe an sau niciodată.',
+  23: 'Este important ca parola să aibă și simboluri speciale pentru că simbolurile o fac mai greu de spart.',
+  24: 'Pentru a verifica dacă o parolă este sigură, poți folosi un generator de parole sau un adult.',
   25: "Parola 'Pisica123' nu este o parolă bună pentru că nu conține simboluri speciale.",
-  26: "Un avantaj al schimbării regulate a parolei este că eviți ca cineva să o folosească pe termen lung.",
-  27: "O parolă memorabilă dar sigură este creată dintr-o frază ușor de reținut.",
-  28: "Cea mai des recomandată combinație într-o parolă este litere mari, mici, cifre și simboluri.",
-  29: "Nu trebuie să folosești numele tău în parolă pentru că poate fi ușor de ghicit de către alții."
+  26: 'Un avantaj al schimbării regulate a parolei este că eviți ca cineva să o folosească pe termen lung.',
+  27: 'O parolă memorabilă dar sigură este creată dintr-o frază ușor de reținut.',
+  28: 'Cea mai des recomandată combinație într-o parolă este litere mari, mici, cifre și simboluri.',
+  29: 'Nu trebuie să folosești numele tău în parolă pentru că poate fi ușor de ghicit de către alții.',
 };
 
 const PlatformerGame: React.FC = () => {
@@ -425,13 +425,20 @@ const PlatformerGame: React.FC = () => {
   const [showTip, setShowTip] = useState(false);
   const [currentTip, setCurrentTip] = useState('');
   const [progressAnimation] = useState(new Animated.Value(0));
-  const [currentQuizQuestions, setCurrentQuizQuestions] = useState<QuizQuestion[]>([]);
-  const [failedAttempts, setFailedAttempts] = useState<Record<number, number>>({});
+  const [currentQuizQuestions, setCurrentQuizQuestions] = useState<
+    QuizQuestion[]
+  >([]);
+  const [failedAttempts, setFailedAttempts] = useState<Record<number, number>>(
+    {}
+  );
   const [showFeedback, setShowFeedback] = useState(false);
   const [currentFeedback, setCurrentFeedback] = useState('');
-  const [failedQuestionIndex, setFailedQuestionIndex] = useState<number | null>(null);
+  const [failedQuestionIndex, setFailedQuestionIndex] = useState<number | null>(
+    null
+  );
   const [showHackerLab, setShowHackerLab] = useState(false);
   const [levelCompleted, setLevelCompleted] = useState(false);
+  const [isProcessingMalware, setIsProcessingMalware] = useState(false);
 
   // Security tips in Romanian
   const securityTips = [
@@ -464,10 +471,15 @@ const PlatformerGame: React.FC = () => {
 
   // Check for malware elimination with improved feedback
   useEffect(() => {
+    if (isProcessingMalware) return; // Prevent re-entry while processing
+
     const checkMalwareElimination = () => {
       const updatedMalware = [...malwareThreats];
-      let updated = false;
+      let hasUpdates = false;
       let newScore = score;
+      let newProgress = gameProgress;
+      let shouldShowTip = false;
+      let tipToShow = '';
 
       malwareThreats.forEach((threat, index) => {
         if (!threat.eliminated) {
@@ -478,41 +490,50 @@ const PlatformerGame: React.FC = () => {
 
           if (distance < 30) {
             updatedMalware[index].eliminated = true;
-            updated = true;
+            hasUpdates = true;
             newScore += 15;
-            Vibration.vibrate(100); // Feedback for elimination
-
-            // Show random security tip
-            const randomTip =
+            newProgress = Math.min(100, gameProgress + 8);
+            shouldShowTip = true;
+            tipToShow =
               securityTips[Math.floor(Math.random() * securityTips.length)];
-            setCurrentTip(randomTip);
-            setShowTip(true);
-            setTimeout(() => setShowTip(false), 3000);
-
-            // Animate progress bar
-            const newProgress = Math.min(100, gameProgress + 8);
-            Animated.timing(progressAnimation, {
-              toValue: newProgress / 100,
-              duration: 500,
-              useNativeDriver: false,
-            }).start();
-            setGameProgress(newProgress);
+            Vibration.vibrate(100);
           }
         }
       });
 
-      if (updated) {
+      if (hasUpdates) {
+        setIsProcessingMalware(true);
+        // Batch updates together
         setMalwareThreats(updatedMalware);
         setScore(newScore);
+        setGameProgress(newProgress);
+
+        if (shouldShowTip) {
+          setCurrentTip(tipToShow);
+          setShowTip(true);
+          setTimeout(() => {
+            setShowTip(false);
+            setIsProcessingMalware(false);
+          }, 3000);
+        } else {
+          setIsProcessingMalware(false);
+        }
+
+        // Animate progress bar
+        Animated.timing(progressAnimation, {
+          toValue: newProgress / 100,
+          duration: 500,
+          useNativeDriver: false,
+        }).start();
       }
     };
 
     checkMalwareElimination();
-  }, [engineerPosition]);
+  }, [engineerPosition.left, engineerPosition.top]);
 
   const handleTeleportPress = () => {
     // Verificăm doar dacă toate computerele sunt rezolvate
-    if (solvedComputers.every(solved => solved)) {
+    if (solvedComputers.every((solved) => solved)) {
       console.log('Teleporting...'); // Debug log
       Vibration.vibrate(100);
       setShowHackerLab(true); // Activăm laboratorul hackerului
@@ -547,7 +568,7 @@ const PlatformerGame: React.FC = () => {
       // Make sure we don't go out of bounds with the quiz questions
       const questionIndex = activeQuiz % currentQuizQuestions.length;
       const question = currentQuizQuestions[questionIndex];
-      
+
       // Check if this is a retry after a failed attempt
       const isRetry = failedAttempts[activeQuiz] === 1;
 
@@ -606,19 +627,19 @@ const PlatformerGame: React.FC = () => {
         setCurrentTip('Excelent! Ai rezolvat provocarea!');
         setShowTip(true);
         setTimeout(() => setShowTip(false), 3000);
-        
+
         setShowModal(false);
         setActiveQuiz(null);
       } else {
         // Wrong answer handling
         Vibration.vibrate(200);
-        
+
         // Check if this is the first or second attempt
         if (!isRetry) {
           // First attempt - give a second chance
           const newFailedAttempts = { ...failedAttempts, [activeQuiz]: 1 };
           setFailedAttempts(newFailedAttempts);
-          
+
           // Show hint for retry
           setCurrentTip('Încearcă din nou! Ai încă o șansă.');
           setShowTip(true);
@@ -626,22 +647,26 @@ const PlatformerGame: React.FC = () => {
         } else {
           // Second failed attempt - show feedback and reset
           setCorrectAnswersInARow(0);
-          
+
           // Find the question index in the allQuizQuestions array
           const allQuestionsIndex = allQuizQuestions.findIndex(
-            q => q.question === question.question
+            (q) => q.question === question.question
           );
-          
+
           // Set feedback and show feedback modal
-          setCurrentFeedback(questionFeedback[allQuestionsIndex] || "Răspunsul corect era: " + question.options[question.correctAnswer]);
+          setCurrentFeedback(
+            questionFeedback[allQuestionsIndex] ||
+              'Răspunsul corect era: ' +
+                question.options[question.correctAnswer]
+          );
           setFailedQuestionIndex(activeQuiz);
           setShowFeedback(true);
-          
+
           // Reset failed attempts for this computer
           const newFailedAttempts = { ...failedAttempts };
           delete newFailedAttempts[activeQuiz];
           setFailedAttempts(newFailedAttempts);
-          
+
           setShowModal(false);
         }
       }
@@ -811,26 +836,13 @@ const PlatformerGame: React.FC = () => {
       />
 
       {/* Feedback Modal */}
-      <Modal
-        visible={showFeedback}
-        transparent={true}
-        animationType="fade"
-      >
+      <Modal visible={showFeedback} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              Feedback
-            </Text>
-            <Text style={styles.feedbackText}>
-              {currentFeedback}
-            </Text>
-            <TouchableOpacity
-              style={styles.retryButton}
-              onPress={handleRetry}
-            >
-              <Text style={styles.retryButtonText}>
-                Încearcă din nou
-              </Text>
+            <Text style={styles.modalTitle}>Feedback</Text>
+            <Text style={styles.feedbackText}>{currentFeedback}</Text>
+            <TouchableOpacity style={styles.retryButton} onPress={handleRetry}>
+              <Text style={styles.retryButtonText}>Încearcă din nou</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -843,11 +855,11 @@ const PlatformerGame: React.FC = () => {
       <SecurityTip tip={currentTip} visible={showTip} />
 
       {/* Teleport Area Indicator cu zonă apăsabilă */}
-      {solvedComputers.every(solved => solved) && (
-        <TouchableOpacity 
+      {solvedComputers.every((solved) => solved) && (
+        <TouchableOpacity
           style={[
             styles.teleportArea,
-            { 
+            {
               position: 'absolute',
               right: 150,
               bottom: 120,
@@ -858,8 +870,8 @@ const PlatformerGame: React.FC = () => {
               borderColor: '#00ff00',
               backgroundColor: 'rgba(0, 255, 0, 0.2)',
               zIndex: 1000,
-            }
-          ]} 
+            },
+          ]}
           onPress={handleTeleportPress}
           activeOpacity={0.6}
         >
