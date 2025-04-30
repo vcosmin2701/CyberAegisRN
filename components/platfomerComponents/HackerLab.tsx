@@ -38,16 +38,19 @@ const HackerLab: React.FC<HackerLabProps> = ({ visible, onComplete, onExit }) =>
     }
   };
 
-  const handleCabinetPress = () => {
-    if (Math.abs(position.left - 100) < 50 && Math.abs(position.top - 250) < 50) {
+  const handleCabinetPress = (isFirstCabinet: boolean) => {
+    if (isFirstCabinet) {
       setShowCabinet(true);
       setFoundPassword(true);
+    } else {
+      Alert.alert('Gol', 'Acest dulap este gol.');
     }
   };
 
   const handlePasswordSubmit = () => {
     if (password === correctPassword) {
       setShowSuccess(true);
+      setShowComputer(false);
       setTimeout(() => {
         setShowSuccess(false);
         onComplete();
@@ -78,7 +81,7 @@ const HackerLab: React.FC<HackerLabProps> = ({ visible, onComplete, onExit }) =>
 
         {/* Hacker's Computer */}
         <TouchableOpacity 
-          style={styles.computer}
+          style={[styles.computer, { right: 50, top: 150 }]}
           onPress={handleComputerPress}
         >
           <View style={[styles.monitor, isGlowing && styles.glowEffect]}>
@@ -89,10 +92,20 @@ const HackerLab: React.FC<HackerLabProps> = ({ visible, onComplete, onExit }) =>
           <View style={styles.base} />
         </TouchableOpacity>
 
-        {/* File Cabinet */}
+        {/* File Cabinet with Password */}
         <TouchableOpacity 
-          style={styles.cabinet}
-          onPress={handleCabinetPress}
+          style={[styles.cabinet, { left: 50, top: 150 }]}
+          onPress={() => handleCabinetPress(true)}
+        >
+          <View style={styles.cabinetDoor}>
+            <View style={styles.cabinetHandle} />
+          </View>
+        </TouchableOpacity>
+
+        {/* Empty Cabinet */}
+        <TouchableOpacity 
+          style={[styles.cabinet, { left: 50, top: 300 }]}
+          onPress={() => handleCabinetPress(false)}
         >
           <View style={styles.cabinetDoor}>
             <View style={styles.cabinetHandle} />
@@ -100,7 +113,7 @@ const HackerLab: React.FC<HackerLabProps> = ({ visible, onComplete, onExit }) =>
         </TouchableOpacity>
 
         {/* Server Racks */}
-        <View style={styles.serverRack}>
+        <View style={[styles.serverRack, { right: 50, bottom: 50 }]}>
           {[...Array(5)].map((_, i) => (
             <View key={i} style={styles.server}>
               <View style={styles.serverLights}>
@@ -112,7 +125,7 @@ const HackerLab: React.FC<HackerLabProps> = ({ visible, onComplete, onExit }) =>
         </View>
 
         {/* Network Cables */}
-        <View style={styles.networkCables}>
+        <View style={[styles.networkCables, { right: 80, bottom: 50 }]}>
           {[...Array(3)].map((_, i) => (
             <View key={i} style={styles.cable} />
           ))}
@@ -219,8 +232,8 @@ const styles = StyleSheet.create({
   },
   computer: {
     position: 'absolute',
-    right: 100,
-    top: 150,
+    width: 100,
+    height: 80,
   },
   monitor: {
     width: 100,
@@ -254,8 +267,6 @@ const styles = StyleSheet.create({
   },
   cabinet: {
     position: 'absolute',
-    left: 100,
-    top: 250,
     width: 70,
     height: 120,
     backgroundColor: '#444',
@@ -279,10 +290,8 @@ const styles = StyleSheet.create({
   },
   serverRack: {
     position: 'absolute',
-    right: 30,
-    top: 50,
     width: 100,
-    height: 350,
+    height: 250,
     backgroundColor: '#333',
     padding: 5,
     borderRadius: 5,
@@ -309,10 +318,8 @@ const styles = StyleSheet.create({
   },
   networkCables: {
     position: 'absolute',
-    right: 130,
-    top: 50,
     width: 20,
-    height: 350,
+    height: 250,
   },
   cable: {
     width: 5,

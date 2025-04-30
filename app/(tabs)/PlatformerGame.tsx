@@ -713,7 +713,7 @@ const PlatformerGame: React.FC = () => {
     setShowSuccessMessage(true);
     setTimeout(() => {
       setShowSuccessMessage(false);
-      router.back(); // Întoarce la lista de nivele
+      handleBackToLevels(); // Use the existing back handler instead of router.back()
     }, 3000);
   };
 
