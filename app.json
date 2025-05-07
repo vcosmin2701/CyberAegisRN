@@ -2,7 +2,7 @@
   "expo": {
     "name": "CyberAegiesRN",
     "slug": "cyberaegiesrn",
-    "sdkVersion": "52.0.0",
+    "sdkVersion": "53.0.0",
     "platforms": ["ios", "android", "web"],
     "orientation": "portrait",
     "version": "1.0.0",
