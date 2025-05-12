@@ -37,7 +37,7 @@
     "firebase": "^11.4.0",
     "metro": "^0.82.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react-dom": "^19.1.0",
     "react-native": "^0.79.2",
     "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "~2.24.0",
