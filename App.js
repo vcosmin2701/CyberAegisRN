@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./app/tabs/LoginScreen";
@@ -8,6 +9,13 @@ import SubjectsScreen from "./screens/SubjectsScreen";
 import ChapterContent from "./screens/ChapterContent";
 
 const Stack = createStackNavigator();
+
+if (Platform.OS === "web" && "serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/service-worker.js")
+    .then(() => console.log("Service Worker Registered"))
+    .catch((error) => console.error("Service Worker Registration Failed:", error));
+}
 
 export default function App() {
   return (
