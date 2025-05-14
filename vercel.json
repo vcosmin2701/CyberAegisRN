@@ -2,6 +2,6 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ],
-  "buildCommand": "npx expo export:web",
+  "buildCommand": "npx expo export",
   "outputDirectory": "web-build"
 }
